@@ -1,6 +1,8 @@
 package org.prgrms.cream.domain.user.service;
 
+import org.prgrms.cream.domain.user.domain.User;
 import org.prgrms.cream.domain.user.dto.UserSignUpRequest;
+import org.prgrms.cream.domain.user.dto.UserUpdateRequest;
 import org.prgrms.cream.domain.user.exception.DuplicateUserException;
 import org.prgrms.cream.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,15 @@ public class UserService {
 		return userRepository
 			.save(userSignUpRequest.toEntity())
 			.getId();
+	}
+
+	@Transactional
+	public Long updateUser(Long id, UserUpdateRequest userUpdateRequest) {
+		User user = userRepository
+			.findById(id)
+			.get();
+		user.updateUser(userUpdateRequest);
+		return user.getId();
 	}
 
 	private void validateDuplicateUser(UserSignUpRequest userSignUpRequest) {
