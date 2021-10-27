@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
-import org.hibernate.validator.constraints.Range;
 
 @Entity
 @Table(name = "user")
@@ -19,17 +18,16 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false,unique = true,length = 45)
+	@Column(nullable = false, unique = true, length = 45)
 	private String nickname;
 
 	@Column(nullable = false, unique = true, length = 50)
 	private String email;
 
-	@Column(nullable = false, unique = true,length = 45)
+	@Column(nullable = false, unique = true, length = 45)
 	private String phone;
 
-	@Range(min = 220, max = 300)
-	private int size;
+	private String size;
 
 	@Column(nullable = false, length = 100)
 	private String address;
@@ -41,7 +39,14 @@ public class User {
 	}
 
 	@Builder
-	private User(Long id, String nickname, String email, String phone, int size, String address) {
+	private User(
+		Long id,
+		String nickname,
+		String email,
+		String phone,
+		String size,
+		String address
+	) {
 		this.id = id;
 		this.nickname = nickname;
 		this.email = email;
