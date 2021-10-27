@@ -1,6 +1,8 @@
 package org.prgrms.cream.domain.user.service;
 
+import java.util.NoSuchElementException;
 import org.prgrms.cream.domain.user.domain.User;
+import org.prgrms.cream.domain.user.dto.UserResponse;
 import org.prgrms.cream.domain.user.dto.UserSignUpRequest;
 import org.prgrms.cream.domain.user.dto.UserUpdateRequest;
 import org.prgrms.cream.domain.user.exception.DuplicateUserException;
@@ -33,6 +35,14 @@ public class UserService {
 		user.updateUser(userUpdateRequest);
 		return user.getId();
 	}
+
+	@Transactional(readOnly = true)
+	public UserResponse findUser(Long id) {
+		return new UserResponse(userRepository
+									.findById(id)
+									.orElseThrow(() -> new NoSuchElementException("해당 유저가 없습니다.")));
+	}
+
 
 	private void validateDuplicateUser(UserSignUpRequest userSignUpRequest) {
 		if (userRepository.existsUserByEmail(
