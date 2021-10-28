@@ -26,16 +26,16 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Long> createUser(@Valid @RequestBody UserSignUpRequest userSignUpRequest) {
-		return ResponseEntity.ok(userService.saveUser(userSignUpRequest));
+	public ApiResponse<Long> createUser(@Valid @RequestBody UserSignUpRequest userSignUpRequest) {
+		return ApiResponse.of(userService.saveUser(userSignUpRequest));
 	}
 
 	@PatchMapping("{id}")
-	public ResponseEntity<Long> updateUser(
+	public ApiResponse<Long> updateUser(
 		@PathVariable Long id,
 		@RequestBody UserUpdateRequest userUpdateRequest
 	) {
-		return ResponseEntity.ok(userService.updateUser(id, userUpdateRequest));
+		return ApiResponse.of(userService.updateUser(id, userUpdateRequest));
 	}
 
 	@GetMapping("{id}")
