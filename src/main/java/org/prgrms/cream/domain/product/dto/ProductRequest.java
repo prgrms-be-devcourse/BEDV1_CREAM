@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import org.prgrms.cream.domain.product.domain.Product;
 
@@ -25,7 +26,7 @@ public class ProductRequest {
 	@NotBlank
 	private String color;
 
-	@NotBlank
+	@NotNull
 	private int releasePrice;
 
 	@NotBlank

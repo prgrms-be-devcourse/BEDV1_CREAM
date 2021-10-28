@@ -39,7 +39,7 @@ public class UserService {
 	private User findActiveUser(Long id) {
 		return userRepository
 			.findByIdAndIsDeleted(id, false)
-			.orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_ERROR));
+			.orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE));
 	}
 
 	private void validateDuplicateUser(UserSignUpRequest userSignUpRequest) {
