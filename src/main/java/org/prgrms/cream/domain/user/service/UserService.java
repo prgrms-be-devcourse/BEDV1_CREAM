@@ -1,6 +1,7 @@
 package org.prgrms.cream.domain.user.service;
 
 import java.util.NoSuchElementException;
+import javassist.NotFoundException;
 import org.prgrms.cream.domain.user.domain.User;
 import org.prgrms.cream.domain.user.dto.UserResponse;
 import org.prgrms.cream.domain.user.dto.UserSignUpRequest;
@@ -22,6 +23,7 @@ public class UserService {
 	@Transactional
 	public Long saveUser(UserSignUpRequest userSignUpRequest) {
 		validateDuplicateUser(userSignUpRequest);
+
 		return userRepository
 			.save(userSignUpRequest.toEntity())
 			.getId();
@@ -29,20 +31,30 @@ public class UserService {
 
 	@Transactional
 	public Long updateUser(Long id, UserUpdateRequest userUpdateRequest) {
-		User user = userRepository
-			.findById(id)
-			.get();
+		User user = checkActiveUser(id);
 		user.updateUser(userUpdateRequest);
+
 		return user.getId();
 	}
 
 	@Transactional(readOnly = true)
 	public UserResponse findUser(Long id) {
-		return new UserResponse(userRepository
-									.findById(id)
-									.orElseThrow(() -> new NoSuchElementException("해당 유저가 없습니다.")));
+		return new UserResponse(checkActiveUser(id));
 	}
 
+	@Transactional
+	public Long deleteUser(Long id) {
+		User user = checkActiveUser(id);
+		user.deleteUser();
+
+		return id;
+	}
+
+	private User checkActiveUser(Long id) {
+		return userRepository
+			.findByIdAndIsDeleted(id, false)
+			.orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다."));
+	}
 
 	private void validateDuplicateUser(UserSignUpRequest userSignUpRequest) {
 		if (userRepository.existsUserByEmail(
