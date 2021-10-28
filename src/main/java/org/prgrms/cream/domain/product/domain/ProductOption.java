@@ -43,4 +43,12 @@ public class ProductOption {
 		this.product = product;
 		this.size = size;
 	}
+
+	public void updateBuyLowestPrice(int price) {
+		this.buyLowestPrice = price;
+	}
+
+	public void updateSellHighestPrice(int price) {
+		this.sellHighestPrice = price;
+	}
 }
