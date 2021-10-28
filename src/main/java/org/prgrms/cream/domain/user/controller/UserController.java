@@ -5,6 +5,7 @@ import org.prgrms.cream.domain.user.dto.UserResponse;
 import org.prgrms.cream.domain.user.dto.UserSignUpRequest;
 import org.prgrms.cream.domain.user.dto.UserUpdateRequest;
 import org.prgrms.cream.domain.user.service.UserService;
+import org.prgrms.cream.global.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -38,7 +39,7 @@ public class UserController {
 	}
 
 	@GetMapping("{id}")
-	public ResponseEntity<UserResponse> findUser(@PathVariable Long id){
-		return ResponseEntity.ok(userService.findUser(id));
+	public ApiResponse<UserResponse> findUser(@PathVariable Long id){
+		return ApiResponse.of(userService.findUser(id));
 	}
 }
