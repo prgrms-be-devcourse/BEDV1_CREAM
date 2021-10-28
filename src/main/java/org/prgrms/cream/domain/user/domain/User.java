@@ -43,8 +43,8 @@ public class User {
 	@Column(nullable = false, length = 100)
 	private String address;
 
-	@Column(nullable = false, columnDefinition = "TINYINT")
-	private boolean isDeleted = false;
+	@Column(nullable = false, columnDefinition = "TINYINT default false")
+	private boolean isDeleted;
 
 	protected User() {
 	}
