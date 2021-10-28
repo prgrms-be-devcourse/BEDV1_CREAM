@@ -7,13 +7,9 @@ import org.prgrms.cream.domain.user.domain.User;
 public class UserSignUpRequest {
 
 	private String nickname;
-
 	private String email;
-
 	private String phone;
-
 	private String size;
-
 	private String address;
 
 	public User toEntity() {
