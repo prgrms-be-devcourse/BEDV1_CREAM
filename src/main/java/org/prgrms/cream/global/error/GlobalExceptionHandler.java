@@ -2,6 +2,7 @@ package org.prgrms.cream.global.error;
 
 import lombok.extern.slf4j.Slf4j;
 import org.prgrms.cream.domain.product.exception.NotFoundProductException;
+import org.prgrms.cream.domain.user.exception.DuplicateUserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -28,7 +29,7 @@ public class GlobalExceptionHandler {
 			ErrorCode.INVALID_INPUT, exception.getBindingResult());
 		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
-
+  
 	@ExceptionHandler({NotFoundProductException.class})
 	public ResponseEntity<ErrorResponse> handleMethodNotFound(
 		NotFoundProductException exception
@@ -38,5 +39,11 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
 
+	@ExceptionHandler(DuplicateUserException.class)
+	public ResponseEntity<ErrorResponse> handleDuplicateUserException(DuplicateUserException exception) {
+		log.error("handleDuplicateUserException", exception);
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.CONFLICT_ERROR);
+		return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+	}
 
 }
