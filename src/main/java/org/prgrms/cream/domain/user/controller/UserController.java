@@ -21,7 +21,7 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ApiResponse<Long> createUser(@Valid @RequestBody UserSignUpRequest userSignUpRequest) {
-		return ApiResponse.of(userService.saveUser(userSignUpRequest));
+	public ResponseEntity<ApiResponse<Long>> createUser(@Valid @RequestBody UserSignUpRequest userSignUpRequest) {
+		return ResponseEntity.ok(ApiResponse.of(userService.saveUser(userSignUpRequest)));
 	}
 }
