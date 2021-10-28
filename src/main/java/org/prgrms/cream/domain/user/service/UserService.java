@@ -36,7 +36,6 @@ public class UserService {
 		return user.getId();
 	}
 
-
 	private User checkActiveUser(Long id) {
 		return userRepository
 			.findByIdAndIsDeleted(id, false)

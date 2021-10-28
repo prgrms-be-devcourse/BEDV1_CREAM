@@ -28,7 +28,7 @@ public class UserController {
 		return ResponseEntity.ok(ApiResponse.of(userService.saveUser(userSignUpRequest)));
 	}
 
-	@PatchMapping("{id}")
+	@PatchMapping("/{id}")
 	public ResponseEntity<ApiResponse<Long>> updateUser(
 		@PathVariable Long id,
 		@RequestBody UserUpdateRequest userUpdateRequest
