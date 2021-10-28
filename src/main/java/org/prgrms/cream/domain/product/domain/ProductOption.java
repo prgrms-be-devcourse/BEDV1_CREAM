@@ -25,12 +25,13 @@ public class ProductOption {
 	@JoinColumn(name = "product_id", referencedColumnName = "id")
 	private Product product;
 
+	@Column(nullable = false)
 	private String size;
 
-	@Column(columnDefinition = "default 0")
+	@Column(nullable = false, columnDefinition = "default 0")
 	private int buyLowestPrice;
 
-	@Column(columnDefinition = "default 0")
+	@Column(nullable = false, columnDefinition = "default 0")
 	private int sellHighestPrice;
 
 	protected ProductOption() {

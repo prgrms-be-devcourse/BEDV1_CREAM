@@ -47,7 +47,7 @@ public class Product {
 	private int releasePrice;
 
 	@Column(nullable = false, columnDefinition = "TINYINT default 0")
-	private boolean isDeleted = false;
+	private boolean isDeleted;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
 	private List<ProductOption> options = new ArrayList<>();

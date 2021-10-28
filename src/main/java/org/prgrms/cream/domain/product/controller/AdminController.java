@@ -28,15 +28,15 @@ public class AdminController {
 		this.productService = productService;
 	}
 
-	@PostMapping(value = "/products")
+	@PostMapping("/products")
 	public ResponseEntity<Long> registerProduct(
-		@RequestPart("file") MultipartFile file,
-		@RequestPart("req") ProductRequest productRequest
+		@RequestPart MultipartFile file,
+		@RequestPart ProductRequest request
 	) throws IOException {
 		String image = s3Uploader.upload(file, DIRECTORY);
-		productRequest.addImage(image);
+		request.addImage(image);
 
-		return ResponseEntity.ok(productService.registerProduct(productRequest));
+		return ResponseEntity.ok(productService.registerProduct(request));
 	}
 
 }

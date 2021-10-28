@@ -17,7 +17,7 @@ public class ProductService {
 
 	@Transactional
 	public Long registerProduct(ProductRequest productRequest) {
-		final Product product = productRequest.toEntity();
+		Product product = productRequest.toEntity();
 		for (String size : productRequest.getSizes()) {
 			product.addOption(size);
 		}

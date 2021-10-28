@@ -306,3 +306,4 @@ gradle-app.setting
 
 .env
 application-local.yml
+/src/main/resources/images/
