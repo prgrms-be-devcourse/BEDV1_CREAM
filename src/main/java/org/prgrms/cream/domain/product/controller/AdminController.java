@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/products")
 public class AdminController {
 
 	private static final String DIRECTORY = "products";
@@ -33,7 +33,7 @@ public class AdminController {
 		this.productService = productService;
 	}
 
-	@PostMapping("/products")
+	@PostMapping
 	public ResponseEntity<ApiResponse<Long>> registerProduct(
 		@RequestPart MultipartFile file,
 		@Valid @RequestPart ProductRequest request
@@ -44,7 +44,7 @@ public class AdminController {
 		return ResponseEntity.ok(ApiResponse.of(productService.registerProduct(request)));
 	}
 
-	@PutMapping("/products/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<ApiResponse<Long>> modifyProduct(
 		@PathVariable Long id,
 		@Valid @RequestBody ProductRequest productRequest

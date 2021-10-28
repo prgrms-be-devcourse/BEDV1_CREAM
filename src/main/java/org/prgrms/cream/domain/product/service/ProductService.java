@@ -37,7 +37,7 @@ public class ProductService {
 
 	@Transactional
 	public Long modifyProduct(Long id, ProductRequest productRequest) {
-		Product product = findProduct(id);
+		Product product = findActiveProduct(id);
 		product.changeProductInfo(productRequest);
 		for (String size : productRequest.getSizes()) {
 			modifyOption(product, size);
@@ -52,7 +52,7 @@ public class ProductService {
 		}
 	}
 
-	private Product findProduct(Long id) {
+	private Product findActiveProduct(Long id) {
 		return productRepository
 			.findByIdAndIsDeleted(id, false)
 			.orElseThrow(() -> new NotFoundProductException(ErrorCode.NOT_FOUND_RESOURCE));
