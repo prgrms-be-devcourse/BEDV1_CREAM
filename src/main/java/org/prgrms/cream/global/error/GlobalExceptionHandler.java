@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(DuplicateUserException.class)
 	public ResponseEntity<ErrorResponse> handleDuplicateUserException(DuplicateUserException exception) {
-		log.error("handleDeuplicateUserException");
+		log.error("handleDuplicateUserException", exception);
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.CONFLICT_ERROR);
 		return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
 	}
