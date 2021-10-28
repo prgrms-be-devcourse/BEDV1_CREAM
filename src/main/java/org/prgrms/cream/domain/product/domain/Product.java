@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import org.prgrms.cream.domain.product.dto.ProductRequest;
 
 @Getter
 @Entity
@@ -82,6 +83,16 @@ public class Product {
 		this.options.add(buildProductOption(option));
 	}
 
+	public void changeProductInfo(ProductRequest productRequest) {
+		this.brand = productRequest.getBrand();
+		this.englishName = productRequest.getEnglishName();
+		this.koreanName = productRequest.getKoreanName();
+		this.modelNumber = productRequest.getModelNumber();
+		this.color = productRequest.getColor();
+		this.releaseDate = productRequest.getReleaseDate();
+		this.releasePrice = productRequest.getReleasePrice();
+	}
+
 	private ProductOption buildProductOption(String option) {
 		return ProductOption
 			.builder()
@@ -89,5 +100,4 @@ public class Product {
 			.size(option)
 			.build();
 	}
-
 }

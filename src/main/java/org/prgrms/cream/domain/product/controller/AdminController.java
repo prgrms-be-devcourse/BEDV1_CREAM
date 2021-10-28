@@ -1,18 +1,23 @@
 package org.prgrms.cream.domain.product.controller;
 
 import java.io.IOException;
+import javax.validation.Valid;
 import org.prgrms.cream.domain.product.dto.ProductRequest;
 import org.prgrms.cream.domain.product.service.ProductService;
+import org.prgrms.cream.global.response.ApiResponse;
 import org.prgrms.cream.global.service.S3Uploader;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/products")
 public class AdminController {
 
 	private static final String DIRECTORY = "products";
@@ -28,15 +33,22 @@ public class AdminController {
 		this.productService = productService;
 	}
 
-	@PostMapping("/products")
-	public ResponseEntity<Long> registerProduct(
+	@PostMapping
+	public ResponseEntity<ApiResponse<Long>> registerProduct(
 		@RequestPart MultipartFile file,
-		@RequestPart ProductRequest request
+		@Valid @RequestPart ProductRequest request
 	) throws IOException {
 		String image = s3Uploader.upload(file, DIRECTORY);
 		request.addImage(image);
 
-		return ResponseEntity.ok(productService.registerProduct(request));
+		return ResponseEntity.ok(ApiResponse.of(productService.registerProduct(request)));
 	}
 
+	@PutMapping("/{id}")
+	public ResponseEntity<ApiResponse<Long>> modifyProduct(
+		@PathVariable Long id,
+		@Valid @RequestBody ProductRequest productRequest
+	) {
+		return ResponseEntity.ok(ApiResponse.of(productService.modifyProduct(id, productRequest)));
+	}
 }
