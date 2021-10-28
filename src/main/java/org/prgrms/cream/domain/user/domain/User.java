@@ -80,18 +80,18 @@ public class User {
 		UpdateInfo(String option) {
 			this.option = option;
 		}
-	}
 
-	public static UpdateInfo getUpdateOption(String input) {
-		return Arrays
-			.stream(UpdateInfo.values())
-			.filter(u -> u.option.equals(input))
-			.findFirst()
-			.orElseThrow(() -> new InvalidArgumentException(ErrorCode.INVALID_INPUT));
+		static UpdateInfo getUpdateOption(String input) {
+			return Arrays
+				.stream(UpdateInfo.values())
+				.filter(u -> u.option.equals(input))
+				.findFirst()
+				.orElseThrow(() -> new InvalidArgumentException(ErrorCode.INVALID_INPUT));
+		}
 	}
 
 	public void updateUser(UserUpdateRequest userUpdateRequest) {
-		switch (getUpdateOption(userUpdateRequest.getOption())) {
+		switch (UpdateInfo.getUpdateOption(userUpdateRequest.getOption())) {
 			case NICKNAME -> this.nickname = userUpdateRequest.getValue();
 			case EMAIL -> this.email = userUpdateRequest.getValue();
 			case PHONE -> this.phone = userUpdateRequest.getValue();
