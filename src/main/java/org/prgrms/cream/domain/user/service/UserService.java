@@ -30,13 +30,13 @@ public class UserService {
 
 	@Transactional
 	public Long updateUser(Long id, UserUpdateRequest userUpdateRequest) {
-		User user = checkActiveUser(id);
+		User user = findActiveUser(id);
 		user.updateUser(userUpdateRequest);
 
 		return user.getId();
 	}
 
-	private User checkActiveUser(Long id) {
+	private User findActiveUser(Long id) {
 		return userRepository
 			.findByIdAndIsDeleted(id, false)
 			.orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_ERROR));
