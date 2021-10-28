@@ -2,6 +2,8 @@ package org.prgrms.cream.global.error;
 
 import lombok.extern.slf4j.Slf4j;
 import org.prgrms.cream.domain.user.exception.DuplicateUserException;
+import org.prgrms.cream.domain.user.exception.InvalidArgumentException;
+import org.prgrms.cream.domain.user.exception.NotFoundUserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -34,5 +36,19 @@ public class GlobalExceptionHandler {
 		log.error("handleDuplicateUserException", exception);
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.CONFLICT_ERROR);
 		return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(NotFoundUserException.class)
+	public ResponseEntity<ErrorResponse> handleNotFoundUserException(NotFoundUserException exception) {
+		log.error("handleNotFoundUserException", exception);
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_FOUND_ERROR);
+		return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(InvalidArgumentException.class)
+	public ResponseEntity<ErrorResponse> handleInvalidArgumentException(InvalidArgumentException exception) {
+		log.error("handleInvalidArgumentException", exception);
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_INPUT);
+		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
 }
