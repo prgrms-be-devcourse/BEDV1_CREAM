@@ -3,6 +3,9 @@ package org.prgrms.cream.global.error;
 import lombok.extern.slf4j.Slf4j;
 import org.prgrms.cream.domain.product.exception.NotFoundProductException;
 import org.prgrms.cream.domain.user.exception.DuplicateUserException;
+import org.prgrms.cream.domain.user.exception.InvalidArgumentException;
+import org.prgrms.cream.domain.user.exception.NotFoundUserException;
+import org.prgrms.cream.global.error.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,11 +32,9 @@ public class GlobalExceptionHandler {
 			ErrorCode.INVALID_INPUT, exception.getBindingResult());
 		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
-  
-	@ExceptionHandler({NotFoundProductException.class})
-	public ResponseEntity<ErrorResponse> handleMethodNotFound(
-		NotFoundProductException exception
-	) {
+
+	@ExceptionHandler({NotFoundProductException.class, NotFoundUserException.class})
+	public ResponseEntity<ErrorResponse> handleMethodNotFound(NotFoundException exception) {
 		log.error("handleMethodNotFoundException", exception);
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_FOUND_RESOURCE);
 		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
@@ -46,4 +47,10 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
 	}
 
+	@ExceptionHandler(InvalidArgumentException.class)
+	public ResponseEntity<ErrorResponse> handleInvalidArgumentException(InvalidArgumentException exception) {
+		log.error("handleInvalidArgumentException", exception);
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_INPUT);
+		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+	}
 }
