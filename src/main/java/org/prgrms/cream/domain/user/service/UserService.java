@@ -1,6 +1,7 @@
 package org.prgrms.cream.domain.user.service;
 
 import org.prgrms.cream.domain.user.domain.User;
+import org.prgrms.cream.domain.user.dto.UserResponse;
 import org.prgrms.cream.domain.user.dto.UserSignUpRequest;
 import org.prgrms.cream.domain.user.dto.UserUpdateRequest;
 import org.prgrms.cream.domain.user.exception.DuplicateUserException;
@@ -36,9 +37,14 @@ public class UserService {
 		return user.getId();
 	}
 
+	@Transactional(readOnly = true)
+	public UserResponse findUser(Long id) {
+		return new UserResponse(findActiveUser(id));
+	}
+
 	private User findActiveUser(Long id) {
 		return userRepository
-			.findByIdAndIsDeleted(id, false)
+			.findByIdAndIsDeletedFalse(id)
 			.orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE));
 	}
 
