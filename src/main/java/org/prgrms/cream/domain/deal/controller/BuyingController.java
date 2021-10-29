@@ -23,7 +23,7 @@ public class BuyingController {
 	}
 
 	@PostMapping("/{id}")
-	public ResponseEntity<ApiResponse<BidResponse>> bidToBuyProduct(
+	public ResponseEntity<ApiResponse<BidResponse>> registerBuyingBid(
 		@PathVariable Long id,
 		@RequestParam String size,
 		@RequestBody BidRequest bidRequest
