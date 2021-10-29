@@ -29,12 +29,10 @@ public class GlobalExceptionHandler {
 			ErrorCode.INVALID_INPUT, exception.getBindingResult());
 		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
-  
+
 	@ExceptionHandler({NotFoundProductException.class})
-	public ResponseEntity<ErrorResponse> handleMethodNotFound(
-		NotFoundProductException exception
-	) {
-		log.error("handleMethodNotFoundException", exception);
+	public ResponseEntity<ErrorResponse> handleNotFound(NotFoundProductException exception) {
+		log.error("handleNotFoundException", exception);
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_FOUND_RESOURCE);
 		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
@@ -45,5 +43,4 @@ public class GlobalExceptionHandler {
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.CONFLICT_ERROR);
 		return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
 	}
-
 }

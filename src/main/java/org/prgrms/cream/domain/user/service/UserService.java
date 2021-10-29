@@ -1,9 +1,9 @@
 package org.prgrms.cream.domain.user.service;
 
-import java.util.NoSuchElementException;
 import org.prgrms.cream.domain.user.domain.User;
 import org.prgrms.cream.domain.user.dto.UserSignUpRequest;
 import org.prgrms.cream.domain.user.exception.DuplicateUserException;
+import org.prgrms.cream.domain.user.exception.NotFoundUserException;
 import org.prgrms.cream.domain.user.repository.UserRepository;
 import org.prgrms.cream.global.error.ErrorCode;
 import org.springframework.stereotype.Service;
@@ -25,6 +25,12 @@ public class UserService {
 		return userRepository
 			.save(userSignUpRequest.toEntity())
 			.getId();
+	}
+
+	public User findUser(Long id) {
+		return userRepository
+			.findById(id)
+			.orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE));
 	}
 
 	private void validateDuplicateUser(UserSignUpRequest userSignUpRequest) {
