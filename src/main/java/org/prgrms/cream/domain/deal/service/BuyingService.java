@@ -38,7 +38,7 @@ public class BuyingService {
 			productOption.updateBuyLowestPrice(bidRequest.price());
 		}
 
-		User user = userService.findUser(bidRequest.userId());
+		User user = userService.findActiveUser(bidRequest.userId());
 		BuyingBid buyingBid = buyingRepository.save(
 			BuyingBid
 				.builder()

@@ -27,9 +27,9 @@ public class UserService {
 			.getId();
 	}
 
-	public User findUser(Long id) {
+	public User findActiveUser(Long id) {
 		return userRepository
-			.findById(id)
+			.findByIdAndIsDeletedFalse(id)
 			.orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE));
 	}
 
