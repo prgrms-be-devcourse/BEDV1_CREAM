@@ -68,7 +68,7 @@ public class ProductService {
 		}
 	}
 
-	private Product findActiveProduct(Long id) {
+	public Product findActiveProduct(Long id) {
 		return productRepository
 			.findByIdAndIsDeletedFalse(id)
 			.orElseThrow(() -> new NotFoundProductException(ErrorCode.NOT_FOUND_RESOURCE));
