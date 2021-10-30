@@ -1,5 +1,6 @@
 package org.prgrms.cream.domain.user.domain;
 
+import java.util.Arrays;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Getter;
+import org.prgrms.cream.domain.user.dto.UserResponse;
+import org.prgrms.cream.domain.user.dto.UserUpdateRequest;
+import org.prgrms.cream.domain.user.exception.InvalidArgumentException;
+import org.prgrms.cream.global.error.ErrorCode;
 
 @Entity
 @Table(name = "user")
@@ -62,5 +67,49 @@ public class User {
 		this.phone = phone;
 		this.size = size;
 		this.address = address;
+	}
+
+	enum UpdateInfo {
+		NICKNAME("nickname"),
+		EMAIL("email"),
+		PHONE("phone"),
+		SIZE("size"),
+		ADDRESS("address");
+
+		private String option;
+
+		UpdateInfo(String option) {
+			this.option = option;
+		}
+
+		static UpdateInfo getUpdateOption(String input) {
+			return Arrays
+				.stream(UpdateInfo.values())
+				.filter(u -> u.option.equals(input))
+				.findFirst()
+				.orElseThrow(() -> new InvalidArgumentException(ErrorCode.INVALID_INPUT));
+		}
+	}
+
+	public void updateUser(UserUpdateRequest userUpdateRequest) {
+		switch (UpdateInfo.getUpdateOption(userUpdateRequest.getOption())) {
+			case NICKNAME -> this.nickname = userUpdateRequest.getValue();
+			case EMAIL -> this.email = userUpdateRequest.getValue();
+			case PHONE -> this.phone = userUpdateRequest.getValue();
+			case ADDRESS -> this.address = userUpdateRequest.getValue();
+			case SIZE -> this.size = userUpdateRequest.getValue();
+		}
+	}
+
+	public UserResponse toResponse() {
+		return UserResponse
+			.builder()
+			.id(id)
+			.nickname(nickname)
+			.size(size)
+			.phone(phone)
+			.email(email)
+			.address(address)
+			.build();
 	}
 }

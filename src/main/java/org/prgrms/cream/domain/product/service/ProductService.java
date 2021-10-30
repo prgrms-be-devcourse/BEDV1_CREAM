@@ -7,6 +7,7 @@ import org.prgrms.cream.domain.product.domain.ProductOption;
 import org.prgrms.cream.domain.product.dto.ProductRequest;
 import org.prgrms.cream.domain.product.dto.ProductsResponse;
 import org.prgrms.cream.domain.product.exception.NotFoundProductException;
+import org.prgrms.cream.domain.product.exception.NotFoundProductOptionException;
 import org.prgrms.cream.domain.product.repository.ProductOptionRepository;
 import org.prgrms.cream.domain.product.repository.ProductRepository;
 import org.prgrms.cream.global.error.ErrorCode;
@@ -59,6 +60,12 @@ public class ProductService {
 			modifyOption(product, size);
 		}
 		return product.getId();
+	}
+
+	public ProductOption findProductOptionByProductIdAndSize(Long id, String size) {
+		return productOptionRepository
+			.findByProductAndSize(findActiveProduct(id), size)
+			.orElseThrow(() -> new NotFoundProductOptionException(ErrorCode.NOT_FOUND_RESOURCE));
 	}
 
 	private void modifyOption(Product product, String size) {
