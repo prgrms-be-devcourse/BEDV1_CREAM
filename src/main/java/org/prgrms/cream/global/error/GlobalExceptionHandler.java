@@ -34,8 +34,8 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler({NotFoundProductException.class, NotFoundUserException.class})
-	public ResponseEntity<ErrorResponse> handleMethodNotFound(NotFoundException exception) {
-		log.error("handleMethodNotFoundException", exception);
+	public ResponseEntity<ErrorResponse> handleNotFound(NotFoundException exception) {
+		log.error("handleNotFoundException", exception);
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_FOUND_RESOURCE);
 		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
