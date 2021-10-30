@@ -1,7 +1,7 @@
 package org.prgrms.cream.domain.user.dto;
 
+import lombok.Builder;
 import lombok.Getter;
-import org.prgrms.cream.domain.user.domain.User;
 
 @Getter
 public class UserResponse {
@@ -13,12 +13,20 @@ public class UserResponse {
 	private String size;
 	private String address;
 
-	public UserResponse(User user) {
-		this.id = user.getId();
-		this.nickname = user.getNickname();
-		this.email = user.getEmail();
-		this.phone = user.getPhone();
-		this.size = user.getSize();
-		this.address = user.getAddress();
+	@Builder
+	public UserResponse(
+		Long id,
+		String nickname,
+		String email,
+		String phone,
+		String size,
+		String address
+	) {
+		this.id = id;
+		this.nickname = nickname;
+		this.email = email;
+		this.phone = phone;
+		this.size = size;
+		this.address = address;
 	}
 }

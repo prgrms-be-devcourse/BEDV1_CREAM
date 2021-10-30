@@ -39,7 +39,7 @@ public class UserService {
 
 	@Transactional(readOnly = true)
 	public UserResponse findUser(Long id) {
-		return new UserResponse(findActiveUser(id));
+		return findActiveUser(id).toUserResponse();
 	}
 
 	private User findActiveUser(Long id) {
