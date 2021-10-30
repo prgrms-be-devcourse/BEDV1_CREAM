@@ -1,6 +1,7 @@
 package org.prgrms.cream.domain.user.service;
 
 import org.prgrms.cream.domain.user.domain.User;
+import org.prgrms.cream.domain.user.dto.UserResponse;
 import org.prgrms.cream.domain.user.dto.UserSignUpRequest;
 import org.prgrms.cream.domain.user.dto.UserUpdateRequest;
 import org.prgrms.cream.domain.user.exception.DuplicateUserException;
@@ -34,6 +35,11 @@ public class UserService {
 		user.updateUser(userUpdateRequest);
 
 		return user.getId();
+	}
+
+	@Transactional(readOnly = true)
+	public UserResponse findUser(Long id) {
+		return findActiveUser(id).toResponse();
 	}
 
 	public User findActiveUser(Long id) {

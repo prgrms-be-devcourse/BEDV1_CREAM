@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Getter;
+import org.prgrms.cream.domain.user.dto.UserResponse;
 import org.prgrms.cream.domain.user.dto.UserUpdateRequest;
 import org.prgrms.cream.domain.user.exception.InvalidArgumentException;
 import org.prgrms.cream.global.error.ErrorCode;
@@ -98,5 +99,17 @@ public class User {
 			case ADDRESS -> this.address = userUpdateRequest.getValue();
 			case SIZE -> this.size = userUpdateRequest.getValue();
 		}
+	}
+
+	public UserResponse toResponse() {
+		return UserResponse
+			.builder()
+			.id(id)
+			.nickname(nickname)
+			.size(size)
+			.phone(phone)
+			.email(email)
+			.address(address)
+			.build();
 	}
 }
