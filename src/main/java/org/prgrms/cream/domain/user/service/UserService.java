@@ -42,7 +42,7 @@ public class UserService {
 		return findActiveUser(id).toUserResponse();
 	}
 
-	private User findActiveUser(Long id) {
+	public User findActiveUser(Long id) {
 		return userRepository
 			.findByIdAndIsDeletedFalse(id)
 			.orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE));
