@@ -101,7 +101,7 @@ public class User {
 		}
 	}
 
-	public UserResponse toUserResponse() {
+	public UserResponse toResponse() {
 		return UserResponse
 			.builder()
 			.id(id)
