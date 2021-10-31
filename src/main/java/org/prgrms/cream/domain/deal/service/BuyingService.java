@@ -33,8 +33,7 @@ public class BuyingService {
 	public BidResponse registerBuyingBid(Long id, String size, BidRequest bidRequest) {
 		ProductOption productOption = productService.findProductOptionByProductIdAndSize(id, size);
 
-		if (productOption.getHighestPrice() > bidRequest.price()
-			|| productOption.getHighestPrice() == 0) {
+		if (productOption.getHighestPrice() < bidRequest.price()) {
 			productOption.updateBuyBidPrice(bidRequest.price());
 		}
 
