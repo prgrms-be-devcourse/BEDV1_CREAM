@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,15 +26,15 @@ public class Deal extends BaseEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "buyer_id", referencedColumnName = "id")
+	@JoinColumn(name = "buyer_id")
 	private User buyer;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "seller_id", referencedColumnName = "id")
+	@JoinColumn(name = "seller_id")
 	private User seller;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "product_id", referencedColumnName = "id")
+	@OneToOne
+	@JoinColumn(name = "product_id")
 	private Product product;
 
 	@Column(nullable = false)
