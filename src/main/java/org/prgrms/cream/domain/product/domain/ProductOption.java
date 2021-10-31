@@ -29,10 +29,10 @@ public class ProductOption {
 	private String size;
 
 	@Column(nullable = false, columnDefinition = "default 0")
-	private int buyLowestPrice;
+	private int highestPrice;
 
 	@Column(nullable = false, columnDefinition = "default 0")
-	private int sellHighestPrice;
+	private int lowestPrice;
 
 	protected ProductOption() {
 	}
@@ -44,11 +44,11 @@ public class ProductOption {
 		this.size = size;
 	}
 
-	public void updateBuyLowestPrice(int price) {
-		this.buyLowestPrice = price;
+	public void updateBuyBidPrice(int price) {
+		this.highestPrice = price;
 	}
 
-	public void updateSellHighestPrice(int price) {
-		this.sellHighestPrice = price;
+	public void updateSellBidPrice(int price) {
+		this.lowestPrice = price;
 	}
 }

@@ -1,12 +1,15 @@
 package org.prgrms.cream.domain.product.controller;
 
 import java.io.IOException;
+import java.util.List;
 import javax.validation.Valid;
 import org.prgrms.cream.domain.product.dto.ProductRequest;
+import org.prgrms.cream.domain.product.dto.ProductsResponse;
 import org.prgrms.cream.domain.product.service.ProductService;
 import org.prgrms.cream.global.response.ApiResponse;
 import org.prgrms.cream.global.service.S3Uploader;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,6 +34,11 @@ public class AdminController {
 	) {
 		this.s3Uploader = s3Uploader;
 		this.productService = productService;
+	}
+
+	@GetMapping
+	public ResponseEntity<ApiResponse<List<ProductsResponse>>> getProducts() {
+		return ResponseEntity.ok(ApiResponse.of(productService.getProducts()));
 	}
 
 	@PostMapping

@@ -9,5 +9,12 @@ public interface ProductOptionRepository extends JpaRepository<ProductOption, Lo
 
 	boolean existsByProductAndSize(Product product, String size);
 
+	Optional<ProductOption> findFirstByProductAndLowestPriceNotOrderByLowestPrice(
+		Product product,
+		int zero
+	);
+
+	Optional<ProductOption> findFirstByProductOrderByHighestPriceDesc(Product product);
+
 	Optional<ProductOption> findByProductAndSize(Product product, String size);
 }
