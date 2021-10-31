@@ -34,8 +34,8 @@ public class SellingService {
 	public BidResponse registerBuyingBid(Long id, String size, BidRequest bidRequest) {
 		ProductOption productOption = productService.findProductOptionByProductIdAndSize(id, size);
 
-		if (bidRequest.price() > productOption.getSellHighestPrice()) {
-			productOption.updateSellHighestPrice(bidRequest.price());
+		if (bidRequest.price() < productOption.getBuyLowestPrice()) {
+			productOption.updateBuyLowestPrice(bidRequest.price());
 		} else {
 			throw new InvalidArgumentException(ErrorCode.INVALID_INPUT);
 		}
