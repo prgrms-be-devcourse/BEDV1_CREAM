@@ -17,16 +17,20 @@ import org.prgrms.cream.global.domain.BaseEntity;
 
 @Getter
 @Entity
-@Table(name = "buying_bid")
-public class BuyingBid extends BaseEntity {
+@Table(name = "deal")
+public class Deal extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	private User user;
+	@JoinColumn(name = "buyer_id", referencedColumnName = "id")
+	private User buyer;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "seller_id", referencedColumnName = "id")
+	private User seller;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id", referencedColumnName = "id")
@@ -36,31 +40,32 @@ public class BuyingBid extends BaseEntity {
 	private String size;
 
 	@Column(nullable = false)
-	private int suggestPrice;
+	private int price;
 
-	@Column(nullable = false)
-	private int deadline;
+	@Column(columnDefinition = "VARCHAR(45) default '검수 중'")
+	private String buyingStatus = "검수 중";
 
-	@Column(columnDefinition = "VARCHAR(45) default '입찰 중'")
-	private String status = "입찰 중";
+	@Column(columnDefinition = "VARCHAR(45) default '검수 중'")
+	private String sellingStatus = "검수 중";
 
-	protected BuyingBid() {
+	protected Deal() {
+
 	}
 
 	@Builder
-	private BuyingBid(
+	private Deal(
 		Long id,
-		User user,
+		User buyer,
+		User seller,
 		Product product,
 		String size,
-		int suggestPrice,
-		int deadline
+		int price
 	) {
 		this.id = id;
-		this.user = user;
+		this.buyer = buyer;
+		this.seller = seller;
 		this.product = product;
 		this.size = size;
-		this.suggestPrice = suggestPrice;
-		this.deadline = deadline;
+		this.price = price;
 	}
 }

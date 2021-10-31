@@ -18,7 +18,7 @@ import org.prgrms.cream.global.domain.BaseEntity;
 @Getter
 @Entity
 @Table(name = "buying_bid")
-public class BuyingBid extends BaseEntity {
+public class SellingBid extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,11 +44,11 @@ public class BuyingBid extends BaseEntity {
 	@Column(columnDefinition = "VARCHAR(45) default '입찰 중'")
 	private String status = "입찰 중";
 
-	protected BuyingBid() {
+	protected SellingBid() {
 	}
 
 	@Builder
-	private BuyingBid(
+	private SellingBid(
 		Long id,
 		User user,
 		Product product,
