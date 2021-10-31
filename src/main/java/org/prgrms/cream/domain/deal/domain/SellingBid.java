@@ -47,8 +47,6 @@ public class SellingBid extends BaseEntity {
 	protected SellingBid() {
 	}
 
-	;
-
 	@Builder
 	public SellingBid(
 		Long id,
