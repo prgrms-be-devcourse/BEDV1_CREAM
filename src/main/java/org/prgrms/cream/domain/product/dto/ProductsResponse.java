@@ -18,13 +18,13 @@ public class ProductsResponse {
 	public ProductsResponse() {
 	}
 
-	public ProductsResponse(Product product, int straightBuyPrice, int straightSellPrice) {
+	public ProductsResponse(Product product, int sellLowestPrice, int buyHighestPrice) {
 		this.id = product.getId();
 		this.brand = product.getBrand();
 		this.englishName = product.getEnglishName();
 		this.koreanName = product.getKoreanName();
-		this.straightBuyPrice = straightBuyPrice;
-		this.straightSellPrice = straightSellPrice;
+		this.straightBuyPrice = sellLowestPrice;
+		this.straightSellPrice = buyHighestPrice;
 		this.releaseDate = product.getReleaseDate();
 		this.image = product.getImage();
 	}

@@ -82,26 +82,20 @@ public class ProductService {
 	}
 
 	private ProductsResponse toProductResponse(Product product) {
-		Optional<ProductOption> optBuyLowestPrice = productOptionRepository
-			.findFirstByProductAndBuyLowestPriceNotOrderByBuyLowestPrice(product, ZERO);
+		Optional<ProductOption> optLowestPrice = productOptionRepository
+			.findFirstByProductAndLowestPriceNotOrderByLowestPrice(product, ZERO);
 
-		Optional<ProductOption> optSellHighestPrice = productOptionRepository
-			.findFirstByProductOrderBySellHighestPriceAsc(product);
+		Optional<ProductOption> optHighestPrice = productOptionRepository
+			.findFirstByProductOrderByHighestPriceDesc(product);
 
-		int buyLowestPrice = NO_BID;
-		if (optBuyLowestPrice.isPresent()) {
-			buyLowestPrice = optBuyLowestPrice
-				.get()
-				.getBuyLowestPrice();
-		}
+		int lowestPrice = optLowestPrice.isEmpty() ? NO_BID : optLowestPrice
+			.get()
+			.getLowestPrice();
 
-		int sellHighestPrice = NO_BID;
-		if (optSellHighestPrice.isPresent()) {
-			sellHighestPrice = optSellHighestPrice
-				.get()
-				.getSellHighestPrice();
-		}
+		int highestPrice = optHighestPrice.isEmpty() ? NO_BID : optHighestPrice
+			.get()
+			.getHighestPrice();
 
-		return new ProductsResponse(product, buyLowestPrice, sellHighestPrice);
+		return new ProductsResponse(product, lowestPrice, highestPrice);
 	}
 }
