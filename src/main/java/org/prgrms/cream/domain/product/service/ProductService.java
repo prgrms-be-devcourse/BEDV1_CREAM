@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.domain.product.domain.ProductOption;
+import org.prgrms.cream.domain.product.dto.OptionResponse;
 import org.prgrms.cream.domain.product.dto.ProductRequest;
+import org.prgrms.cream.domain.product.dto.ProductResponse;
 import org.prgrms.cream.domain.product.dto.ProductsResponse;
 import org.prgrms.cream.domain.product.exception.NotFoundProductException;
 import org.prgrms.cream.domain.product.exception.NotFoundProductOptionException;
@@ -40,6 +42,23 @@ public class ProductService {
 			.toList();
 	}
 
+	@Transactional(readOnly = true)
+	public ProductResponse getProduct(Long id) {
+		Product product = findActiveProduct(id);
+
+		return new ProductResponse(
+			product,
+			productOptionRepository
+				.findByProduct(product)
+				.stream()
+				.map(productOption -> new OptionResponse(
+					productOption.getSize(),
+					productOption.getLowestPrice()
+				))
+				.toList()
+		);
+	}
+
 	@Transactional
 	public Long registerProduct(ProductRequest productRequest) {
 		Product product = productRequest.toEntity();
@@ -62,19 +81,14 @@ public class ProductService {
 		return product.getId();
 	}
 
+	@Transactional(readOnly = true)
 	public ProductOption findProductOptionByProductIdAndSize(Long id, String size) {
 		return productOptionRepository
 			.findByProductAndSize(findActiveProduct(id), size)
 			.orElseThrow(() -> new NotFoundProductOptionException(ErrorCode.NOT_FOUND_RESOURCE));
 	}
 
-	private void modifyOption(Product product, String size) {
-		boolean isExist = productOptionRepository.existsByProductAndSize(product, size);
-		if (!isExist) {
-			product.addOption(size);
-		}
-	}
-
+	@Transactional(readOnly = true)
 	public Product findActiveProduct(Long id) {
 		return productRepository
 			.findByIdAndIsDeletedFalse(id)
@@ -97,5 +111,12 @@ public class ProductService {
 			.getHighestPrice();
 
 		return new ProductsResponse(product, lowestPrice, highestPrice);
+	}
+
+	private void modifyOption(Product product, String size) {
+		boolean isExist = productOptionRepository.existsByProductAndSize(product, size);
+		if (!isExist) {
+			product.addOption(size);
+		}
 	}
 }

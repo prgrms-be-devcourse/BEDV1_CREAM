@@ -1,31 +1,40 @@
 package org.prgrms.cream.domain.product.dto;
 
+import java.util.List;
 import lombok.Getter;
 import org.prgrms.cream.domain.product.domain.Product;
 
 @Getter
-public class ProductsResponse {
+public class ProductResponse {
 
 	private Long id;
 	private String brand;
 	private String englishName;
 	private String koreanName;
-	private int straightBuyPrice;
-	private int straightSellPrice;
+	private String modelNumber;
 	private String releaseDate;
+	private String color;
+	private int releasePrice;
 	private String image;
 
-	private ProductsResponse() {
+	private List<OptionResponse> options;
+
+	private ProductResponse() {
 	}
 
-	public ProductsResponse(Product product, int sellLowestPrice, int buyHighestPrice) {
+	public ProductResponse(
+		Product product,
+		List<OptionResponse> options
+	) {
 		this.id = product.getId();
 		this.brand = product.getBrand();
 		this.englishName = product.getEnglishName();
 		this.koreanName = product.getKoreanName();
-		this.straightBuyPrice = sellLowestPrice;
-		this.straightSellPrice = buyHighestPrice;
+		this.modelNumber = product.getModelNumber();
 		this.releaseDate = product.getReleaseDate();
+		this.color = product.getColor();
+		this.releasePrice = product.getReleasePrice();
 		this.image = product.getImage();
+		this.options = options;
 	}
 }
