@@ -17,7 +17,7 @@ import org.prgrms.cream.global.domain.BaseEntity;
 
 @Getter
 @Entity
-@Table(name = "buying_bid")
+@Table(name = "selling_bid")
 public class SellingBid extends BaseEntity {
 
 	@Id
