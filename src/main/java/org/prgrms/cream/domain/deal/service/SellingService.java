@@ -7,7 +7,9 @@ import org.prgrms.cream.domain.deal.dto.BidResponse;
 import org.prgrms.cream.domain.deal.repository.SellingRepository;
 import org.prgrms.cream.domain.product.domain.ProductOption;
 import org.prgrms.cream.domain.product.service.ProductService;
+import org.prgrms.cream.domain.user.exception.InvalidArgumentException;
 import org.prgrms.cream.domain.user.service.UserService;
+import org.prgrms.cream.global.error.ErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,9 +34,10 @@ public class SellingService {
 	public BidResponse registerBuyingBid(Long id, String size, BidRequest bidRequest) {
 		ProductOption productOption = productService.findProductOptionByProductIdAndSize(id, size);
 
-		if (bidRequest.price() > productOption.getBuyLowestPrice()) {
+		if (bidRequest.price() > productOption.getSellHighestPrice()) {
 			productOption.updateSellHighestPrice(bidRequest.price());
-		}
+		}else
+			throw new InvalidArgumentException(ErrorCode.INVALID_INPUT);
 
 		SellingBid bid = SellingBid
 			.builder()
