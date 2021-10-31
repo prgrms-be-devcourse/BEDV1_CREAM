@@ -4,10 +4,10 @@ import java.time.format.DateTimeFormatter;
 import org.prgrms.cream.domain.deal.domain.SellingBid;
 import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
+import org.prgrms.cream.domain.deal.exception.NotFoundBidException;
 import org.prgrms.cream.domain.deal.repository.SellingRepository;
 import org.prgrms.cream.domain.product.domain.ProductOption;
 import org.prgrms.cream.domain.product.service.ProductService;
-import org.prgrms.cream.domain.user.exception.NotFoundUserException;
 import org.prgrms.cream.domain.user.service.UserService;
 import org.prgrms.cream.global.error.ErrorCode;
 import org.springframework.stereotype.Service;
@@ -83,7 +83,7 @@ public class SellingService {
 				userService.findActiveUser(userId),
 				productService.findActiveProduct(productId),
 				size)
-			.orElseThrow(() -> new NotFoundUserException(ErrorCode.NOT_FOUND_RESOURCE));
+			.orElseThrow(() -> new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE));
 	}
 
 	public boolean existsSameBid(Long productId, String size, Long userId) {
