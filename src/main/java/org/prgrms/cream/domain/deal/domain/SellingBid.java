@@ -63,4 +63,9 @@ public class SellingBid extends BaseEntity {
 		this.suggestPrice = suggestPrice;
 		this.deadline = deadline;
 	}
+
+	public void updateSellingBid(int price, int deadline){
+		this.suggestPrice = price;
+		this.deadline = deadline;
+	}
 }
