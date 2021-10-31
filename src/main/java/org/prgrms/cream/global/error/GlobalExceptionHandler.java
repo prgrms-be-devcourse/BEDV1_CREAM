@@ -1,6 +1,7 @@
 package org.prgrms.cream.global.error;
 
 import lombok.extern.slf4j.Slf4j;
+import org.prgrms.cream.domain.deal.exception.NotFoundBidException;
 import org.prgrms.cream.domain.product.exception.NotFoundProductException;
 import org.prgrms.cream.domain.user.exception.DuplicateUserException;
 import org.prgrms.cream.domain.user.exception.InvalidArgumentException;
@@ -33,7 +34,13 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler({NotFoundProductException.class, NotFoundUserException.class})
+	@ExceptionHandler(
+		{
+			NotFoundProductException.class,
+			NotFoundUserException.class,
+			NotFoundBidException.class
+		}
+	)
 	public ResponseEntity<ErrorResponse> handleNotFound(NotFoundException exception) {
 		log.error("handleNotFoundException", exception);
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_FOUND_RESOURCE);
