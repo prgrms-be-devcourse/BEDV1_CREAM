@@ -5,13 +5,13 @@ import org.prgrms.cream.domain.deal.dto.BidResponse;
 import org.prgrms.cream.domain.deal.service.SellingService;
 import org.prgrms.cream.global.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class SellingController {
 
 	private final SellingService sellingService;
