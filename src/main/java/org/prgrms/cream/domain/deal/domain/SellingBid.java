@@ -1,5 +1,6 @@
 package org.prgrms.cream.domain.deal.domain;
 
+import java.time.format.DateTimeFormatter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import org.prgrms.cream.domain.deal.dto.BidRequest;
+import org.prgrms.cream.domain.deal.dto.BidResponse;
 import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.domain.user.domain.User;
 import org.prgrms.cream.global.domain.BaseEntity;
@@ -64,8 +67,19 @@ public class SellingBid extends BaseEntity {
 		this.deadline = deadline;
 	}
 
-	public void updateSellingBid(int price, int deadline){
+	public void updateSellingBid(int price, int deadline) {
 		this.suggestPrice = price;
 		this.deadline = deadline;
+	}
+
+	public BidResponse toBidResponse(BidRequest bidRequest) {
+		return new BidResponse(
+			suggestPrice,
+			deadline,
+			this
+				.getCreatedDate()
+				.plusDays(bidRequest.deadline())
+				.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+		);
 	}
 }

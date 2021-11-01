@@ -1,6 +1,5 @@
 package org.prgrms.cream.domain.deal.service;
 
-import java.time.format.DateTimeFormatter;
 import org.prgrms.cream.domain.deal.domain.SellingBid;
 import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
@@ -49,11 +48,7 @@ public class SellingService {
 
 		sellingRepository.save(sellingBid);
 
-		return new BidResponse(
-			sellingBid.getSuggestPrice(),
-			sellingBid.getDeadline(),
-			createExpiredDate(sellingBid, bidRequest)
-		);
+		return sellingBid.toBidResponse(bidRequest);
 	}
 
 	@Transactional
@@ -65,11 +60,7 @@ public class SellingService {
 
 		updateLowestPrice(bidRequest, productOption);
 
-		return new BidResponse(
-			sellingBid.getSuggestPrice(),
-			sellingBid.getDeadline(),
-			createExpiredDate(sellingBid, bidRequest)
-		);
+		return sellingBid.toBidResponse(bidRequest);
 	}
 
 	@Transactional(readOnly = true)
@@ -94,12 +85,5 @@ public class SellingService {
 			|| productOption.getLowestPrice() == ZERO) {
 			productOption.updateSellBidPrice(bidRequest.price());
 		}
-	}
-
-	private String createExpiredDate(SellingBid sellingBid, BidRequest bidRequest) {
-		return sellingBid
-			.getCreatedDate()
-			.plusDays(bidRequest.deadline())
-			.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 	}
 }
