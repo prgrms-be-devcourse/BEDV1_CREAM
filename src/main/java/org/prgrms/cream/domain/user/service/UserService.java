@@ -42,6 +42,14 @@ public class UserService {
 		return findActiveUser(id).toResponse();
 	}
 
+	@Transactional
+	public Long deleteUser(Long id) {
+		User user = findActiveUser(id);
+		user.deleteUser();
+
+		return user.getId();
+	}
+
 	public User findActiveUser(Long id) {
 		return userRepository
 			.findByIdAndIsDeletedFalse(id)
@@ -54,13 +62,5 @@ public class UserService {
 		)) {
 			throw new DuplicateUserException(ErrorCode.CONFLICT_ERROR);
 		}
-	}
-
-	@Transactional
-	public Long deleteUser(Long id) {
-		User user = findActiveUser(id);
-		user.deleteUser();
-
-		return user.getId();
 	}
 }
