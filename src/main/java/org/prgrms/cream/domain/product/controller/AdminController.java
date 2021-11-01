@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import javax.validation.Valid;
 import org.prgrms.cream.domain.product.dto.ProductRequest;
+import org.prgrms.cream.domain.product.dto.ProductResponse;
 import org.prgrms.cream.domain.product.dto.ProductsResponse;
 import org.prgrms.cream.domain.product.service.ProductService;
 import org.prgrms.cream.global.response.ApiResponse;
@@ -41,6 +42,11 @@ public class AdminController {
 	@GetMapping
 	public ResponseEntity<ApiResponse<List<ProductsResponse>>> getProducts() {
 		return ResponseEntity.ok(ApiResponse.of(productService.getProducts()));
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<ApiResponse<ProductResponse>> getProduct(@PathVariable Long id) {
+		return ResponseEntity.ok(ApiResponse.of(productService.getProduct(id)));
 	}
 
 	@PostMapping
