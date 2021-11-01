@@ -13,7 +13,7 @@ public class DealService {
 		this.dealRepository = dealRepository;
 	}
 
-	public Deal makeDeal(Deal deal) {
+	public Deal createDeal(Deal deal) {
 		return dealRepository.save(deal);
 	}
 }

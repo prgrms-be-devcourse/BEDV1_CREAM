@@ -42,7 +42,7 @@ public class BuyingController {
 		@RequestParam String size,
 		@RequestBody BuyRequest buyRequest
 	) {
-		return ResponseEntity.ok(
-			ApiResponse.of(buyingService.straightBuyProduct(productId, size, buyRequest)));
+		return ResponseEntity.ok(ApiResponse.of(
+			buyingService.straightBuyProduct(productId, size, buyRequest)));
 	}
 }

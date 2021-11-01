@@ -85,7 +85,7 @@ public class BuyingService {
 			.updateSellBidPrice(secondSellingBid.getSuggestPrice());
 
 		return dealService
-			.makeDeal(
+			.createDeal(
 				Deal
 					.builder()
 					.buyer(userService.findActiveUser(buyRequest.userId()))
