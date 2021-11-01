@@ -85,7 +85,7 @@ public class ProductService {
 		Product product = findActiveProduct(id);
 
 		Optional<Deal> optDeal = dealRepository.findFirstByProductOrderByCreatedDateDesc(product);
-		int recentDealPrice = optDeal.isEmpty() ? 0 : optDeal
+		int recentDealPrice = optDeal.isEmpty() ? NO_DEAL : optDeal
 			.get()
 			.getPrice();
 
