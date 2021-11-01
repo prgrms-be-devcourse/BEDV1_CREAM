@@ -16,7 +16,6 @@ public class ProductResponse {
 	private String color;
 	private int releasePrice;
 	private String image;
-
 	private List<OptionResponse> options;
 
 	private ProductResponse() {

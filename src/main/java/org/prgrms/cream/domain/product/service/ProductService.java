@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductService {
 
 	private static final int NO_BID = 0;
+	private static final int NO_DEAL = 0;
 	private static final int ZERO = 0;
 
 	private final ProductRepository productRepository;
@@ -72,7 +73,8 @@ public class ProductService {
 				.stream()
 				.map(productOption -> new OptionResponse(
 					productOption.getSize(),
-					productOption.getLowestPrice()
+					productOption.getLowestPrice(),
+					productOption.getHighestPrice()
 				))
 				.toList()
 		);
@@ -100,7 +102,7 @@ public class ProductService {
 
 		Optional<Deal> optDeal = dealRepository.findFirstByProductAndSizeOrderByCreatedDateDesc(
 			product, size);
-		int recentDealPrice = optDeal.isEmpty() ? 0 : optDeal
+		int recentDealPrice = optDeal.isEmpty() ? NO_DEAL : optDeal
 			.get()
 			.getPrice();
 

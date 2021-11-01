@@ -46,6 +46,7 @@ public class ProductController {
 				optSize
 					.map(size -> productService.getProductDetailByOption(id, size))
 					.orElse(productService.getProductDetail(id))
-			));
+			)
+		);
 	}
 }
