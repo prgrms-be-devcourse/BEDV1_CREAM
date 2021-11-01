@@ -20,6 +20,7 @@ public class SellingService {
 	private static final int ZERO = 0;
 	private static final int ONLY_ONE_BID = 1;
 	private static final int ALL_BID = 2;
+
 	private final ProductService productService;
 	private final UserService userService;
 	private final BuyingService buyingService;
