@@ -1,5 +1,7 @@
 package org.prgrms.cream.domain.deal.controller;
 
+import org.prgrms.cream.domain.deal.dto.BuyRequest;
+import org.prgrms.cream.domain.deal.dto.DealResponse;
 import javax.validation.Valid;
 import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
@@ -8,6 +10,7 @@ import org.prgrms.cream.global.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +26,7 @@ public class SellingController {
 		this.sellingService = sellingService;
 	}
 
-	@PostMapping("/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<ApiResponse<BidResponse>> registerSellingBid(
 		@PathVariable Long id,
 		@RequestParam String size,
@@ -35,5 +38,15 @@ public class SellingController {
 		}
 		return ResponseEntity.ok(ApiResponse.of(
 			sellingService.registerSellingBid(id, size, bidRequest)));
+	}
+
+	@PostMapping("/{id}")
+	public ResponseEntity<ApiResponse<DealResponse>> straightSellProduct(
+		@PathVariable Long id,
+		@RequestParam String size,
+		@RequestBody BuyRequest buyRequest
+	) {
+		return ResponseEntity.ok(
+			ApiResponse.of(sellingService.straightSellProduct(id, size, buyRequest)));
 	}
 }

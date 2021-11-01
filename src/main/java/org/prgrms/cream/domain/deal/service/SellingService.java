@@ -1,15 +1,19 @@
 package org.prgrms.cream.domain.deal.service;
 
+import java.util.List;
+import org.prgrms.cream.domain.deal.domain.BuyingBid;
+import org.prgrms.cream.domain.deal.domain.Deal;
+import org.prgrms.cream.domain.deal.dto.BuyRequest;
+import org.prgrms.cream.domain.deal.dto.DealResponse;
+import org.prgrms.cream.domain.deal.model.DealStatus;
+import org.prgrms.cream.domain.product.domain.ProductOption;
+import org.prgrms.cream.domain.product.service.ProductService;
+import org.prgrms.cream.domain.user.service.UserService;
 import org.prgrms.cream.domain.deal.domain.SellingBid;
 import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
 import org.prgrms.cream.domain.deal.exception.NotFoundBidException;
 import org.prgrms.cream.domain.deal.repository.SellingRepository;
-import org.prgrms.cream.domain.product.domain.ProductOption;
-import org.prgrms.cream.domain.product.service.ProductService;
-import org.prgrms.cream.domain.user.service.UserService;
-import java.util.List;
-import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.global.error.ErrorCode;
 import org.springframework.stereotype.Service;
@@ -18,20 +22,57 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SellingService {
 
+	private static final int FIRST_BID = 0;
+	private static final int SECOND_BID = 1;
 	private static final int ZERO = 0;
+	private static final int ONLY_ONE_BID = 1;
+	private static final int ALL_BID = 2;
 
-	private final SellingRepository sellingRepository;
 	private final ProductService productService;
 	private final UserService userService;
+	private final BuyingService buyingService;
+	private final DealService dealService;
+	private final SellingRepository sellingRepository;
 
 	public SellingService(
-		SellingRepository sellingRepository,
 		ProductService productService,
-		UserService userService
+		UserService userService,
+		BuyingService buyingService,
+		DealService dealService,
+		SellingRepository sellingRepository
 	) {
-		this.sellingRepository = sellingRepository;
 		this.productService = productService;
 		this.userService = userService;
+		this.buyingService = buyingService;
+		this.dealService = dealService;
+		this.sellingRepository = sellingRepository;
+	}
+
+	@Transactional
+	public DealResponse straightSellProduct(Long productId, String size, BuyRequest buyRequest) {
+		List<BuyingBid> buyingBids = buyingService.findBuyingBid(
+			productId, size, DealStatus.BIDDING);
+
+		BuyingBid firstBuyingBid = buyingBids.get(FIRST_BID);
+
+		Deal deal = dealService.createDeal(
+			firstBuyingBid,
+			size,
+			userService.findActiveUser(buyRequest.userId()),
+			productService.findActiveProduct(productId)
+		);
+
+		ProductOption productOption = productService.findProductOptionByProductIdAndSize(
+			productId, size);
+
+		if (buyingBids.size() == ONLY_ONE_BID) {
+			productOption.updateBuyBidPrice(ZERO);
+		} else if (buyingBids.size() == ALL_BID) {
+			BuyingBid secondBuyingBid = buyingBids.get(SECOND_BID);
+			productOption.updateBuyBidPrice(secondBuyingBid.getSuggestPrice());
+		}
+
+		return deal.toResponse();
 	}
 
 	@Transactional
@@ -102,10 +143,11 @@ public class SellingService {
 
 		return sellingBids;
 	}
-  
+
   private void updateLowestPrice(BidRequest bidRequest, ProductOption productOption) {
-		if (productOption.getLowestPrice() > bidRequest.price()
-			|| productOption.getLowestPrice() == ZERO) {
-			productOption.updateSellBidPrice(bidRequest.price());
-		}
+	  if (productOption.getLowestPrice() > bidRequest.price()
+		  || productOption.getLowestPrice() == ZERO) {
+		  productOption.updateSellBidPrice(bidRequest.price());
+	  }
+  }
 }
