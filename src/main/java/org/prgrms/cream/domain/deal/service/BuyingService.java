@@ -65,8 +65,11 @@ public class BuyingService {
 		Product product = productService.findActiveProduct(productId);
 
 		List<BuyingBid> buyingBids = buyingRepository
-			.findTop2ByProductAndSizeAndStatusOrderBySuggestPriceDescCreatedDateAsc(product, size,
-																					status.getStatus());
+			.findTop2ByProductAndSizeAndStatusOrderBySuggestPriceDescCreatedDateAsc(
+				product,
+				size,
+				status.getStatus()
+			);
 
 		if (buyingBids.isEmpty()) {
 			throw new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE);
