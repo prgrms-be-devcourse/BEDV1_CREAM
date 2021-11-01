@@ -4,13 +4,12 @@ spring:
 
 cloud:
   aws:
-    credentials:
-      accessKey: ${IAM_ACCESS_KEY}
-      secretKey: ${IAM_SECRET_KEY}
     s3:
       bucket: cream-image
     region:
       static: ap-northeast-2
     stack:
       auto: false
+    credentials:
+      instanceProfile: true
 
