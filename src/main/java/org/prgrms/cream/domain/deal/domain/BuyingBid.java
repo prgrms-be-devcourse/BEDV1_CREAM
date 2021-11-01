@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.domain.user.domain.User;
 import org.prgrms.cream.global.domain.BaseEntity;
@@ -62,5 +63,9 @@ public class BuyingBid extends BaseEntity {
 		this.size = size;
 		this.suggestPrice = suggestPrice;
 		this.deadline = deadline;
+	}
+
+	public void changeStatus(DealStatus status) {
+		this.status = status.getStatus();
 	}
 }

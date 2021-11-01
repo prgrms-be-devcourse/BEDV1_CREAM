@@ -7,6 +7,7 @@ import org.prgrms.cream.domain.user.dto.UserUpdateRequest;
 import org.prgrms.cream.domain.user.service.UserService;
 import org.prgrms.cream.global.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,5 +42,10 @@ public class UserController {
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse<UserResponse>> findUser(@PathVariable Long id) {
 		return ResponseEntity.ok(ApiResponse.of(userService.findUser(id)));
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<ApiResponse<Long>> deleteUser(@PathVariable Long id) {
+		return ResponseEntity.ok(ApiResponse.of(userService.deleteUser(id)));
 	}
 }

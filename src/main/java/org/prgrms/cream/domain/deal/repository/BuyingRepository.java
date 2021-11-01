@@ -3,6 +3,7 @@ package org.prgrms.cream.domain.deal.repository;
 import java.util.List;
 import org.prgrms.cream.domain.deal.domain.BuyingBid;
 import org.prgrms.cream.domain.deal.dto.BidDetail;
+import org.prgrms.cream.domain.product.domain.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -29,4 +30,10 @@ public interface BuyingRepository extends JpaRepository<BuyingBid, Long> {
 		nativeQuery = true
 	)
 	List<BidDetail> findAllByProductAndSizeGroupBy(Long productId, String size);
+  
+	List<BuyingBid> findTop2ByProductAndSizeAndStatusOrderBySuggestPriceDescCreatedDateAsc(
+		Product product,
+		String size,
+		String dealStatus
+	);
 }

@@ -112,4 +112,8 @@ public class User {
 			.address(address)
 			.build();
 	}
+
+	public void deleteUser() {
+		this.isDeleted = true;
+	}
 }

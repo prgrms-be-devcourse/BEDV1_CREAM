@@ -9,7 +9,9 @@ import org.prgrms.cream.domain.product.dto.ProductsResponse;
 import org.prgrms.cream.domain.product.service.ProductService;
 import org.prgrms.cream.global.response.ApiResponse;
 import org.prgrms.cream.global.service.S3Uploader;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,5 +66,11 @@ public class AdminController {
 		@Valid @RequestBody ProductRequest productRequest
 	) {
 		return ResponseEntity.ok(ApiResponse.of(productService.modifyProduct(id, productRequest)));
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> removeProduct(@PathVariable Long id) {
+		productService.removeProduct(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

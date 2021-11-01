@@ -1,5 +1,7 @@
 package org.prgrms.cream.domain.deal.domain;
 
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import org.prgrms.cream.domain.deal.dto.DealResponse;
 import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.domain.user.domain.User;
 import org.prgrms.cream.global.domain.BaseEntity;
@@ -68,5 +71,19 @@ public class Deal extends BaseEntity {
 		this.product = product;
 		this.size = size;
 		this.price = price;
+	}
+
+	public DealResponse toResponse() {
+		return DealResponse.of(
+			id,
+			product.getEnglishName(),
+			size,
+			price,
+			convertDateTime(this.getCreatedDate())
+		);
+	}
+
+	private String convertDateTime(LocalDateTime dateTime) {
+		return dateTime.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
 	}
 }
