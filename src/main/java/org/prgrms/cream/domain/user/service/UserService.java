@@ -55,4 +55,12 @@ public class UserService {
 			throw new DuplicateUserException(ErrorCode.CONFLICT_ERROR);
 		}
 	}
+
+	@Transactional
+	public Long deleteUser(Long id) {
+		User user = findActiveUser(id);
+		user.deleteUser();
+
+		return user.getId();
+	}
 }
