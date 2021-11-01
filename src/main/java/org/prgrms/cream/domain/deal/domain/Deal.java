@@ -1,5 +1,7 @@
 package org.prgrms.cream.domain.deal.domain;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -76,7 +78,12 @@ public class Deal extends BaseEntity {
 			id,
 			product.getEnglishName(),
 			size,
-			price
+			price,
+			convertDateTime(this.getCreatedDate())
 		);
+	}
+
+	private String convertDateTime(LocalDateTime dateTime) {
+		return dateTime.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
 	}
 }

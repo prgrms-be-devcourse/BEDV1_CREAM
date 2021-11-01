@@ -4,10 +4,17 @@ public record DealResponse(
 	Long dealId,
 	String productName,
 	String size,
-	Integer price
+	int price,
+	String createdDate
 ) {
 
-	public static DealResponse of(Long id, String productName, String size, Integer price) {
-		return new DealResponse(id, productName, size, price);
+	public static DealResponse of(
+		Long id,
+		String productName,
+		String size,
+		int price,
+		String createdDate
+	) {
+		return new DealResponse(id, productName, size, price, createdDate);
 	}
 }
