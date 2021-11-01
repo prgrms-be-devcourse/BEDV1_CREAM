@@ -13,3 +13,16 @@ spring:
     hibernate:
       format_sql: true
       ddl-auto: none
+
+cloud:
+  aws:
+    credentials:
+      accessKey: ${IAM_ACCESS_KEY}
+      secretKey: ${IAM_SECRET_KEY}
+    s3:
+      bucket: cream-image
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
