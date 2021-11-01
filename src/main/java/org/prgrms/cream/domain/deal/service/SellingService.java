@@ -19,13 +19,13 @@ public class SellingService {
 	}
 
 	@Transactional(readOnly = true)
-	public SellingBid findSellingBidOfHighestPrice(
+	public SellingBid findSellingBidOfLowestPrice(
 		Product product,
 		String size,
 		DealStatus dealStatus
 	) {
 		return sellingRepository
-			.findFirstByProductAndSizeAndStatusOrderBySuggestPriceDescCreatedDateAsc(
+			.findFirstByProductAndSizeAndStatusOrderBySuggestPriceAscCreatedDateAsc(
 				product,
 				size,
 				dealStatus.getStatus()

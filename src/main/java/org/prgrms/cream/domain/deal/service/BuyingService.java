@@ -72,17 +72,17 @@ public class BuyingService {
 	public DealResponse straightBuyProduct(Long productId, String size, BuyRequest buyRequest) {
 		Product product = productService.findActiveProduct(productId);
 		SellingBid topSellingBid = sellingService
-			.findSellingBidOfHighestPrice(product, size, DealStatus.BIDDING);
+			.findSellingBidOfLowestPrice(product, size, DealStatus.BIDDING);
 		topSellingBid.changeStatus(DealStatus.BID_COMPLETED);
 
 		SellingBid secondSellingBid = sellingService
-			.findSellingBidOfHighestPrice(product, size, DealStatus.BIDDING);
+			.findSellingBidOfLowestPrice(product, size, DealStatus.BIDDING);
 		productService
 			.findProductOptionByProductIdAndSize(
 				productId,
 				size
 			)
-			.updateBuyBidPrice(secondSellingBid.getSuggestPrice());
+			.updateSellBidPrice(secondSellingBid.getSuggestPrice());
 
 		return dealService
 			.makeDeal(

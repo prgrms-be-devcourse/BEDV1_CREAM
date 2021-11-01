@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SellingRepository extends JpaRepository<SellingBid, Long> {
 
-	Optional<SellingBid> findFirstByProductAndSizeAndStatusOrderBySuggestPriceDescCreatedDateAsc(
+	Optional<SellingBid> findFirstByProductAndSizeAndStatusOrderBySuggestPriceAscCreatedDateAsc(
 		Product product,
 		String size,
 		String status
