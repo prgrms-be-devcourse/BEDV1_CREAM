@@ -62,6 +62,12 @@ public class ProductService {
 		return product.getId();
 	}
 
+	@Transactional
+	public void removeProduct(Long id) {
+		Product product = findActiveProduct(id);
+		product.deleteProduct();
+	}
+
 	public ProductOption findProductOptionByProductIdAndSize(Long id, String size) {
 		return productOptionRepository
 			.findByProductAndSize(findActiveProduct(id), size)

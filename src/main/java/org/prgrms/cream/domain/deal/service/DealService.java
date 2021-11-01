@@ -35,4 +35,8 @@ public class DealService {
 
 		return dealRepository.save(deal);
 	}
+
+	public Deal createDeal(Deal deal) {
+		return dealRepository.save(deal);
+	}
 }
