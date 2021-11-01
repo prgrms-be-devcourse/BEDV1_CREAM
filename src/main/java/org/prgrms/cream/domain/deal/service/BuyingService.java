@@ -1,6 +1,7 @@
 package org.prgrms.cream.domain.deal.service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import org.prgrms.cream.domain.deal.domain.BuyingBid;
 import org.prgrms.cream.domain.deal.domain.Deal;
 import org.prgrms.cream.domain.deal.domain.SellingBid;
@@ -20,6 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BuyingService {
+
+	private static final int FIRST_BID = 0;
+	private static final int SECOND_BID = 1;
+	private static final int TWO_BIDS = 2;
+	private static final int VALUE_ZERO = 0;
 
 	private final BuyingRepository buyingRepository;
 	private final ProductService productService;
@@ -71,18 +77,26 @@ public class BuyingService {
 	@Transactional
 	public DealResponse straightBuyProduct(Long productId, String size, BuyRequest buyRequest) {
 		Product product = productService.findActiveProduct(productId);
-		SellingBid topSellingBid = sellingService
-			.findSellingBidOfLowestPrice(product, size, DealStatus.BIDDING);
-		topSellingBid.changeStatus(DealStatus.BID_COMPLETED);
+		List<SellingBid> sellingBids = sellingService
+			.findSellingBidsOfLowestPrice(product, size, DealStatus.BIDDING);
 
-		SellingBid secondSellingBid = sellingService
-			.findSellingBidOfLowestPrice(product, size, DealStatus.BIDDING);
-		productService
+		ProductOption productOption = productService
 			.findProductOptionByProductIdAndSize(
 				productId,
 				size
-			)
-			.updateSellBidPrice(secondSellingBid.getSuggestPrice());
+			);
+
+		SellingBid topSellingBid = sellingBids.get(FIRST_BID);
+		topSellingBid.changeStatus(DealStatus.BID_COMPLETED);
+		if (sellingBids.size() < TWO_BIDS) {
+			productOption.updateSellBidPrice(VALUE_ZERO);
+		} else if (sellingBids.size() == TWO_BIDS) {
+			productOption.updateSellBidPrice(
+				sellingBids
+					.get(SECOND_BID)
+					.getSuggestPrice()
+			);
+		}
 
 		return dealService
 			.createDeal(

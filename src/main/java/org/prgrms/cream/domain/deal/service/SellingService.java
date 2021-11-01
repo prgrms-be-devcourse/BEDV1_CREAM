@@ -1,5 +1,6 @@
 package org.prgrms.cream.domain.deal.service;
 
+import java.util.List;
 import org.prgrms.cream.domain.deal.domain.SellingBid;
 import org.prgrms.cream.domain.deal.exception.NotFoundBidException;
 import org.prgrms.cream.domain.deal.model.DealStatus;
@@ -19,17 +20,22 @@ public class SellingService {
 	}
 
 	@Transactional(readOnly = true)
-	public SellingBid findSellingBidOfLowestPrice(
+	public List<SellingBid> findSellingBidsOfLowestPrice(
 		Product product,
 		String size,
 		DealStatus dealStatus
 	) {
-		return sellingRepository
-			.findFirstByProductAndSizeAndStatusOrderBySuggestPriceAscCreatedDateAsc(
+		List<SellingBid> sellingBids = sellingRepository
+			.findFirst2ByProductAndSizeAndStatusOrderBySuggestPriceAscCreatedDateAsc(
 				product,
 				size,
 				dealStatus.getStatus()
-			)
-			.orElseThrow(() -> new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE));
+			);
+
+		if (sellingBids.isEmpty()) {
+			throw new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE);
+		}
+
+		return sellingBids;
 	}
 }
