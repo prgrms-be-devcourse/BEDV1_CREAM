@@ -19,7 +19,6 @@ public class SellingController {
 
 	private final SellingService sellingService;
 
-
 	public SellingController(SellingService sellingService) {
 		this.sellingService = sellingService;
 	}
