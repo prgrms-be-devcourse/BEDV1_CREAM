@@ -61,6 +61,7 @@ public class BuyingService {
 		return new BidResponse(buyingBid.getSuggestPrice(), buyingBid.getDeadline(), expiredDate);
 	}
 
+	@Transactional(readOnly = true)
 	public List<BuyingBid> findBuyingBid(Long productId, String size, DealStatus status) {
 		Product product = productService.findActiveProduct(productId);
 
