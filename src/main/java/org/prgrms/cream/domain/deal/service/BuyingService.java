@@ -1,14 +1,19 @@
 package org.prgrms.cream.domain.deal.service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import org.prgrms.cream.domain.deal.domain.BuyingBid;
 import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
+import org.prgrms.cream.domain.deal.exception.NotFoundBidException;
+import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.deal.repository.BuyingRepository;
+import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.domain.product.domain.ProductOption;
 import org.prgrms.cream.domain.product.service.ProductService;
 import org.prgrms.cream.domain.user.domain.User;
 import org.prgrms.cream.domain.user.service.UserService;
+import org.prgrms.cream.global.error.ErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,5 +59,19 @@ public class BuyingService {
 			.plusDays(buyingBid.getDeadline())
 			.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
 		return new BidResponse(buyingBid.getSuggestPrice(), buyingBid.getDeadline(), expiredDate);
+	}
+
+	public List<BuyingBid> findBuyingBid(Long productId, String size, DealStatus status) {
+		Product product = productService.findActiveProduct(productId);
+
+		List<BuyingBid> buyingBids = buyingRepository
+			.findTop2ByProductAndSizeAndStatusOrderBySuggestPriceDescCreatedDateAsc(product, size,
+																					status.getStatus());
+
+		if (buyingBids.isEmpty()) {
+			throw new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE);
+		}
+
+		return buyingBids;
 	}
 }

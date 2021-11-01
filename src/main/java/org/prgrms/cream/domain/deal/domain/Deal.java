@@ -12,6 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import org.prgrms.cream.domain.deal.dto.DealResponse;
 import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.domain.user.domain.User;
 import org.prgrms.cream.global.domain.BaseEntity;
@@ -68,5 +69,11 @@ public class Deal extends BaseEntity {
 		this.product = product;
 		this.size = size;
 		this.price = price;
+	}
+
+	public DealResponse toResponse() {
+		return new DealResponse(
+			id, product.getEnglishName(), size, price
+		);
 	}
 }
