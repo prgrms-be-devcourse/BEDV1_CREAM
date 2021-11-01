@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SellingService {
 
+	private static final int ZERO = 0;
+
 	private final SellingRepository sellingRepository;
 	private final ProductService productService;
 	private final UserService userService;
@@ -89,7 +91,7 @@ public class SellingService {
 
 	private void updateLowestPrice(BidRequest bidRequest, ProductOption productOption) {
 		if (productOption.getLowestPrice() > bidRequest.price()
-			|| productOption.getLowestPrice() == 0) {
+			|| productOption.getLowestPrice() == ZERO) {
 			productOption.updateSellBidPrice(bidRequest.price());
 		}
 	}
