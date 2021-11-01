@@ -3,18 +3,19 @@ package org.prgrms.cream.domain.deal.service;
 import java.util.List;
 import org.prgrms.cream.domain.deal.domain.BuyingBid;
 import org.prgrms.cream.domain.deal.domain.Deal;
-import org.prgrms.cream.domain.deal.dto.BuyRequest;
-import org.prgrms.cream.domain.deal.dto.DealResponse;
-import org.prgrms.cream.domain.deal.model.DealStatus;
-import org.prgrms.cream.domain.product.domain.ProductOption;
-import org.prgrms.cream.domain.product.service.ProductService;
-import org.prgrms.cream.domain.user.service.UserService;
 import org.prgrms.cream.domain.deal.domain.SellingBid;
 import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
+import org.prgrms.cream.domain.deal.dto.BuyRequest;
+import org.prgrms.cream.domain.deal.dto.DealResponse;
 import org.prgrms.cream.domain.deal.exception.NotFoundBidException;
+import org.prgrms.cream.domain.deal.model.DealStatus;
+import org.prgrms.cream.domain.deal.repository.BuyingRepository;
 import org.prgrms.cream.domain.deal.repository.SellingRepository;
 import org.prgrms.cream.domain.product.domain.Product;
+import org.prgrms.cream.domain.product.domain.ProductOption;
+import org.prgrms.cream.domain.product.service.ProductService;
+import org.prgrms.cream.domain.user.service.UserService;
 import org.prgrms.cream.global.error.ErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,31 +31,39 @@ public class SellingService {
 
 	private final ProductService productService;
 	private final UserService userService;
-	private final BuyingService buyingService;
 	private final DealService dealService;
 	private final SellingRepository sellingRepository;
+	private final BuyingRepository buyingRepository;
 
 	public SellingService(
 		ProductService productService,
 		UserService userService,
-		BuyingService buyingService,
 		DealService dealService,
-		SellingRepository sellingRepository
+		SellingRepository sellingRepository,
+		BuyingRepository buyingRepository
 	) {
 		this.productService = productService;
 		this.userService = userService;
-		this.buyingService = buyingService;
 		this.dealService = dealService;
 		this.sellingRepository = sellingRepository;
+		this.buyingRepository = buyingRepository;
 	}
 
 	@Transactional
 	public DealResponse straightSellProduct(Long productId, String size, BuyRequest buyRequest) {
-		List<BuyingBid> buyingBids = buyingService.findBuyingBid(
-			productId, size, DealStatus.BIDDING);
+		Product product = productService.findActiveProduct(productId);
+		List<BuyingBid> buyingBids = buyingRepository
+			.findTop2ByProductAndSizeAndStatusOrderBySuggestPriceDescCreatedDateAsc(
+				product,
+				size,
+				DealStatus.BIDDING.getStatus()
+			);
+
+		if (buyingBids.isEmpty()) {
+			throw new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE);
+		}
 
 		BuyingBid firstBuyingBid = buyingBids.get(FIRST_BID);
-
 		Deal deal = dealService.createDeal(
 			firstBuyingBid,
 			size,
@@ -64,7 +73,6 @@ public class SellingService {
 
 		ProductOption productOption = productService.findProductOptionByProductIdAndSize(
 			productId, size);
-
 		if (buyingBids.size() == ONLY_ONE_BID) {
 			productOption.updateBuyBidPrice(ZERO);
 		} else if (buyingBids.size() == ALL_BID) {
@@ -113,7 +121,8 @@ public class SellingService {
 			.findByUserAndProductAndSize(
 				userService.findActiveUser(userId),
 				productService.findActiveProduct(productId),
-				size)
+				size
+			)
 			.orElseThrow(() -> new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE));
 	}
 
@@ -121,33 +130,14 @@ public class SellingService {
 		return sellingRepository.existsByUserAndProductAndSize(
 			userService.findActiveUser(userId),
 			productService.findActiveProduct(productId),
-			size);
+			size
+		);
 	}
 
-	@Transactional(readOnly = true)
-	public List<SellingBid> findSellingBidsOfLowestPrice(
-		Product product,
-		String size,
-		DealStatus dealStatus
-	) {
-		List<SellingBid> sellingBids = sellingRepository
-			.findFirst2ByProductAndSizeAndStatusOrderBySuggestPriceAscCreatedDateAsc(
-				product,
-				size,
-				dealStatus.getStatus()
-			);
-
-		if (sellingBids.isEmpty()) {
-			throw new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE);
+	private void updateLowestPrice(BidRequest bidRequest, ProductOption productOption) {
+		if (productOption.getLowestPrice() > bidRequest.price()
+			|| productOption.getLowestPrice() == ZERO) {
+			productOption.updateSellBidPrice(bidRequest.price());
 		}
-
-		return sellingBids;
 	}
-
-  private void updateLowestPrice(BidRequest bidRequest, ProductOption productOption) {
-	  if (productOption.getLowestPrice() > bidRequest.price()
-		  || productOption.getLowestPrice() == ZERO) {
-		  productOption.updateSellBidPrice(bidRequest.price());
-	  }
-  }
 }

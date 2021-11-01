@@ -7,11 +7,12 @@ import org.prgrms.cream.domain.deal.domain.Deal;
 import org.prgrms.cream.domain.deal.domain.SellingBid;
 import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
-import org.prgrms.cream.domain.deal.exception.NotFoundBidException;
-import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.deal.dto.BuyRequest;
 import org.prgrms.cream.domain.deal.dto.DealResponse;
+import org.prgrms.cream.domain.deal.exception.NotFoundBidException;
+import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.deal.repository.BuyingRepository;
+import org.prgrms.cream.domain.deal.repository.SellingRepository;
 import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.domain.product.domain.ProductOption;
 import org.prgrms.cream.domain.product.service.ProductService;
@@ -30,22 +31,22 @@ public class BuyingService {
 	private static final int VALUE_ZERO = 0;
 
 	private final BuyingRepository buyingRepository;
+	private final SellingRepository sellingRepository;
 	private final ProductService productService;
 	private final UserService userService;
-	private final SellingService sellingService;
 	private final DealService dealService;
 
 	public BuyingService(
 		BuyingRepository buyingRepository,
+		SellingRepository sellingRepository,
 		ProductService productService,
 		UserService userService,
-		SellingService sellingService,
 		DealService dealService
 	) {
 		this.buyingRepository = buyingRepository;
+		this.sellingRepository = sellingRepository;
 		this.productService = productService;
 		this.userService = userService;
-		this.sellingService = sellingService;
 		this.dealService = dealService;
 	}
 
@@ -79,15 +80,22 @@ public class BuyingService {
 	@Transactional
 	public DealResponse straightBuyProduct(Long productId, String size, BuyRequest buyRequest) {
 		Product product = productService.findActiveProduct(productId);
-		List<SellingBid> sellingBids = sellingService
-			.findSellingBidsOfLowestPrice(product, size, DealStatus.BIDDING);
+		List<SellingBid> sellingBids = sellingRepository
+			.findFirst2ByProductAndSizeAndStatusOrderBySuggestPriceAscCreatedDateAsc(
+				product,
+				size,
+				DealStatus.BIDDING.getStatus()
+			);
+
+		if (sellingBids.isEmpty()) {
+			throw new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE);
+		}
 
 		ProductOption productOption = productService
 			.findProductOptionByProductIdAndSize(
 				productId,
 				size
 			);
-
 		SellingBid topSellingBid = sellingBids.get(FIRST_BID);
 		topSellingBid.changeStatus(DealStatus.BID_COMPLETED);
 		if (sellingBids.size() < TWO_BIDS) {

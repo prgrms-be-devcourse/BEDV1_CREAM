@@ -5,7 +5,7 @@ public record DealResponse(
 	String productName,
 	String size,
 	int price,
-	String dateTime
+	String createdDate
 ) {
 
 	public static DealResponse of(
