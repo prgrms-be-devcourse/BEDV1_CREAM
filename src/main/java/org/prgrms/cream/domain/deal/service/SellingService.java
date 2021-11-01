@@ -34,10 +34,7 @@ public class SellingService {
 	public BidResponse registerSellingBid(Long id, String size, BidRequest bidRequest) {
 		ProductOption productOption = productService.findProductOptionByProductIdAndSize(id, size);
 
-		if (productOption.getLowestPrice() > bidRequest.price()
-			|| productOption.getLowestPrice() == 0) {
-			productOption.updateSellBidPrice(bidRequest.price());
-		}
+		updateLowestPrice(bidRequest, productOption);
 
 		SellingBid sellingBid = SellingBid
 			.builder()
@@ -64,10 +61,7 @@ public class SellingService {
 
 		ProductOption productOption = productService.findProductOptionByProductIdAndSize(id, size);
 
-		if (productOption.getLowestPrice() > bidRequest.price()
-			|| productOption.getLowestPrice() == 0) {
-			productOption.updateSellBidPrice(bidRequest.price());
-		}
+		updateLowestPrice(bidRequest, productOption);
 
 		return new BidResponse(
 			sellingBid.getSuggestPrice(),
@@ -91,6 +85,13 @@ public class SellingService {
 			userService.findActiveUser(userId),
 			productService.findActiveProduct(productId),
 			size);
+	}
+
+	private void updateLowestPrice(BidRequest bidRequest, ProductOption productOption) {
+		if (productOption.getLowestPrice() > bidRequest.price()
+			|| productOption.getLowestPrice() == 0) {
+			productOption.updateSellBidPrice(bidRequest.price());
+		}
 	}
 
 	private String createExpiredDate(SellingBid sellingBid, BidRequest bidRequest) {
