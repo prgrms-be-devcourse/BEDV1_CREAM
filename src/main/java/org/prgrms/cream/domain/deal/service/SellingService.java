@@ -8,6 +8,9 @@ import org.prgrms.cream.domain.deal.repository.SellingRepository;
 import org.prgrms.cream.domain.product.domain.ProductOption;
 import org.prgrms.cream.domain.product.service.ProductService;
 import org.prgrms.cream.domain.user.service.UserService;
+import java.util.List;
+import org.prgrms.cream.domain.deal.model.DealStatus;
+import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.global.error.ErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,10 +83,29 @@ public class SellingService {
 			size);
 	}
 
-	private void updateLowestPrice(BidRequest bidRequest, ProductOption productOption) {
+	@Transactional(readOnly = true)
+	public List<SellingBid> findSellingBidsOfLowestPrice(
+		Product product,
+		String size,
+		DealStatus dealStatus
+	) {
+		List<SellingBid> sellingBids = sellingRepository
+			.findFirst2ByProductAndSizeAndStatusOrderBySuggestPriceAscCreatedDateAsc(
+				product,
+				size,
+				dealStatus.getStatus()
+			);
+
+		if (sellingBids.isEmpty()) {
+			throw new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE);
+		}
+
+		return sellingBids;
+	}
+  
+  private void updateLowestPrice(BidRequest bidRequest, ProductOption productOption) {
 		if (productOption.getLowestPrice() > bidRequest.price()
 			|| productOption.getLowestPrice() == ZERO) {
 			productOption.updateSellBidPrice(bidRequest.price());
 		}
-	}
 }

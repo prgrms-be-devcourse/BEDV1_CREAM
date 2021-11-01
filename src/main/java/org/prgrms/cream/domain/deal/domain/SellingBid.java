@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
+import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.domain.user.domain.User;
 import org.prgrms.cream.global.domain.BaseEntity;
@@ -81,5 +82,9 @@ public class SellingBid extends BaseEntity {
 				.plusDays(bidRequest.deadline())
 				.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
 		);
+  }
+  
+	public void changeStatus(DealStatus dealStatus) {
+		this.status = dealStatus.getStatus();
 	}
 }

@@ -93,6 +93,10 @@ public class Product {
 		this.releasePrice = productRequest.getReleasePrice();
 	}
 
+	public void deleteProduct() {
+		this.isDeleted = true;
+	}
+
 	private ProductOption buildProductOption(String option) {
 		return ProductOption
 			.builder()
