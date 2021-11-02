@@ -1,5 +1,6 @@
 package org.prgrms.cream.domain.deal.domain;
 
+import java.time.format.DateTimeFormatter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -71,5 +72,9 @@ public class BuyingBid extends BaseEntity {
 
 	public void cancel() {
 		this.status = DealStatus.BID_CANCELLED.getStatus();
+	}
+
+	public String getConvertCreatedDate() {
+		return getCreatedDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"));
 	}
 }
