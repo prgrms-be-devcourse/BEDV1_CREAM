@@ -6,6 +6,7 @@ public record BuyingBidResponse(
 	String productName,
 	String size,
 	int suggestPrice,
+	String status,
 	String createdDate
 ) {
 

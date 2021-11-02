@@ -8,7 +8,7 @@ import lombok.Getter;
 public class DealHistoryResponse {
 
 	private final Long id;
-	private final String img;
+	private final String image;
 	private final String productName;
 	private final String size;
 	private final String status;
@@ -16,13 +16,13 @@ public class DealHistoryResponse {
 
 	public DealHistoryResponse(
 		Long id,
-		String img,
+		String image,
 		String productName,
 		String size,
 		String status
 	) {
 		this.id = id;
-		this.img = img;
+		this.image = image;
 		this.productName = productName;
 		this.size = size;
 		this.status = status;
@@ -30,14 +30,14 @@ public class DealHistoryResponse {
 
 	public DealHistoryResponse(
 		Long id,
-		String img,
+		String image,
 		String productName,
 		String size,
 		String status,
 		String buyDate
 	) {
 		this.id = id;
-		this.img = img;
+		this.image = image;
 		this.productName = productName;
 		this.size = size;
 		this.status = status;

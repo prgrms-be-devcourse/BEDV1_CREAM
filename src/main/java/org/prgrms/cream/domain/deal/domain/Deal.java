@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import org.prgrms.cream.domain.deal.dto.DealHistoryResponse;
 import org.prgrms.cream.domain.deal.dto.DealResponse;
 import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.domain.user.domain.User;
@@ -88,6 +89,27 @@ public class Deal extends BaseEntity {
 
 	public String getConvertCreatedDate() {
 		return getCreatedDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"));
+	}
+
+	public DealHistoryResponse toHistoryResponse() {
+		return new DealHistoryResponse(
+			id,
+			product.getImage(),
+			product.getEnglishName(),
+			size,
+			buyingStatus
+		);
+	}
+
+	public DealHistoryResponse toHistoryDateResponse() {
+		return new DealHistoryResponse(
+			id,
+			product.getImage(),
+			product.getEnglishName(),
+			size,
+			buyingStatus,
+			getConvertCreatedDate()
+		);
 	}
 
 	private String convertDateTime(LocalDateTime dateTime) {

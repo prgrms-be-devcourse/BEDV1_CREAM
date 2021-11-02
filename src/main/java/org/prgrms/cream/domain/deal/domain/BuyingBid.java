@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import org.prgrms.cream.domain.deal.dto.BuyingBidResponse;
 import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.domain.user.domain.User;
@@ -76,5 +77,17 @@ public class BuyingBid extends BaseEntity {
 
 	public String getConvertCreatedDate() {
 		return getCreatedDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"));
+	}
+
+	public BuyingBidResponse toResponse() {
+		return new BuyingBidResponse(
+			id,
+			product.getImage(),
+			product.getEnglishName(),
+			size,
+			suggestPrice,
+			status,
+			getConvertCreatedDate()
+		);
 	}
 }

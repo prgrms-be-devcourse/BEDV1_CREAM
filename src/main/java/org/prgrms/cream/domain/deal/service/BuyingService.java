@@ -180,21 +180,7 @@ public class BuyingService {
 				status
 			)
 			.stream()
-			.map(
-				buyingBid ->
-					new BuyingBidResponse(
-						buyingBid.getId(),
-						buyingBid
-							.getProduct()
-							.getImage(),
-						buyingBid
-							.getProduct()
-							.getEnglishName(),
-						buyingBid.getSize(),
-						buyingBid.getSuggestPrice(),
-						buyingBid.getConvertCreatedDate()
-					)
-			)
+			.map(BuyingBid::toResponse)
 			.toList();
 	}
 
@@ -203,21 +189,7 @@ public class BuyingService {
 		return buyingRepository
 			.findAllByUser(userService.findActiveUser(userId))
 			.stream()
-			.map(
-				buyingBid ->
-					new BuyingBidResponse(
-						buyingBid.getId(),
-						buyingBid
-							.getProduct()
-							.getImage(),
-						buyingBid
-							.getProduct()
-							.getEnglishName(),
-						buyingBid.getSize(),
-						buyingBid.getSuggestPrice(),
-						buyingBid.getConvertCreatedDate()
-					)
-			)
+			.map(BuyingBid::toResponse)
 			.toList();
 	}
 }

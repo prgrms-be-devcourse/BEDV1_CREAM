@@ -54,20 +54,7 @@ public class DealService {
 				status
 			)
 			.stream()
-			.map(
-				deal ->
-					new DealHistoryResponse(
-						deal.getId(),
-						deal
-							.getProduct()
-							.getImage(),
-						deal
-							.getProduct()
-							.getEnglishName(),
-						deal.getSize(),
-						deal.getBuyingStatus()
-					)
-			)
+			.map(Deal::toHistoryResponse)
 			.toList();
 	}
 
@@ -76,20 +63,7 @@ public class DealService {
 		return dealRepository
 			.findAllByBuyerAndIsFinishedFalse(userService.findActiveUser(userId))
 			.stream()
-			.map(
-				deal ->
-					new DealHistoryResponse(
-						deal.getId(),
-						deal
-							.getProduct()
-							.getImage(),
-						deal
-							.getProduct()
-							.getEnglishName(),
-						deal.getSize(),
-						deal.getBuyingStatus()
-					)
-			)
+			.map(Deal::toHistoryResponse)
 			.toList();
 	}
 
@@ -101,21 +75,7 @@ public class DealService {
 				status
 			)
 			.stream()
-			.map(
-				deal ->
-					new DealHistoryResponse(
-						deal.getId(),
-						deal
-							.getProduct()
-							.getImage(),
-						deal
-							.getProduct()
-							.getEnglishName(),
-						deal.getSize(),
-						deal.getBuyingStatus(),
-						deal.getConvertCreatedDate()
-					)
-			)
+			.map(Deal::toHistoryDateResponse)
 			.toList();
 	}
 
@@ -124,22 +84,7 @@ public class DealService {
 		return dealRepository
 			.findAllByBuyerAndIsFinishedTrue(userService.findActiveUser(userId))
 			.stream()
-			.map(
-				deal ->
-					new DealHistoryResponse(
-						deal.getId(),
-						deal
-							.getProduct()
-							.getImage(),
-						deal
-							.getProduct()
-							.getEnglishName(),
-						deal.getSize(),
-						deal.getBuyingStatus(),
-						deal.getConvertCreatedDate()
-					)
-			)
+			.map(Deal::toHistoryDateResponse)
 			.toList();
 	}
-
 }
