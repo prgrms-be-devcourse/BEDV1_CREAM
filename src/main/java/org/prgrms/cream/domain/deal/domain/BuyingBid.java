@@ -70,6 +70,6 @@ public class BuyingBid extends BaseEntity {
 	}
 
 	public void cancel() {
-		this.status = DealStatus.BID_DELETED.getStatus();
+		this.status = DealStatus.BID_CANCELLED.getStatus();
 	}
 }
