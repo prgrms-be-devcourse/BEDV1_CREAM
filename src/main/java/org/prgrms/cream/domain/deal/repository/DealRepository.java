@@ -20,4 +20,8 @@ public interface DealRepository extends JpaRepository<Deal, Long> {
 	List<Deal> findAllByBuyerAndBuyingStatusAndIsFinishedFalse(User user, String status);
 
 	List<Deal> findAllByBuyerAndIsFinishedFalse(User user);
+
+	List<Deal> findAllByBuyerAndBuyingStatusAndIsFinishedTrue(User user, String status);
+
+	List<Deal> findAllByBuyerAndIsFinishedTrue(User user);
 }

@@ -93,4 +93,53 @@ public class DealService {
 			.toList();
 	}
 
+	@Transactional(readOnly = true)
+	public List<DealHistoryResponse> getFinishedDealByStatus(Long userId, String status) {
+		return dealRepository
+			.findAllByBuyerAndBuyingStatusAndIsFinishedTrue(
+				userService.findActiveUser(userId),
+				status
+			)
+			.stream()
+			.map(
+				deal ->
+					new DealHistoryResponse(
+						deal.getId(),
+						deal
+							.getProduct()
+							.getImage(),
+						deal
+							.getProduct()
+							.getEnglishName(),
+						deal.getSize(),
+						deal.getBuyingStatus(),
+						deal.getConvertCreatedDate()
+					)
+			)
+			.toList();
+	}
+
+	@Transactional(readOnly = true)
+	public List<DealHistoryResponse> getAllFinishedDealHistory(Long userId) {
+		return dealRepository
+			.findAllByBuyerAndIsFinishedTrue(userService.findActiveUser(userId))
+			.stream()
+			.map(
+				deal ->
+					new DealHistoryResponse(
+						deal.getId(),
+						deal
+							.getProduct()
+							.getImage(),
+						deal
+							.getProduct()
+							.getEnglishName(),
+						deal.getSize(),
+						deal.getBuyingStatus(),
+						deal.getConvertCreatedDate()
+					)
+			)
+			.toList();
+	}
+
 }

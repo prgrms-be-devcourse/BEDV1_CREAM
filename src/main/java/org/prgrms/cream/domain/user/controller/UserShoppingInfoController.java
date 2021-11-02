@@ -55,7 +55,7 @@ public class UserShoppingInfoController {
 	}
 
 	@GetMapping("/buying/pending")
-	public ResponseEntity<ApiResponse<List<DealHistoryResponse>>> getPendingHistory(
+	public ResponseEntity<ApiResponse<List<DealHistoryResponse>>> getPendingDealHistory(
 		@PathVariable Long userId,
 		@RequestParam Optional<String> status
 	) {
@@ -64,6 +64,20 @@ public class UserShoppingInfoController {
 				status
 					.map(dealStatus -> dealService.getPendingDealByStatus(userId, dealStatus))
 					.orElse(dealService.getAllPendingDealHistory(userId))
+			)
+		);
+	}
+
+	@GetMapping("/buying/finished")
+	public ResponseEntity<ApiResponse<List<DealHistoryResponse>>> getFinishedDealHistory(
+		@PathVariable Long userId,
+		@RequestParam Optional<String> status
+	) {
+		return ResponseEntity.ok(
+			ApiResponse.of(
+				status
+					.map(dealStatus -> dealService.getFinishedDealByStatus(userId, dealStatus))
+					.orElse(dealService.getAllFinishedDealHistory(userId))
 			)
 		);
 	}
