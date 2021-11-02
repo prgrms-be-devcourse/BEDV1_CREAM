@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.prgrms.cream.domain.deal.domain.Deal;
 import org.prgrms.cream.domain.product.domain.Product;
+import org.prgrms.cream.domain.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DealRepository extends JpaRepository<Deal, Long> {
@@ -15,4 +16,8 @@ public interface DealRepository extends JpaRepository<Deal, Long> {
 	List<Deal> findAllByProductOrderByCreatedDateDesc(Product product);
 
 	List<Deal> findAllByProductAndSizeOrderByCreatedDateDesc(Product product, String size);
+
+	List<Deal> findAllByBuyerAndBuyingStatusAndIsFinishedFalse(User user, String status);
+
+	List<Deal> findAllByBuyerAndIsFinishedFalse(User user);
 }

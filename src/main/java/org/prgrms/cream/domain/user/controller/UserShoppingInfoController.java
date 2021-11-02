@@ -3,7 +3,9 @@ package org.prgrms.cream.domain.user.controller;
 import java.util.List;
 import java.util.Optional;
 import org.prgrms.cream.domain.deal.dto.BuyingBidResponse;
+import org.prgrms.cream.domain.deal.dto.DealHistoryResponse;
 import org.prgrms.cream.domain.deal.service.BuyingService;
+import org.prgrms.cream.domain.deal.service.DealService;
 import org.prgrms.cream.global.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserShoppingInfoController {
 
 	private final BuyingService buyingService;
+	private final DealService dealService;
 
-	public UserShoppingInfoController(BuyingService buyingService) {
+	public UserShoppingInfoController(
+		BuyingService buyingService,
+		DealService dealService
+	) {
 		this.buyingService = buyingService;
+		this.dealService = dealService;
 	}
 
 	@DeleteMapping("/buying/{bidId}")
@@ -34,7 +41,7 @@ public class UserShoppingInfoController {
 	}
 
 	@GetMapping("/buying/bidding")
-	public ResponseEntity<ApiResponse<List<BuyingBidResponse>>> getBiddingHistories(
+	public ResponseEntity<ApiResponse<List<BuyingBidResponse>>> getBiddingHistory(
 		@PathVariable Long userId,
 		@RequestParam Optional<String> status
 	) {
@@ -43,6 +50,20 @@ public class UserShoppingInfoController {
 				status
 					.map(bidStatus -> buyingService.getBiddingHistoryByStatus(userId, bidStatus))
 					.orElse(buyingService.getAllBiddingHistory(userId))
+			)
+		);
+	}
+
+	@GetMapping("/buying/pending")
+	public ResponseEntity<ApiResponse<List<DealHistoryResponse>>> getPendingHistory(
+		@PathVariable Long userId,
+		@RequestParam Optional<String> status
+	) {
+		return ResponseEntity.ok(
+			ApiResponse.of(
+				status
+					.map(dealStatus -> dealService.getPendingDealByStatus(userId, dealStatus))
+					.orElse(dealService.getAllPendingDealHistory(userId))
 			)
 		);
 	}

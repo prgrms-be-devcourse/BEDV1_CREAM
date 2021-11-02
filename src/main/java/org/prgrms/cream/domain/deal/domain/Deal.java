@@ -1,7 +1,7 @@
 package org.prgrms.cream.domain.deal.domain;
 
-import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -52,6 +52,9 @@ public class Deal extends BaseEntity {
 	@Column(columnDefinition = "VARCHAR(45) default '검수 중'")
 	private String sellingStatus = "검수 중";
 
+	@Column(nullable = false, columnDefinition = "TINYINT default 0")
+	private boolean isFinished;
+
 	protected Deal() {
 
 	}
@@ -81,6 +84,10 @@ public class Deal extends BaseEntity {
 			price,
 			convertDateTime(this.getCreatedDate())
 		);
+	}
+
+	public String getConvertCreatedDate() {
+		return getCreatedDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"));
 	}
 
 	private String convertDateTime(LocalDateTime dateTime) {
