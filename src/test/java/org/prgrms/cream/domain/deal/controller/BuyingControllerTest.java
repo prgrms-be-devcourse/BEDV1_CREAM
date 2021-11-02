@@ -123,4 +123,33 @@ class BuyingControllerTest {
 			)
 			.andDo(print());
 	}
+
+	@DisplayName("입찰 취소 테스트")
+	@Test
+	void cancelBuyingBidTest() throws Exception {
+		// given
+		Long userId = 2L;
+		Long buyingBidId = 16L;
+
+		// when
+		ResultActions result = mockMvc
+			.perform(
+				delete("/users/{userId}/buying/{buyingBidId}", userId, buyingBidId)
+					.contentType(MediaType.APPLICATION_JSON));
+
+		// then
+		result
+			.andExpect(
+				status().isOk()
+			);
+
+		mockMvc
+			.perform(
+				delete("/users/{userId}/buying/{buyingBidId}", userId, buyingBidId)
+					.contentType(MediaType.APPLICATION_JSON))
+			.andExpect(
+				status().isBadRequest()
+			);
+	}
+
 }
