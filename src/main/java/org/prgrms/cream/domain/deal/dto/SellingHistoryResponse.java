@@ -2,22 +2,16 @@ package org.prgrms.cream.domain.deal.dto;
 
 import java.util.List;
 import lombok.Getter;
-import org.prgrms.cream.domain.user.dto.UserDealResponse;
 
 @Getter
 public class SellingHistoryResponse {
 
-	private List<SellingBidResponse> sellingBidResponse;
-	private List<UserDealResponse> ongoingUserDealResponse;
-	private List<UserDealResponse> completeUserDealResponse;
+	private List<SellingBidResponse> userSellingBidResponses;
+
 
 	public SellingHistoryResponse(
-		List<SellingBidResponse> sellingBidResponse,
-		List<UserDealResponse> ongoingUserDealResponse,
-		List<UserDealResponse> completeUserDealResponse
+		List<SellingBidResponse> userSellingBidResponses
 	) {
-		this.sellingBidResponse = sellingBidResponse;
-		this.ongoingUserDealResponse = ongoingUserDealResponse;
-		this.completeUserDealResponse = completeUserDealResponse;
+		this.userSellingBidResponses = userSellingBidResponses;
 	}
 }

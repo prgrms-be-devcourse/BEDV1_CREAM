@@ -1,5 +1,6 @@
 package org.prgrms.cream.domain.deal.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.prgrms.cream.domain.deal.domain.BuyingBid;
 import org.prgrms.cream.domain.deal.domain.Deal;
@@ -8,6 +9,8 @@ import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
 import org.prgrms.cream.domain.deal.dto.BuyRequest;
 import org.prgrms.cream.domain.deal.dto.DealResponse;
+import org.prgrms.cream.domain.deal.dto.SellingBidResponse;
+import org.prgrms.cream.domain.deal.dto.SellingHistoryResponse;
 import org.prgrms.cream.domain.deal.exception.NotFoundBidException;
 import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.deal.repository.BuyingRepository;
@@ -126,6 +129,33 @@ public class SellingService {
 			.orElseThrow(() -> new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE));
 	}
 
+	@Transactional(readOnly = true)
+	public SellingHistoryResponse getAllSellingHistory(
+		Long id
+	) {
+		List<SellingBidResponse> userSellingBidResponses = new ArrayList<>();
+
+		List<SellingBid> sellingBids = sellingRepository.findAllByUser(
+			userService.findActiveUser(id));
+
+		return new SellingHistoryResponse(bidsToBidResponse(userSellingBidResponses, sellingBids));
+	}
+
+	@Transactional(readOnly = true)
+	public SellingHistoryResponse getAllSellingHistoryByStatus(
+		Long id,
+		String status
+	) {
+		List<SellingBidResponse> userSellingBidResponses = new ArrayList<>();
+
+		List<SellingBid> sellingBids = sellingRepository.findAllByUserAndStatus(
+			userService.findActiveUser(id),
+			status
+		);
+
+		return new SellingHistoryResponse(bidsToBidResponse(userSellingBidResponses, sellingBids));
+	}
+
 	public boolean existsSameBid(Long productId, String size, Long userId) {
 		return sellingRepository.existsByUserAndProductAndSize(
 			userService.findActiveUser(userId),
@@ -139,5 +169,15 @@ public class SellingService {
 			|| productOption.getLowestPrice() == ZERO) {
 			productOption.updateSellBidPrice(bidRequest.price());
 		}
+	}
+
+	private List<SellingBidResponse> bidsToBidResponse(
+		List<SellingBidResponse> userSellingBidResponses,
+		List<SellingBid> sellingBids
+	) {
+		for (SellingBid sellingBid : sellingBids) {
+			userSellingBidResponses.add(sellingBid.toSellingBidResponse());
+		}
+		return userSellingBidResponses;
 	}
 }
