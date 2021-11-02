@@ -1,4 +1,4 @@
-package org.prgrms.cream.domain.user.dto.user;
+package org.prgrms.cream.domain.user.dto;
 
 import lombok.Getter;
 
