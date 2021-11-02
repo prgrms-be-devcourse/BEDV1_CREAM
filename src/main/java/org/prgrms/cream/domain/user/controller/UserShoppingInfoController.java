@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/users/{userId}")
-public class UserBuyingController {
+public class UserShoppingInfoController {
 
 	private final BuyingService buyingService;
 
-	public UserBuyingController(BuyingService buyingService) {
+	public UserShoppingInfoController(BuyingService buyingService) {
 		this.buyingService = buyingService;
 	}
 
