@@ -2,6 +2,7 @@ package org.prgrms.cream.domain.deal.service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import org.prgrms.cream.domain.deal.domain.BuyingBid;
 import org.prgrms.cream.domain.deal.domain.Deal;
 import org.prgrms.cream.domain.deal.domain.SellingBid;
@@ -138,5 +139,35 @@ public class BuyingService {
 		}
 
 		return buyingBids;
+	}
+
+	@Transactional
+	public void cancelBuyingBid(Long userId, Long bidId) {
+		BuyingBid buyingBid = buyingRepository
+			.findByIdAndUserAndStatus(
+				bidId,
+				userService.findActiveUser(userId),
+				DealStatus.BIDDING.getStatus()
+			)
+			.orElseThrow(() -> new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE));
+		buyingBid.cancel();
+
+		ProductOption productOption = productService.findProductOptionByProductIdAndSize(
+			buyingBid
+				.getProduct()
+				.getId(),
+			buyingBid.getSize()
+		);
+		Optional<BuyingBid> topPriceBid = buyingRepository
+			.findFirstByProductAndSizeAndStatusOrderBySuggestPriceDesc(
+				buyingBid.getProduct(),
+				buyingBid.getSize(),
+				DealStatus.BIDDING.getStatus()
+			);
+		productOption.updateBuyBidPrice(
+			topPriceBid.isEmpty() ? VALUE_ZERO : topPriceBid
+				.get()
+				.getSuggestPrice()
+		);
 	}
 }

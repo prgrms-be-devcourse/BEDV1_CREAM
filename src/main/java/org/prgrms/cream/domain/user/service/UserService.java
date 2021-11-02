@@ -52,6 +52,7 @@ public class UserService {
 		return user.getId();
 	}
 
+	@Transactional(readOnly = true)
 	public User findActiveUser(Long id) {
 		return userRepository
 			.findByIdAndIsDeletedFalse(id)
