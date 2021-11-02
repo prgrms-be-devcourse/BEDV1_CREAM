@@ -1,5 +1,7 @@
 package org.prgrms.cream.domain.user.service;
 
+import org.prgrms.cream.domain.deal.repository.DealRepository;
+import org.prgrms.cream.domain.deal.repository.SellingRepository;
 import org.prgrms.cream.domain.user.domain.User;
 import org.prgrms.cream.domain.user.dto.UserResponse;
 import org.prgrms.cream.domain.user.dto.UserSignUpRequest;
@@ -15,9 +17,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
 	private final UserRepository userRepository;
+	private final SellingRepository sellingRepository;
+	private final DealRepository dealRepository;
 
-	public UserService(UserRepository userRepository) {
+	public UserService(
+		UserRepository userRepository,
+		SellingRepository sellingRepository,
+		DealRepository dealRepository
+	) {
 		this.userRepository = userRepository;
+		this.sellingRepository = sellingRepository;
+		this.dealRepository = dealRepository;
 	}
 
 	@Transactional

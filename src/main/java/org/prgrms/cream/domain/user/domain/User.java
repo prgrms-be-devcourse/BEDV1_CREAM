@@ -69,28 +69,6 @@ public class User {
 		this.address = address;
 	}
 
-	enum UpdateInfo {
-		NICKNAME("nickname"),
-		EMAIL("email"),
-		PHONE("phone"),
-		SIZE("size"),
-		ADDRESS("address");
-
-		private String option;
-
-		UpdateInfo(String option) {
-			this.option = option;
-		}
-
-		static UpdateInfo getUpdateOption(String input) {
-			return Arrays
-				.stream(UpdateInfo.values())
-				.filter(u -> u.option.equals(input))
-				.findFirst()
-				.orElseThrow(() -> new InvalidArgumentException(ErrorCode.INVALID_INPUT));
-		}
-	}
-
 	public void updateUser(UserUpdateRequest userUpdateRequest) {
 		switch (UpdateInfo.getUpdateOption(userUpdateRequest.getOption())) {
 			case NICKNAME -> this.nickname = userUpdateRequest.getValue();
@@ -115,5 +93,27 @@ public class User {
 
 	public void deleteUser() {
 		this.isDeleted = true;
+	}
+
+	enum UpdateInfo {
+		NICKNAME("nickname"),
+		EMAIL("email"),
+		PHONE("phone"),
+		SIZE("size"),
+		ADDRESS("address");
+
+		private String option;
+
+		UpdateInfo(String option) {
+			this.option = option;
+		}
+
+		static UpdateInfo getUpdateOption(String input) {
+			return Arrays
+				.stream(UpdateInfo.values())
+				.filter(u -> u.option.equals(input))
+				.findFirst()
+				.orElseThrow(() -> new InvalidArgumentException(ErrorCode.INVALID_INPUT));
+		}
 	}
 }
