@@ -32,9 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 class UserControllerTest {
 
-
-	static UserSignUpTestRequest userSignUpRequest;
-	static UserUpdateTestRequest userUpdateTestRequest;
+	private static UserSignUpTestRequest userSignUpRequest;
+	private static UserUpdateTestRequest userUpdateTestRequest;
 
 	@Autowired
 	private MockMvc mockMvc;
