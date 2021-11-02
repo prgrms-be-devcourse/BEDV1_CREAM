@@ -186,7 +186,7 @@ class UserControllerTest {
 			)
 			.andExpect(
 				jsonPath("$.data")
-					.value(2L)
+					.value(userId)
 			)
 			.andDo(
 				print()
@@ -360,7 +360,7 @@ class UserControllerTest {
 			)
 			.andExpect(
 				jsonPath("$.data")
-					.value(2L)
+					.value(userId)
 			)
 			.andDo(
 				print()
