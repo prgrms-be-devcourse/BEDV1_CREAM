@@ -53,6 +53,9 @@ public class Deal extends BaseEntity {
 	@Column(columnDefinition = "VARCHAR(45) default '검수 중'")
 	private String sellingStatus = "검수 중";
 
+	@Column(nullable = false, columnDefinition = "TINYINT default 0")
+	private boolean isFinished;
+
 	protected Deal() {
 
 	}

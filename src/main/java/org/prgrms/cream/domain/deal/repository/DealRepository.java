@@ -17,5 +17,17 @@ public interface DealRepository extends JpaRepository<Deal, Long> {
 
 	List<Deal> findAllByProductAndSizeOrderByCreatedDateDesc(Product product, String size);
 
-	List<Deal> findAllBySellerAndSellingStatus(User user, String status);
+	List<Deal> findAllBySellerAndSellingStatusAndIsFinishedFalse(
+		User user,
+		String status
+	);
+
+	List<Deal> findAllBySellerAndSellingStatusAndIsFinishedTrue(
+		User user,
+		String status
+	);
+
+	List<Deal> findAllBySellerAndIsFinishedFalse(User user);
+
+	List<Deal> findAllBySellerAndIsFinishedTrue(User user);
 }
