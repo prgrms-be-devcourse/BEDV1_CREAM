@@ -1,5 +1,6 @@
 package org.prgrms.cream.domain.deal.domain;
 
+import java.time.format.DateTimeFormatter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import org.prgrms.cream.domain.deal.dto.BuyingBidResponse;
 import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.domain.user.domain.User;
@@ -71,5 +73,21 @@ public class BuyingBid extends BaseEntity {
 
 	public void cancel() {
 		this.status = DealStatus.BID_CANCELLED.getStatus();
+	}
+
+	public String getConvertCreatedDate() {
+		return getCreatedDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"));
+	}
+
+	public BuyingBidResponse toResponse() {
+		return new BuyingBidResponse(
+			id,
+			product.getImage(),
+			product.getEnglishName(),
+			size,
+			suggestPrice,
+			status,
+			getConvertCreatedDate()
+		);
 	}
 }
