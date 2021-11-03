@@ -8,6 +8,7 @@ import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.deal.repository.DealRepository;
 import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.domain.user.domain.User;
+import org.prgrms.cream.domain.user.dto.UserDealHistoryResponse;
 import org.prgrms.cream.domain.user.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,10 +44,10 @@ public class DealService {
 	}
 
 	@Transactional(readOnly = true)
-	public DealHistoryResponse getFinishedDealHistory(
+	public UserDealHistoryResponse getFinishedDealHistory(
 		Long id
 	) {
-		return new DealHistoryResponse(
+		return new UserDealHistoryResponse(
 			dealRepository
 				.findAllBySellerAndIsFinishedTrue(
 					userService.findActiveUser(id)
@@ -58,11 +59,11 @@ public class DealService {
 	}
 
 	@Transactional(readOnly = true)
-	public DealHistoryResponse getFinishedDealHistoryByStatus(
+	public UserDealHistoryResponse getFinishedDealHistoryByStatus(
 		Long id,
 		String status
 	) {
-		return new DealHistoryResponse(
+		return new UserDealHistoryResponse(
 			dealRepository
 				.findAllBySellerAndSellingStatusAndIsFinishedTrue(
 					userService.findActiveUser(id),
@@ -75,10 +76,10 @@ public class DealService {
 	}
 
 	@Transactional(readOnly = true)
-	public DealHistoryResponse getPendingDealHistory(
+	public UserDealHistoryResponse getPendingDealHistory(
 		Long id
 	) {
-		return new DealHistoryResponse(
+		return new UserDealHistoryResponse(
 			dealRepository
 				.findAllBySellerAndIsFinishedFalse(
 					userService.findActiveUser(id)
@@ -90,11 +91,11 @@ public class DealService {
 	}
 
 	@Transactional(readOnly = true)
-	public DealHistoryResponse getPendingDealHistoryByStatus(
+	public UserDealHistoryResponse getPendingDealHistoryByStatus(
 		Long id,
 		String status
 	) {
-		return new DealHistoryResponse(
+		return new UserDealHistoryResponse(
 			dealRepository
 				.findAllBySellerAndSellingStatusAndIsFinishedFalse(
 					userService.findActiveUser(id),
