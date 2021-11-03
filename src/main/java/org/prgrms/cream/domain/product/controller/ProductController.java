@@ -1,6 +1,7 @@
 package org.prgrms.cream.domain.product.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.prgrms.cream.domain.product.dto.DetailResponse;
 import org.prgrms.cream.domain.product.dto.ProductResponse;
@@ -26,9 +27,11 @@ public class ProductController {
 		this.productService = productService;
 	}
 
-	@GetMapping
-	public ResponseEntity<ApiResponse<List<ProductsResponse>>> getProducts() {
-		return ResponseEntity.ok(ApiResponse.of(productService.getProducts()));
+	@GetMapping("/search")
+	public ResponseEntity<ApiResponse<List<ProductsResponse>>> getProducts(
+		@RequestParam(required = false) Map<String, String> filter
+	) {
+		return ResponseEntity.ok(ApiResponse.of(productService.getProducts(filter)));
 	}
 
 	@GetMapping("/{id}")
