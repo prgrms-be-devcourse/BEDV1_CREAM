@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>구매 내역</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"
+        rel="stylesheet">
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script crossorigin="anonymous"
+          integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+          src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+<body>
+<h1>구매 내역</h1>
+<div class="col-md-10">
+  <form>
+    <div class="form-group">
+      <label for="userId">유저 ID</label>
+      <input id="userId" type="text">
+    </div>
+
+    <button class="btn btn-primary" id="btn-bidding" type="button">구매 입찰</button>
+    <button class="btn btn-secondary" id="btn-pending" type="button">진행 중</button>
+    <button class="btn btn-info" id="btn-finished" type="button">종료</button>
+
+    <select class="form-select" id="status">
+      <option selected value="">전체</option>
+      <option value="입찰 중">입찰 중</option>
+      <option value="기한만료">기한만료</option>
+    </select>
+  </form>
+</div>
+
+<div class="col-md-10">
+  <table class="table" id="dynamicTable">
+    <thead>
+    <tr>
+      <th>이미지</th>
+      <th>상품명</th>
+      <th>사이즈</th>
+      <th>구매 희망가</th>
+      <th>상태</th>
+      <th>만료일</th>
+    </tr>
+    </thead>
+    <tbody id="dynamicTbody">
+
+    </tbody>
+  </table>
+</div>
+
+
+<script src="../js/buying-info.js" type="text/javascript"></script>
+</body>
+</html>
