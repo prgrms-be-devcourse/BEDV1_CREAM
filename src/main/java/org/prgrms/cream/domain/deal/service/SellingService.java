@@ -1,6 +1,7 @@
 package org.prgrms.cream.domain.deal.service;
 
 import java.util.List;
+import java.util.Optional;
 import org.prgrms.cream.domain.deal.domain.BuyingBid;
 import org.prgrms.cream.domain.deal.domain.Deal;
 import org.prgrms.cream.domain.deal.domain.SellingBid;
@@ -124,6 +125,41 @@ public class SellingService {
 				size
 			)
 			.orElseThrow(() -> new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE));
+	}
+
+	@Transactional
+	public void cancelSellingBid(Long bidId, Long userId) {
+
+		SellingBid sellingBid = sellingRepository
+			.findByIdAndUserAndStatus(
+				bidId,
+				userService.findActiveUser(userId),
+				DealStatus.BIDDING.getStatus()
+			)
+			.orElseThrow(() -> new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE));
+
+		sellingBid.changeStatus(DealStatus.BID_CANCELLED);
+
+		Optional<SellingBid> findSellingBid = sellingRepository
+			.findTopByProductAndSizeAndStatusOrderBySuggestPriceAscCreatedDateAsc(
+				sellingBid.getProduct(),
+				sellingBid.getSize(),
+				DealStatus.BIDDING.getStatus()
+			);
+
+		ProductOption productOption = productService
+			.findProductOptionByProductIdAndSize(
+				sellingBid
+					.getProduct()
+					.getId(),
+				sellingBid
+					.getSize()
+			);
+
+		productOption.updateSellBidPrice(findSellingBid.isEmpty() ? ZERO : findSellingBid
+			.get()
+			.getSuggestPrice()
+		);
 	}
 
 	public boolean existsSameBid(Long productId, String size, Long userId) {
