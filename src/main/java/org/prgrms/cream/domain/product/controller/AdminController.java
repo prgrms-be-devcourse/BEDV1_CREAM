@@ -48,7 +48,6 @@ public class AdminController {
 		return ResponseEntity.ok(ApiResponse.of(productService.getProducts(filter)));
 	}
 
-
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse<ProductResponse>> getProduct(@PathVariable Long id) {
 		return ResponseEntity.ok(ApiResponse.of(productService.getProduct(id)));

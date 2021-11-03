@@ -28,7 +28,6 @@ public class ProductSpecification {
 	private static final String SEPARATOR_LIKE = "%";
 	private static final int FALSE = 0;
 
-
 	public static Specification<Product> filterProduct(Map<String, String> filter) {
 		return (root, query, criteriaBuilder) -> {
 			List<Predicate> predicates = new ArrayList<>();
@@ -56,9 +55,6 @@ public class ProductSpecification {
 								.in(sizeJoin.get(key))
 								.value(values));
 						break;
-					case NAME_PRICE:
-						// TODO
-						break;
 					case SORT:
 						if (NAME_RELEASE_DATE.equals(value)) {
 							query.orderBy(criteriaBuilder.desc(root.get(value)));
@@ -81,7 +77,9 @@ public class ProductSpecification {
 				}
 
 			});
+
 			query.distinct(true);
+
 			return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
 		};
 	}
