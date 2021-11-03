@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.prgrms.cream.domain.deal.dto.BuyingBidResponse;
 import org.prgrms.cream.domain.deal.dto.DealHistoryResponse;
 import org.prgrms.cream.domain.deal.service.BuyingService;
+import org.prgrms.cream.domain.deal.service.SellingService;
 import org.prgrms.cream.domain.deal.service.DealService;
 import org.prgrms.cream.global.response.ApiResponse;
 import org.springframework.http.HttpStatus;
@@ -20,15 +21,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users/{userId}")
 public class UserShoppingInfoController {
 
-	private final BuyingService buyingService;
+ 	private final BuyingService buyingService;
+	private final SellingService sellingService;
 	private final DealService dealService;
 
 	public UserShoppingInfoController(
-		BuyingService buyingService,
-		DealService dealService
+ 		BuyingService buyingService,
+		SellingService sellingService,
+    DealService dealService
 	) {
 		this.buyingService = buyingService;
+ 		this.sellingService = sellingService;
 		this.dealService = dealService;
+	}
+
+	@DeleteMapping("/selling/{bidId}")
+	public ResponseEntity<Void> cancelSellingBid(
+		@PathVariable Long userId,
+		@PathVariable Long bidId
+	) {
+		sellingService.cancelSellingBid(bidId, userId);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@DeleteMapping("/buying/{bidId}")

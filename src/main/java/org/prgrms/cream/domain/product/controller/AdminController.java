@@ -2,6 +2,7 @@ package org.prgrms.cream.domain.product.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import javax.validation.Valid;
 import org.prgrms.cream.domain.product.dto.ProductRequest;
 import org.prgrms.cream.domain.product.dto.ProductResponse;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,9 +41,11 @@ public class AdminController {
 		this.productService = productService;
 	}
 
-	@GetMapping
-	public ResponseEntity<ApiResponse<List<ProductsResponse>>> getProducts() {
-		return ResponseEntity.ok(ApiResponse.of(productService.getProducts()));
+	@GetMapping("/search")
+	public ResponseEntity<ApiResponse<List<ProductsResponse>>> getProducts(
+		@RequestParam(required = false) Map<String, String> filter
+	) {
+		return ResponseEntity.ok(ApiResponse.of(productService.getProducts(filter)));
 	}
 
 	@GetMapping("/{id}")
