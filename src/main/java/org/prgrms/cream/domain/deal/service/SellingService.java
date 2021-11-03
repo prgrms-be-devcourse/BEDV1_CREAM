@@ -1,6 +1,5 @@
 package org.prgrms.cream.domain.deal.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.prgrms.cream.domain.deal.domain.BuyingBid;
@@ -10,7 +9,6 @@ import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
 import org.prgrms.cream.domain.deal.dto.BuyRequest;
 import org.prgrms.cream.domain.deal.dto.DealResponse;
-import org.prgrms.cream.domain.deal.dto.SellingBidResponse;
 import org.prgrms.cream.domain.deal.dto.SellingHistoryResponse;
 import org.prgrms.cream.domain.deal.exception.NotFoundBidException;
 import org.prgrms.cream.domain.deal.model.DealStatus;
@@ -134,16 +132,14 @@ public class SellingService {
 	public SellingHistoryResponse getAllSellingHistory(
 		Long id
 	) {
-		List<SellingBidResponse> userSellingBidResponses = new ArrayList<>();
-
-		List<SellingBid> sellingBids = sellingRepository.findAllByUser(
-			userService.findActiveUser(id));
-
 		return new SellingHistoryResponse(
-			bidsToBidResponse(
-				userSellingBidResponses,
-				sellingBids
-			)
+			sellingRepository
+				.findAllByUser(
+					userService.findActiveUser(id)
+				)
+				.stream()
+				.map(SellingBid::toSellingBidResponse)
+				.toList()
 		);
 	}
 
@@ -152,18 +148,15 @@ public class SellingService {
 		Long id,
 		String status
 	) {
-		List<SellingBidResponse> userSellingBidResponses = new ArrayList<>();
-
-		List<SellingBid> sellingBids = sellingRepository.findAllByUserAndStatus(
-			userService.findActiveUser(id),
-			status
-		);
-
 		return new SellingHistoryResponse(
-			bidsToBidResponse(
-				userSellingBidResponses,
-				sellingBids
-			)
+			sellingRepository
+				.findAllByUserAndStatus(
+					userService.findActiveUser(id),
+					status
+				)
+				.stream()
+				.map(SellingBid::toSellingBidResponse)
+				.toList()
 		);
 	}
 
@@ -215,15 +208,5 @@ public class SellingService {
 			|| productOption.getLowestPrice() == ZERO) {
 			productOption.updateSellBidPrice(bidRequest.price());
 		}
-	}
-
-	private List<SellingBidResponse> bidsToBidResponse(
-		List<SellingBidResponse> userSellingBidResponses,
-		List<SellingBid> sellingBids
-	) {
-		for (SellingBid sellingBid : sellingBids) {
-			userSellingBidResponses.add(sellingBid.toSellingBidResponse());
-		}
-		return userSellingBidResponses;
 	}
 }

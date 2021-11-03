@@ -107,7 +107,6 @@ public class SellingBid extends BaseEntity {
 					.plusDays(this.getDeadline()
 					)
 			)
-
 		);
 	}
 }
