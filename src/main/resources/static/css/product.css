@@ -1,0 +1,48 @@
+@font-face {
+  font-family: 'RixYeoljeongdo_Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2102-01@1.0/RixYeoljeongdo_Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OTWelcomeRA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeRA.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OTWelcomeBA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeBA.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.content {
+  width: 95%;
+}
+
+.navbar-brand {
+  font-family: RixYeoljeongdo_Regular, serif;
+  font-size: 40px;
+}
+
+.table {
+  font-family: OTWelcomeRA, serif;
+  font-size: 18px;
+}
+
+.td_brand, .filter-item, .nav-item {
+  font-family: OTWelcomeBA, serif;
+  font-size: 20px;
+}
+
+h2 {
+  font-family: OTWelcomeBA, serif;
+}
+
+tr, td {
+  text-align: center;
+  vertical-align: middle;
+}
