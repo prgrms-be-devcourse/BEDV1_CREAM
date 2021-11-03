@@ -63,7 +63,9 @@ public class DealService {
 	) {
 		List<UserDealResponse> userDealResponses = new ArrayList<>();
 		List<Deal> deals = dealRepository.findAllBySellerAndSellingStatusAndIsFinishedTrue(
-			userService.findActiveUser(id), status);
+			userService.findActiveUser(id),
+			status
+		);
 
 		return new DealHistoryResponse(addToDealResponse(userDealResponses, deals));
 	}
@@ -87,7 +89,9 @@ public class DealService {
 	) {
 		List<UserDealResponse> userDealResponses = new ArrayList<>();
 		List<Deal> deals = dealRepository.findAllBySellerAndSellingStatusAndIsFinishedFalse(
-			userService.findActiveUser(id), status);
+			userService.findActiveUser(id),
+			status
+		);
 
 		return new DealHistoryResponse(addToDealResponse(userDealResponses, deals));
 	}
