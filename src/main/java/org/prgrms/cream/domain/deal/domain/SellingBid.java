@@ -1,5 +1,6 @@
 package org.prgrms.cream.domain.deal.domain;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
+import org.prgrms.cream.domain.deal.dto.SellingBidResponse;
 import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.domain.user.domain.User;
@@ -82,9 +84,29 @@ public class SellingBid extends BaseEntity {
 				.plusDays(bidRequest.deadline())
 				.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
 		);
-  }
-  
+	}
+
 	public void changeStatus(DealStatus dealStatus) {
 		this.status = dealStatus.getStatus();
+	}
+
+	private String convertDateTime(LocalDateTime dateTime) {
+		return dateTime.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+	}
+
+	public SellingBidResponse toSellingBidResponse() {
+		return new SellingBidResponse(
+			this.product.getImage(),
+			this
+				.getProduct()
+				.getKoreanName(),
+			this.size,
+			this.suggestPrice,
+			this.convertDateTime(
+				getCreatedDate()
+					.plusDays(this.getDeadline()
+					)
+			)
+		);
 	}
 }

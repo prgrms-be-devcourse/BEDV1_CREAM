@@ -27,6 +27,10 @@ public interface SellingRepository extends JpaRepository<SellingBid, Long> {
 		String status
 	);
 
+	List<SellingBid> findAllByUserAndStatus(User user, String status);
+
+	List<SellingBid> findAllByUser(User user);
+
 	@Query(
 		value =
 			"SELECT s.size, s.suggest_price as price, COUNT(*) as quantity "

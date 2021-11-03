@@ -42,6 +42,70 @@ public class DealService {
 		return dealRepository.save(deal);
 	}
 
+	@Transactional(readOnly = true)
+	public DealHistoryResponse getFinishedDealHistory(
+		Long id
+	) {
+		return new DealHistoryResponse(
+			dealRepository
+				.findAllBySellerAndIsFinishedTrue(
+					userService.findActiveUser(id)
+				)
+				.stream()
+				.map(Deal::toUserDealResponse)
+				.toList()
+		);
+	}
+
+	@Transactional(readOnly = true)
+	public DealHistoryResponse getFinishedDealHistoryByStatus(
+		Long id,
+		String status
+	) {
+		return new DealHistoryResponse(
+			dealRepository
+				.findAllBySellerAndSellingStatusAndIsFinishedTrue(
+					userService.findActiveUser(id),
+					status
+				)
+				.stream()
+				.map(Deal::toUserDealResponse)
+				.toList()
+		);
+	}
+
+	@Transactional(readOnly = true)
+	public DealHistoryResponse getPendingDealHistory(
+		Long id
+	) {
+		return new DealHistoryResponse(
+			dealRepository
+				.findAllBySellerAndIsFinishedFalse(
+					userService.findActiveUser(id)
+				)
+				.stream()
+				.map(Deal::toUserDealResponse)
+				.toList()
+		);
+	}
+
+	@Transactional(readOnly = true)
+	public DealHistoryResponse getPendingDealHistoryByStatus(
+		Long id,
+		String status
+	) {
+		return new DealHistoryResponse(
+			dealRepository
+				.findAllBySellerAndSellingStatusAndIsFinishedFalse(
+					userService.findActiveUser(id),
+					status
+				)
+				.stream()
+				.map(Deal::toUserDealResponse)
+				.toList()
+		);
+	}
+
 	public Deal createDeal(Deal deal) {
 		return dealRepository.save(deal);
 	}
