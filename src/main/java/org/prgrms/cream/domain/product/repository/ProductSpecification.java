@@ -18,6 +18,8 @@ public class ProductSpecification {
 	private static final String NAME_BRAND = "brand";
 	private static final String NAME_SIZE = "size";
 	private static final String NAME_PRICE = "price";
+	private static final String NAME_RELEASE_DATE = "releaseDate";
+	private static final String SORT = "sort";
 	private static final String SEPARATOR_COMMA = ",";
 
 	public static Specification<Product> filterProduct(Map<String, String> filter) {
@@ -51,6 +53,12 @@ public class ProductSpecification {
 
 					case NAME_PRICE:
 						// TODO
+						break;
+
+					case SORT:
+						if (NAME_RELEASE_DATE.equals(value)) {
+							query.orderBy(criteriaBuilder.desc(root.get(value)));
+						}
 						break;
 				}
 
