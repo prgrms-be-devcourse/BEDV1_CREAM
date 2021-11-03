@@ -139,7 +139,12 @@ public class SellingService {
 		List<SellingBid> sellingBids = sellingRepository.findAllByUser(
 			userService.findActiveUser(id));
 
-		return new SellingHistoryResponse(bidsToBidResponse(userSellingBidResponses, sellingBids));
+		return new SellingHistoryResponse(
+			bidsToBidResponse(
+				userSellingBidResponses,
+				sellingBids
+			)
+		);
 	}
 
 	@Transactional(readOnly = true)
@@ -154,7 +159,12 @@ public class SellingService {
 			status
 		);
 
-		return new SellingHistoryResponse(bidsToBidResponse(userSellingBidResponses, sellingBids));
+		return new SellingHistoryResponse(
+			bidsToBidResponse(
+				userSellingBidResponses,
+				sellingBids
+			)
+		);
 	}
 
 	@Transactional
