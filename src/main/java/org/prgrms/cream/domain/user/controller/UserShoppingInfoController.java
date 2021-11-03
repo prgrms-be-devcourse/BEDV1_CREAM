@@ -4,8 +4,8 @@ import java.util.Optional;
 import org.prgrms.cream.domain.deal.dto.DealHistoryResponse;
 import org.prgrms.cream.domain.deal.dto.SellingHistoryResponse;
 import org.prgrms.cream.domain.deal.service.BuyingService;
-import org.prgrms.cream.domain.deal.service.DealService;
 import org.prgrms.cream.domain.deal.service.SellingService;
+import org.prgrms.cream.domain.deal.service.DealService;
 import org.prgrms.cream.global.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +32,15 @@ public class UserShoppingInfoController {
 		this.buyingService = buyingService;
 		this.sellingService = sellingService;
 		this.dealService = dealService;
+	}
+
+	@DeleteMapping("/selling/{bidId}")
+	public ResponseEntity<Void> cancelSellingBid(
+		@PathVariable Long userId,
+		@PathVariable Long bidId
+	) {
+		sellingService.cancelSellingBid(bidId, userId);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@DeleteMapping("/buying/{bidId}")
