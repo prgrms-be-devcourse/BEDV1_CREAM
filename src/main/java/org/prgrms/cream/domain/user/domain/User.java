@@ -111,7 +111,7 @@ public class User {
 		private static UpdateInfo getUpdateOption(String input) {
 			return Arrays
 				.stream(UpdateInfo.values())
-				.filter(u -> u.option.equals(input))
+				.filter(user -> user.option.equals(input))
 				.findFirst()
 				.orElseThrow(() -> new InvalidArgumentException(ErrorCode.INVALID_INPUT));
 		}
