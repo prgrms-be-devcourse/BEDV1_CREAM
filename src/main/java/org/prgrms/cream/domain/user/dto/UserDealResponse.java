@@ -5,12 +5,12 @@ import lombok.Getter;
 @Getter
 public class UserDealResponse {
 
-	private String image;
-	private String name;
-	private String size;
-	private int price;
-	private String dealDate;
-	private String status;
+	private final String image;
+	private final String name;
+	private final String size;
+	private final int price;
+	private final String dealDate;
+	private final String status;
 
 	public UserDealResponse(
 		String image,
