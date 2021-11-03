@@ -9,6 +9,7 @@ import org.prgrms.cream.domain.deal.domain.SellingBid;
 import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
 import org.prgrms.cream.domain.deal.dto.BuyRequest;
+import org.prgrms.cream.domain.deal.dto.BuyingBidResponse;
 import org.prgrms.cream.domain.deal.dto.DealResponse;
 import org.prgrms.cream.domain.deal.exception.NotFoundBidException;
 import org.prgrms.cream.domain.deal.model.DealStatus;
@@ -169,5 +170,26 @@ public class BuyingService {
 				.get()
 				.getSuggestPrice()
 		);
+	}
+
+	@Transactional(readOnly = true)
+	public List<BuyingBidResponse> getBiddingHistoryByStatus(Long userId, String status) {
+		return buyingRepository
+			.findAllByUserAndStatus(
+				userService.findActiveUser(userId),
+				status
+			)
+			.stream()
+			.map(BuyingBid::toResponse)
+			.toList();
+	}
+
+	@Transactional(readOnly = true)
+	public List<BuyingBidResponse> getAllBiddingHistory(Long userId) {
+		return buyingRepository
+			.findAllByUser(userService.findActiveUser(userId))
+			.stream()
+			.map(BuyingBid::toResponse)
+			.toList();
 	}
 }

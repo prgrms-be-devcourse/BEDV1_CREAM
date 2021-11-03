@@ -46,4 +46,8 @@ public interface BuyingRepository extends JpaRepository<BuyingBid, Long> {
 		String size,
 		String status
 	);
+
+	List<BuyingBid> findAllByUserAndStatus(User user, String status);
+
+	List<BuyingBid> findAllByUser(User user);
 }
