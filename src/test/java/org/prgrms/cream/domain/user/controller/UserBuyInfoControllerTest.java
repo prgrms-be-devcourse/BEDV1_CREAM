@@ -43,11 +43,11 @@ class UserBuyInfoControllerTest {
 				status().isOk()
 			)
 			.andExpect(
-				jsonPath("$.data.buyingBidResponses")
+				jsonPath("$.data.bidHistory")
 					.isArray()
 			)
 			.andExpect(
-				jsonPath("$.data.buyingBidResponses.length()")
+				jsonPath("$.data.bidHistory.length()")
 					.value(expectedLength)
 			);
 	}
@@ -74,11 +74,11 @@ class UserBuyInfoControllerTest {
 				status().isOk()
 			)
 			.andExpect(
-				jsonPath("$.data.buyingBidResponses")
+				jsonPath("$.data.bidHistory")
 					.isArray()
 			)
 			.andExpect(
-				jsonPath("$.data.buyingBidResponses.length()")
+				jsonPath("$.data.bidHistory.length()")
 					.value(expectedLength)
 			);
 	}
@@ -103,11 +103,11 @@ class UserBuyInfoControllerTest {
 				status().isOk()
 			)
 			.andExpect(
-				jsonPath("$.data")
+				jsonPath("$.data.dealHistory")
 					.isArray()
 			)
 			.andExpect(
-				jsonPath("$.data.length()")
+				jsonPath("$.data.dealHistory.length()")
 					.value(expectedLength)
 			);
 	}
@@ -134,11 +134,11 @@ class UserBuyInfoControllerTest {
 				status().isOk()
 			)
 			.andExpect(
-				jsonPath("$.data")
+				jsonPath("$.data.dealHistory")
 					.isArray()
 			)
 			.andExpect(
-				jsonPath("$.data.length()")
+				jsonPath("$.data.dealHistory.length()")
 					.value(expectedLength)
 			);
 	}
@@ -163,11 +163,11 @@ class UserBuyInfoControllerTest {
 				status().isOk()
 			)
 			.andExpect(
-				jsonPath("$.data")
+				jsonPath("$.data.dealHistory")
 					.isArray()
 			)
 			.andExpect(
-				jsonPath("$.data.length()")
+				jsonPath("$.data.dealHistory.length()")
 					.value(expectedLength)
 			);
 	}
@@ -194,11 +194,11 @@ class UserBuyInfoControllerTest {
 				status().isOk()
 			)
 			.andExpect(
-				jsonPath("$.data")
+				jsonPath("$.data.dealHistory")
 					.isArray()
 			)
 			.andExpect(
-				jsonPath("$.data.length()")
+				jsonPath("$.data.dealHistory.length()")
 					.value(expectedLength)
 			);
 	}
