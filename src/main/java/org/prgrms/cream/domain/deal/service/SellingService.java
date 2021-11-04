@@ -195,11 +195,12 @@ public class SellingService {
 		);
 	}
 
-	public boolean existsSameBid(Long productId, String size, Long userId) {
-		return sellingRepository.existsByUserAndProductAndSize(
+	public boolean existsSameBid(Long productId, String size, Long userId, String status) {
+		return sellingRepository.existsByUserAndProductAndSizeAndStatus(
 			userService.findActiveUser(userId),
 			productService.findActiveProduct(productId),
-			size
+			size,
+			status
 		);
 	}
 
