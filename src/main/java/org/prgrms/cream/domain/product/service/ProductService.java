@@ -1,7 +1,11 @@
 package org.prgrms.cream.domain.product.service;
 
+import static org.prgrms.cream.domain.product.repository.ProductSpecification.*;
+import static org.springframework.data.jpa.domain.Specification.*;
+
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.prgrms.cream.domain.deal.domain.Deal;
 import org.prgrms.cream.domain.deal.dto.BidDetail;
@@ -54,9 +58,9 @@ public class ProductService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<ProductsResponse> getProducts() {
+	public List<ProductsResponse> getProducts(Map<String, String> filter) {
 		return productRepository
-			.findAllByIsDeletedFalse()
+			.findAll(where(filterProduct(filter)))
 			.stream()
 			.map(this::toProductResponse)
 			.toList();
@@ -138,12 +142,12 @@ public class ProductService {
 		return product.getId();
 	}
 
-  @Transactional
+	@Transactional
 	public void removeProduct(Long id) {
 		Product product = findActiveProduct(id);
 		product.deleteProduct();
 	}
-  
+
 	@Transactional(readOnly = true)
 	public ProductOption findProductOptionByProductIdAndSize(Long id, String size) {
 		return productOptionRepository
@@ -214,7 +218,6 @@ public class ProductService {
 
 		return new DetailResponse(recentDealPrice, dealPriceRes, buyingBidRes, sellingBidRes);
 	}
-
 
 	private void modifyOption(Product product, String size) {
 		boolean isExist = productOptionRepository.existsByProductAndSize(product, size);
