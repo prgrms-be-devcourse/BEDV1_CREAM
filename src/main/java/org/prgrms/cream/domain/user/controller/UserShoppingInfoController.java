@@ -4,11 +4,11 @@ import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.Optional;
 import org.prgrms.cream.domain.deal.dto.BuyingHistoryResponse;
-import org.prgrms.cream.domain.deal.dto.DealHistoryResponse;
 import org.prgrms.cream.domain.deal.dto.SellingHistoryResponse;
 import org.prgrms.cream.domain.deal.service.BuyingService;
 import org.prgrms.cream.domain.deal.service.DealService;
 import org.prgrms.cream.domain.deal.service.SellingService;
+import org.prgrms.cream.domain.user.dto.UserBuyingDealHistoryResponse;
 import org.prgrms.cream.domain.user.dto.UserDealHistoryResponse;
 import org.prgrms.cream.global.response.ApiResponse;
 import org.springframework.http.HttpStatus;
@@ -92,7 +92,7 @@ public class UserShoppingInfoController {
 	}
 
 	@GetMapping("/buying/pending")
-	public ResponseEntity<ApiResponse<List<DealHistoryResponse>>> getPendingDealHistory(
+	public ResponseEntity<ApiResponse<UserBuyingDealHistoryResponse>> getPendingDealHistory(
 		@PathVariable Long userId,
 		@RequestParam Optional<String> status
 	) {
@@ -126,7 +126,7 @@ public class UserShoppingInfoController {
 	}
 
 	@GetMapping("/buying/finished")
-	public ResponseEntity<ApiResponse<List<DealHistoryResponse>>> getFinishedDealHistory(
+	public ResponseEntity<ApiResponse<UserBuyingDealHistoryResponse>> getFinishedDealHistory(
 		@PathVariable Long userId,
 		@RequestParam Optional<String> status
 	) {
@@ -135,7 +135,6 @@ public class UserShoppingInfoController {
 				status
 					.map(dealStatus -> dealService.getFinishedDealByStatus(userId, dealStatus))
 					.orElse(dealService.getAllFinishedDealHistory(userId))
-
 			)
 		);
 	}

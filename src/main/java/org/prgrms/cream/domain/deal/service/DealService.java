@@ -1,13 +1,12 @@
 package org.prgrms.cream.domain.deal.service;
 
-import java.util.List;
 import org.prgrms.cream.domain.deal.domain.BuyingBid;
 import org.prgrms.cream.domain.deal.domain.Deal;
-import org.prgrms.cream.domain.deal.dto.DealHistoryResponse;
 import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.deal.repository.DealRepository;
 import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.domain.user.domain.User;
+import org.prgrms.cream.domain.user.dto.UserBuyingDealHistoryResponse;
 import org.prgrms.cream.domain.user.dto.UserDealHistoryResponse;
 import org.prgrms.cream.domain.user.service.UserService;
 import org.springframework.stereotype.Service;
@@ -112,44 +111,54 @@ public class DealService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<DealHistoryResponse> getPendingDealByStatus(Long userId, String status) {
-		return dealRepository
-			.findAllByBuyerAndBuyingStatusAndIsFinishedFalse(
-				userService.findActiveUser(userId),
-				status
-			)
-			.stream()
-			.map(Deal::toHistoryResponse)
-			.toList();
+	public UserBuyingDealHistoryResponse getPendingDealByStatus(Long userId, String status) {
+		return new UserBuyingDealHistoryResponse(
+			dealRepository
+				.findAllByBuyerAndBuyingStatusAndIsFinishedFalse(
+					userService.findActiveUser(userId),
+					status
+				)
+				.stream()
+				.map(Deal::toHistoryResponse)
+				.toList()
+		);
 	}
 
 	@Transactional(readOnly = true)
-	public List<DealHistoryResponse> getAllPendingDealHistory(Long userId) {
-		return dealRepository
-			.findAllByBuyerAndIsFinishedFalse(userService.findActiveUser(userId))
-			.stream()
-			.map(Deal::toHistoryResponse)
-			.toList();
+	public UserBuyingDealHistoryResponse getAllPendingDealHistory(Long userId) {
+		return new UserBuyingDealHistoryResponse(
+			dealRepository
+				.findAllByBuyerAndIsFinishedFalse(
+					userService.findActiveUser(userId))
+				.stream()
+				.map(Deal::toHistoryResponse)
+				.toList()
+		);
 	}
 
 	@Transactional(readOnly = true)
-	public List<DealHistoryResponse> getFinishedDealByStatus(Long userId, String status) {
-		return dealRepository
-			.findAllByBuyerAndBuyingStatusAndIsFinishedTrue(
-				userService.findActiveUser(userId),
-				status
-			)
-			.stream()
-			.map(Deal::toHistoryDateResponse)
-			.toList();
+	public UserBuyingDealHistoryResponse getFinishedDealByStatus(Long userId, String status) {
+		return new UserBuyingDealHistoryResponse(
+			dealRepository
+				.findAllByBuyerAndBuyingStatusAndIsFinishedTrue(
+					userService.findActiveUser(userId),
+					status
+				)
+				.stream()
+				.map(Deal::toHistoryDateResponse)
+				.toList()
+		);
 	}
 
 	@Transactional(readOnly = true)
-	public List<DealHistoryResponse> getAllFinishedDealHistory(Long userId) {
-		return dealRepository
-			.findAllByBuyerAndIsFinishedTrue(userService.findActiveUser(userId))
-			.stream()
-			.map(Deal::toHistoryDateResponse)
-			.toList();
+	public UserBuyingDealHistoryResponse getAllFinishedDealHistory(Long userId) {
+		return new UserBuyingDealHistoryResponse(
+			dealRepository
+				.findAllByBuyerAndIsFinishedTrue(
+					userService.findActiveUser(userId))
+				.stream()
+				.map(Deal::toHistoryDateResponse)
+				.toList()
+		);
 	}
 }

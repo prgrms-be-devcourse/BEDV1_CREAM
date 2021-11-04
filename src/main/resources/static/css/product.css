@@ -46,7 +46,7 @@
   font-size: 20px;
 }
 
-.column-name, thead {
+.column-name, thead, input {
   font-size: 15px;
 }
 
