@@ -6,6 +6,9 @@ on:
 env:
   S3_BUCKET_NAME: cream-deploy
   PROJECT_NAME: cream
+  TEST_DB_HOST: ${{ secrets.TEST_DB_HOST }}
+  TEST_DB_USERNAME: ${{ secrets.TEST_DB_USERNAME }}
+  TEST_DB_PWD: ${{ secrets.TEST_DB_PWD }}
 
 jobs:
   build:
