@@ -5,6 +5,7 @@ $(function () {
       type: "get",
       dataType: "json",
       success: function (data) {
+        console.log(data);
         $('#user-nickname').html(data.data.nickname);
         $('#user-email').html(data.data.email)
         $('#user-phone').html(data.data.phone)

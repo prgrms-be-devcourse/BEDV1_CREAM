@@ -27,7 +27,7 @@ public class SwaggerConfig {
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
 			.title("CREAM API")
-			.description("크림 API 문서입니다.")
+			.description("크림 서비스 클론 코딩 프로젝트 API 문서")
 			.version("1.0.0")
 			.build();
 	}

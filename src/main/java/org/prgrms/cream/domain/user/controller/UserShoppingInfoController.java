@@ -1,13 +1,14 @@
 package org.prgrms.cream.domain.user.controller;
 
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.Optional;
 import org.prgrms.cream.domain.deal.dto.BuyingHistoryResponse;
-import org.prgrms.cream.domain.deal.dto.DealHistoryResponse;
 import org.prgrms.cream.domain.deal.dto.SellingHistoryResponse;
 import org.prgrms.cream.domain.deal.service.BuyingService;
 import org.prgrms.cream.domain.deal.service.DealService;
 import org.prgrms.cream.domain.deal.service.SellingService;
+import org.prgrms.cream.domain.user.dto.UserBuyingDealHistoryResponse;
 import org.prgrms.cream.domain.user.dto.UserDealHistoryResponse;
 import org.prgrms.cream.global.response.ApiResponse;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,7 @@ public class UserShoppingInfoController {
 		this.dealService = dealService;
 	}
 
+	@ApiOperation(value = "판매입찰 취소", notes = "회원Id와 입찰Id를 이용해서 판매입찰을 취소합니다.")
 	@DeleteMapping("/selling/{bidId}")
 	public ResponseEntity<Void> cancelSellingBid(
 		@PathVariable Long userId,
@@ -46,6 +48,10 @@ public class UserShoppingInfoController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	@ApiOperation(
+		value = "구매 입찰 취소 API",
+		notes = "사용자가 구매 입찰 내역 중 특정 구매 입찰을 취소합니다."
+	)
 	@DeleteMapping("/buying/{bidId}")
 	public ResponseEntity<Void> cancelBuyingBid(
 		@PathVariable Long userId,
@@ -55,6 +61,10 @@ public class UserShoppingInfoController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	@ApiOperation(
+		value = "구매 입찰 내역 조회 API",
+		notes = "사용자의 현재 구매 입찰 내역을 조회합니다."
+	)
 	@GetMapping("/buying/bidding")
 	public ResponseEntity<ApiResponse<BuyingHistoryResponse>> getBiddingHistory(
 		@PathVariable Long userId,
@@ -69,6 +79,7 @@ public class UserShoppingInfoController {
 		);
 	}
 
+	@ApiOperation(value = "판매입찰 내역 조회", notes = "회원Id와 상태를 이용해 판매입찰내역을 조회합니다.")
 	@GetMapping("/selling/bidding")
 	public ResponseEntity<ApiResponse<SellingHistoryResponse>> getSellingBidHistories(
 		@PathVariable Long userId,
@@ -88,8 +99,12 @@ public class UserShoppingInfoController {
 		);
 	}
 
+	@ApiOperation(
+		value = "구매 거래 진행 중 내역 조회 API",
+		notes = "구매 입찰 거래가 체결되어 거래 진행 중인 내역을 조회합니다."
+	)
 	@GetMapping("/buying/pending")
-	public ResponseEntity<ApiResponse<List<DealHistoryResponse>>> getPendingDealHistory(
+	public ResponseEntity<ApiResponse<UserBuyingDealHistoryResponse>> getPendingDealHistory(
 		@PathVariable Long userId,
 		@RequestParam Optional<String> status
 	) {
@@ -102,6 +117,7 @@ public class UserShoppingInfoController {
 		);
 	}
 
+	@ApiOperation(value = "판매진행중 내역 조회", notes = "회원Id와 상태를 이용해 판매진행중 내역을 조회합니다.")
 	@GetMapping("/selling/pending")
 	public ResponseEntity<ApiResponse<UserDealHistoryResponse>> getPendingDealHistories(
 		@PathVariable Long userId,
@@ -121,8 +137,9 @@ public class UserShoppingInfoController {
 		);
 	}
 
+	@ApiOperation(value = "구매 거래 종료 내역 조회 API", notes = "거래가 종료된 내역을 조회합니다.")
 	@GetMapping("/buying/finished")
-	public ResponseEntity<ApiResponse<List<DealHistoryResponse>>> getFinishedDealHistory(
+	public ResponseEntity<ApiResponse<UserBuyingDealHistoryResponse>> getFinishedDealHistory(
 		@PathVariable Long userId,
 		@RequestParam Optional<String> status
 	) {
@@ -131,11 +148,11 @@ public class UserShoppingInfoController {
 				status
 					.map(dealStatus -> dealService.getFinishedDealByStatus(userId, dealStatus))
 					.orElse(dealService.getAllFinishedDealHistory(userId))
-
 			)
 		);
 	}
 
+	@ApiOperation(value = "판매완료 내역 조회", notes = "회원Id와 상태를 이용해 판매완료 내역을 조회합니다.")
 	@GetMapping("/selling/finished")
 	public ResponseEntity<ApiResponse<UserDealHistoryResponse>> getFinishedDealHistories(
 		@PathVariable Long userId,

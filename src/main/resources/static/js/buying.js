@@ -16,15 +16,13 @@ function getProduct() {
     $.each(response.data.options, (idx, product) => {
       if (product.size === size) {
         $('#product-size').text(product.size);
-        $('#product-straightBuyPrice').text(
-            '즉시 구매가 : ' + product.straightBuyPrice);
-        $('#product-straightSellPrice').text(
-            '즉시 판매가 : ' + product.straightSellPrice);
+        $('#product-straightBuyPrice').text(product.straightBuyPrice);
+        $('#product-straightSellPrice').text(product.straightSellPrice);
       }
     });
   }).fail(function (error) {
-    console.log(error)
-    alert(error);
+    alert('에러코드 : ' + error.responseJSON.status + '\n'
+        + error.responseJSON.message);
   })
 }
 
@@ -54,9 +52,8 @@ function buying() {
     $("#result-deadline").text('입찰 마감 기한 : ' + response.data.deadline + '일');
     $("#result-expiredDate").text(response.data.expiredDate + '까지');
   }).fail(function (error) {
-    console.log(error);
-    console.log(error.responseJSON)
-    alert(error);
+    alert('에러코드 : ' + error.responseJSON.status + '\n'
+        + error.responseJSON.message);
   })
 }
 
@@ -78,12 +75,13 @@ function straightBuy() {
     dataType: 'json',
     contentType: 'application/json; charset=utf-8',
   }).done(function (response) {
-    $('straight-dealId').text('거래 체결 ID : ' + response.data.dealId);
+    $('#straight-dealId').text('거래 체결 ID : ' + response.data.dealId);
     $('#straight-productName').text('거래 상품 : ' + response.data.productName);
     $('#straight-size').text('사이즈 : ' + response.data.size);
     $('#straight-price').text('체결 거래가 : ' + response.data.price);
     $('#straight-createdDate').text('체결일자 : ' + response.data.createdDate);
   }).fail(function (error) {
-    alert(error);
+    alert('에러코드 : ' + error.responseJSON.status + '\n'
+        + error.responseJSON.message);
   })
 }

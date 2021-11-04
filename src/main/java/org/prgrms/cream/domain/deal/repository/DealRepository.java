@@ -9,13 +9,19 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DealRepository extends JpaRepository<Deal, Long> {
 
-	Optional<Deal> findFirstByProductOrderByCreatedDateDesc(Product product);
+	Optional<Deal> findFirstByProductAndIsFinishedTrueOrderByCreatedDateDesc(Product product);
 
-	Optional<Deal> findFirstByProductAndSizeOrderByCreatedDateDesc(Product product, String size);
+	Optional<Deal> findFirstByProductAndSizeAndIsFinishedTrueOrderByCreatedDateDesc(
+		Product product,
+		String size
+	);
 
-	List<Deal> findAllByProductOrderByCreatedDateDesc(Product product);
+	List<Deal> findAllByProductAndIsFinishedTrueOrderByCreatedDateDesc(Product product);
 
-	List<Deal> findAllByProductAndSizeOrderByCreatedDateDesc(Product product, String size);
+	List<Deal> findAllByProductAndSizeAndIsFinishedTrueOrderByCreatedDateDesc(
+		Product product,
+		String size
+	);
 
 	List<Deal> findAllBySellerAndSellingStatusAndIsFinishedFalse(User user, String status);
 

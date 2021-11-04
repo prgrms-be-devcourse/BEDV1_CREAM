@@ -88,12 +88,14 @@ public class ProductService {
 	public DetailResponse getProductDetail(Long id) {
 		Product product = findActiveProduct(id);
 
-		Optional<Deal> optDeal = dealRepository.findFirstByProductOrderByCreatedDateDesc(product);
+		Optional<Deal> optDeal = dealRepository.findFirstByProductAndIsFinishedTrueOrderByCreatedDateDesc(
+			product);
 		int recentDealPrice = optDeal.isEmpty() ? NO_DEAL : optDeal
 			.get()
 			.getPrice();
 
-		List<Deal> dealPrices = dealRepository.findAllByProductOrderByCreatedDateDesc(product);
+		List<Deal> dealPrices = dealRepository.findAllByProductAndIsFinishedTrueOrderByCreatedDateDesc(
+			product);
 		List<BidDetail> buyingBids = buyingRepository.findAllByProductGroupBy(product.getId());
 		List<BidDetail> sellingBids = sellingRepository.findAllByProductGroupBy(product.getId());
 
@@ -104,13 +106,13 @@ public class ProductService {
 	public DetailResponse getProductDetailByOption(Long id, String size) {
 		Product product = findActiveProduct(id);
 
-		Optional<Deal> optDeal = dealRepository.findFirstByProductAndSizeOrderByCreatedDateDesc(
+		Optional<Deal> optDeal = dealRepository.findFirstByProductAndSizeAndIsFinishedTrueOrderByCreatedDateDesc(
 			product, size);
 		int recentDealPrice = optDeal.isEmpty() ? NO_DEAL : optDeal
 			.get()
 			.getPrice();
 
-		List<Deal> dealPrices = dealRepository.findAllByProductAndSizeOrderByCreatedDateDesc(
+		List<Deal> dealPrices = dealRepository.findAllByProductAndSizeAndIsFinishedTrueOrderByCreatedDateDesc(
 			product, size);
 		List<BidDetail> buyingBids = buyingRepository.findAllByProductAndSizeGroupBy(
 			product.getId(), size);
