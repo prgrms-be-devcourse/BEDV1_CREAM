@@ -1,5 +1,6 @@
 package org.prgrms.cream.domain.deal.controller;
 
+import io.swagger.annotations.ApiOperation;
 import javax.validation.Valid;
 import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
@@ -27,6 +28,7 @@ public class SellingController {
 		this.sellingService = sellingService;
 	}
 
+	@ApiOperation(value = "판매입찰등록 및 수정", notes = "상품Id와 신발사이즈,입찰정보(dto)를 통해 입찰을 등록 혹은 갱신합니다.")
 	@PutMapping("/{id}")
 	public ResponseEntity<ApiResponse<BidResponse>> registerSellingBid(
 		@PathVariable Long id,
@@ -46,6 +48,7 @@ public class SellingController {
 			sellingService.registerSellingBid(id, size, bidRequest)));
 	}
 
+	@ApiOperation(value = "즉시판매", notes = "상품Id와 신발사이즈,입찰정보(dto)를 통해 입찰을 등록 혹은 갱신합니다.")
 	@PostMapping("/{id}")
 	public ResponseEntity<ApiResponse<DealResponse>> straightSellProduct(
 		@PathVariable Long id,
