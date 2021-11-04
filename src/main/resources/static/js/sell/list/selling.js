@@ -17,7 +17,7 @@ $(function () {
         $('#user-size').html(data.data.size)
       },
       error: function (err) {
-        alert("ajax 에러 발생");
+        alert("내역을 조회할 수 없습니다.");
       }
     });
   })

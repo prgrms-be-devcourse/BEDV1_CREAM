@@ -13,7 +13,7 @@ $(function () {
         $('#product-releasePrice').html(data.data.releasePrice + "원")
       },
       error: function (err) {
-        alert("ajax 에러 발생");
+        alert("존재하지 않는 상품입니다.");
       }
     });
   })

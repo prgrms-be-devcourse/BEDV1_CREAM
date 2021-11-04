@@ -12,7 +12,7 @@ $(function () {
         $('#user-size').html(data.data.size)
       },
       error: function (err) {
-        alert(err);
+        alert("수정을 할 수 없습니다.");
       }
     });
   })

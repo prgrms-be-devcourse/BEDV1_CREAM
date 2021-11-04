@@ -12,7 +12,7 @@ $(function () {
         $('#user-size').html(data.data.size)
       },
       error: function (err) {
-        alert(err);
+        alert("존재하지 않는 회원입니다.");
       }
     });
   })

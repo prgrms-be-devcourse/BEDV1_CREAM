@@ -18,7 +18,7 @@ $(function () {
         console.log(data);
       },
       error: function (err) {
-        alert(err);
+        alert("회원가입을 할 수 없습니다.");
       }
     });
   })
