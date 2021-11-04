@@ -7,7 +7,7 @@ public record BuyingBidResponse(
 	String size,
 	int suggestPrice,
 	String status,
-	String expiryDate
+	String expiredDate
 ) {
 
 }
