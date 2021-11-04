@@ -289,14 +289,17 @@ public class UserSellInfoControllerTest {
 	@DisplayName("판매입찰 취소 테스트")
 	@Test
 	void cancelSellingBidTest() throws Exception {
+		// given
 		Long userId = 2L;
 		Long bidId = 1L;
 
+		// when
 		ResultActions result = mockMvc.perform(delete("/users/{id}/selling/{id}", userId, bidId)
 												   .contentType(MediaType.APPLICATION_JSON)
 
 		);
 
+		// then
 		result
 			.andExpect(
 				status().isOk()
