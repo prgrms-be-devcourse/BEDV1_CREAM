@@ -6,7 +6,7 @@ let allProductDetail = null;
 let productDetail = null;
 let options = {};
 let size = "모든 사이즈";
-let price = 0;
+let price = temp[2];
 
 $(function () {
   $.ajax({
@@ -21,7 +21,6 @@ $(function () {
         success: (detailRes) => {
           productDetail = detailRes.data;
           allProductDetail = detailRes.data;
-          price = productDetail.recentDealPrice;
           console.log(productInfo);
           console.log(productDetail);
 
@@ -38,11 +37,16 @@ $(function () {
               + 'data-toggle="modal" data-target="#myModal" onclick="getOption()">'
               + size + '</button></td></tr>'
               + '<tr><td>최근 거래가</td><td id="recent-price">'
-              + price
+              + productDetail.recentDealPrice
               + '</td></tr>'
               + '<tr>'
-              + '<td><button class="btn btn-danger btn-block">구매</button></td>'
-              + '<td><button class="btn btn-success btn-block">판매</button></td>'
+              + '<td><button class="btn btn-danger btn-block"'
+              + 'onClick="location.href=\'/buy/buying.html?' + productInfo.id
+              + '\'">구매</button></td>'
+              + '<td><button class="btn btn-success btn-block"'
+              + 'onClick="location.href=\'/sell/deal/selling-product.html?'
+              + productInfo.id
+              + '\'">판매</button></td>'
               + '</tr>');
 
           $("#product-info2").append(
