@@ -5,7 +5,6 @@ let productInfo = null;
 let productDetail = null;
 let options = {};
 let size = "모든 사이즈";
-let price = 0;
 
 $(function () {
   $.ajax({
@@ -19,7 +18,6 @@ $(function () {
         url: "/products/" + productId + "/details",
         success: (detailRes) => {
           productDetail = detailRes.data;
-          price = productDetail.recentDealPrice;
           console.log(productInfo);
           console.log(productDetail);
 
@@ -32,8 +30,12 @@ $(function () {
               + '<h3>' + productInfo.brand + '</h3>'
               + '<h4>' + productInfo.englishName + '</h4>'
               + '<h5>' + productInfo.koreanName + '</h5></td></tr>'
-              + '<tr><td>사이즈</td><td>' + size + '</td></tr>'
-              + '<tr><td>최근 거래가</td><td>' + price + '</td></tr>'
+              + '<tr><td>사이즈</td><td><button id="product-opt" type="button" class="btn btn-light" '
+              + 'data-toggle="modal" data-target="#myModal" onclick="getOption()">'
+              + size + '</button></td></tr>'
+              + '<tr><td>최근 거래가</td><td id="recent-price">'
+              + productDetail.recentDealPrice
+              + '</td></tr>'
               + '<tr>'
               + '<td><button class="btn btn-danger btn-block">구매</button></td>'
               + '<td><button class="btn btn-success btn-block">판매</button></td>'
@@ -53,6 +55,7 @@ $(function () {
               + '<td>' + productInfo.releasePrice + '</td></tr>');
 
           getDetail();
+
           $.each(productDetail.dealPriceResponses, (idx, deal) => {
             let dealRow = '<tr>' +
                 '<td>' + deal.size + '</td>' +
@@ -65,6 +68,34 @@ $(function () {
     }
   });
 });
+
+function getOption() {
+  $('#modal-content tbody').empty();
+  $.each(options, (idx, opt) => {
+    let optRow = '<tr>' +
+        '<td><button type="button" class="btn btn-light" data-dismiss="modal" onclick="changeOption('
+        + opt.size + ')">'
+        + opt.size + '</button></td>' +
+        '<td>' + opt.straightBuyPrice + '</td></tr>';
+    $('#modal-content tbody').append(optRow);
+  });
+}
+
+function changeOption(opt) {
+  $('#product-opt').text(opt);
+  $.ajax({
+    type: "GET",
+    url: "/products/" + productId + "/details",
+    data: {
+      optSize: opt,
+    },
+    success: (response) => {
+      productDetail = response.data;
+      $('#recent-price').text(productDetail.recentDealPrice);
+      getDetail();
+    }
+  });
+}
 
 function getDetail() {
   $('.tab-menu').click(function () {
