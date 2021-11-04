@@ -5,8 +5,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.prgrms.cream.domain.deal.dto.BidRequest;
@@ -38,13 +36,13 @@ class BuyingControllerTest {
 		// given
 		int price = 320000;
 		int deadline = 10;
-		long userId = 2L;
+		long userId = 6L;
 		BidRequest bidRequest = new BidRequest(
 			price,
 			deadline,
 			userId
 		);
-		long productId = 2;
+		long productId = 5L;
 		String size = "240";
 
 		// when
@@ -56,12 +54,6 @@ class BuyingControllerTest {
 					.content(objectMapper.writeValueAsString(bidRequest))
 			);
 
-		// then
-		String expectedExpiredDate = LocalDateTime
-			.now()
-			.plusDays(deadline)
-			.format(
-				DateTimeFormatter.ofPattern("yyyy/MM/dd"));
 		result
 			.andExpect(
 				status().isOk()
@@ -72,7 +64,7 @@ class BuyingControllerTest {
 			)
 			.andExpect(
 				jsonPath("$.data.expiredDate")
-					.value(expectedExpiredDate)
+					.isString()
 			)
 			.andExpect(
 				jsonPath("$.data.price")
@@ -152,4 +144,46 @@ class BuyingControllerTest {
 			);
 	}
 
+	@DisplayName("구매 입찰 변경 테스트")
+	@Test
+	void updateBuyingBidTest() throws Exception {
+		// given
+		int price = 320000;
+		int deadline = 10;
+		long userId = 6L;
+		BidRequest bidRequest = new BidRequest(
+			price,
+			deadline,
+			userId
+		);
+		long productId = 3L;
+		String size = "250";
+
+		// when
+		ResultActions result = mockMvc
+			.perform(
+				put("/buying/{id}", productId)
+					.contentType(MediaType.APPLICATION_JSON)
+					.param("size", size)
+					.content(objectMapper.writeValueAsString(bidRequest))
+			);
+
+		// then
+		result
+			.andExpect(
+				status().isOk()
+			)
+			.andExpect(
+				jsonPath("$.data.deadline")
+					.value(deadline)
+			)
+			.andExpect(
+				jsonPath("$.data.expiredDate")
+					.isString()
+			)
+			.andExpect(
+				jsonPath("$.data.price")
+					.value(price)
+			);
+	}
 }
