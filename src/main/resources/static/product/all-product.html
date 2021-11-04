@@ -38,13 +38,15 @@
       <div class="sidebar-sticky pt-3">
         <div class="flex-column mt-5">
           <div class="filter-item mb-5">
-            <button class="btn btn-dark btn-block">검색</button>
+            <input class="form-control mb-1" id="keyword" placeholder="브랜드명, 모델명, 모델번호"
+                   type="text"/>
+            <button class="btn btn-dark btn-block" onclick="getFilter()">검색</button>
           </div>
           <div class="filter-item">
-            <p>+ 브랜드</p>
+            <p> + 브랜드</p>
           </div>
           <div class="filter-item">
-            <p>+ 사이즈</p>
+            <p> + 사이즈</p>
           </div>
         </div>
       </div>
@@ -56,6 +58,14 @@
       <h2>상품</h2>
       <div class="table-responsive content">
         <table class="table table-hover" id="productList">
+          <colgroup>
+            <col style="width:12%">
+            <col style="width:12%">
+            <col style="width:30%">
+            <col style="width:30%">
+            <col style="width:8%">
+            <col style="width:8%">
+          </colgroup>
           <tbody>
           </tbody>
         </table>
