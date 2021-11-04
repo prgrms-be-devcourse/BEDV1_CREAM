@@ -81,10 +81,6 @@ public class BuyingBid extends BaseEntity {
 		this.deadline = deadline;
 	}
 
-	public String getConvertCreatedDate() {
-		return getCreatedDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"));
-	}
-
 	public String getExpiredDate() {
 		return getCreatedDate()
 			.plusDays(deadline)
@@ -107,7 +103,7 @@ public class BuyingBid extends BaseEntity {
 		return new BidResponse(
 			suggestPrice,
 			deadline,
-			getConvertCreatedDate()
+			getExpiredDate()
 		);
 	}
 }
