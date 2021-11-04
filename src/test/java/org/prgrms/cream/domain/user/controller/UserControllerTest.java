@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.validation.ConstraintViolationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.prgrms.cream.domain.user.config.TestConfig;
+import org.prgrms.cream.domain.config.TestConfig;
 import org.prgrms.cream.domain.user.dto.UserSignUpTestRequest;
 import org.prgrms.cream.domain.user.dto.UserUpdateTestRequest;
 import org.prgrms.cream.domain.user.exception.DuplicateUserException;
