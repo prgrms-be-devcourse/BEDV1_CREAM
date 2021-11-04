@@ -30,7 +30,7 @@ class ProductControllerTest {
 	@Test
 	void getProductsTest() throws Exception {
 		this.mockMvc
-			.perform(MockMvcRequestBuilders.get("/products"))
+			.perform(MockMvcRequestBuilders.get("/products/search"))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.data").isArray());
 	}
