@@ -88,7 +88,8 @@ public class ProductService {
 	public DetailResponse getProductDetail(Long id) {
 		Product product = findActiveProduct(id);
 
-		Optional<Deal> optDeal = dealRepository.findFirstByProductOrderByCreatedDateDesc(product);
+		Optional<Deal> optDeal = dealRepository.findFirstByProductAndIsFinishedTrueOrderByCreatedDateDesc(
+			product);
 		int recentDealPrice = optDeal.isEmpty() ? NO_DEAL : optDeal
 			.get()
 			.getPrice();
@@ -105,7 +106,7 @@ public class ProductService {
 	public DetailResponse getProductDetailByOption(Long id, String size) {
 		Product product = findActiveProduct(id);
 
-		Optional<Deal> optDeal = dealRepository.findFirstByProductAndSizeOrderByCreatedDateDesc(
+		Optional<Deal> optDeal = dealRepository.findFirstByProductAndSizeAndIsFinishedTrueOrderByCreatedDateDesc(
 			product, size);
 		int recentDealPrice = optDeal.isEmpty() ? NO_DEAL : optDeal
 			.get()
