@@ -33,8 +33,12 @@ public class SellingController {
 		@RequestParam String size,
 		@Valid @RequestBody BidRequest bidRequest
 	) {
-		if (sellingService.existsSameBid(id, size, bidRequest.userId(),
-										 DealStatus.BIDDING.getStatus())) {
+		if (sellingService.existsSameBid(
+			id,
+			size,
+			bidRequest.userId(),
+			DealStatus.BIDDING.getStatus())
+		) {
 			return ResponseEntity.ok(ApiResponse.of(
 				sellingService.updateSellingBid(id, size, bidRequest)));
 		}
