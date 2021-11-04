@@ -5,10 +5,10 @@ import javax.validation.constraints.Min;
 public class BidTestRequest {
 
 	@Min(30000)
-	private Integer price;
+	private int price;
 
 	@Min(1)
-	private Integer deadline;
+	private int deadline;
 	private Long userId;
 
 	public BidTestRequest() {

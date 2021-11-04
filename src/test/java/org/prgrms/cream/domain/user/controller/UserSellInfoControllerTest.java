@@ -32,7 +32,7 @@ public class UserSellInfoControllerTest {
 	@Test
 	void getSellingBidHistoriesTest() throws Exception {
 		// given
-		long userId = 2L;
+		Long userId = 2L;
 
 		// when
 		ResultActions result = mockMvc.perform(get("/users/{id}/selling/bidding", userId)
@@ -71,7 +71,7 @@ public class UserSellInfoControllerTest {
 	@Test
 	void conditionalGetSellingBidHistoriesTest() throws Exception {
 		// given
-		long userId = 2L;
+		Long userId = 2L;
 
 		MultiValueMap<String, String> param = new LinkedMultiValueMap<>();
 		param.add("status", "입찰 중");
@@ -114,7 +114,7 @@ public class UserSellInfoControllerTest {
 	@Test
 	void getPendingDealHistoryTest() throws Exception {
 		// given
-		long userId = 2L;
+		Long userId = 2L;
 
 		// when
 		ResultActions result = mockMvc.perform(get("/users/{id}/selling/pending", userId)
@@ -156,7 +156,7 @@ public class UserSellInfoControllerTest {
 	@Test
 	void ConditionalGetPendingDealHistoryTest() throws Exception {
 		// given
-		long userId = 2L;
+		Long userId = 2L;
 
 		MultiValueMap<String, String> param = new LinkedMultiValueMap<>();
 		param.add("status", "검수 중");
@@ -202,7 +202,7 @@ public class UserSellInfoControllerTest {
 	@Test
 	void getFinishedDealHistoriesTest() throws Exception {
 		// given
-		long userId = 2L;
+		Long userId = 2L;
 
 		// when
 		ResultActions result = mockMvc.perform(get("/users/{id}/selling/finished", userId)
@@ -244,7 +244,7 @@ public class UserSellInfoControllerTest {
 	@Test
 	void ConditionalGetFinishedDealHistoriesTest() throws Exception {
 		// given
-		long userId = 2L;
+		Long userId = 2L;
 
 		MultiValueMap<String, String> param = new LinkedMultiValueMap<>();
 		param.add("status", "취소완료");
