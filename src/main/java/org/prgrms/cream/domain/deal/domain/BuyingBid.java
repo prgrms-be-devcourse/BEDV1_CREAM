@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
+import org.prgrms.cream.domain.deal.dto.BidResponse;
 import org.prgrms.cream.domain.deal.dto.BuyingBidResponse;
 import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.product.domain.Product;
@@ -75,8 +76,19 @@ public class BuyingBid extends BaseEntity {
 		this.status = DealStatus.BID_CANCELLED.getStatus();
 	}
 
+	public void update(int price, int deadline) {
+		this.suggestPrice = price;
+		this.deadline = deadline;
+	}
+
 	public String getConvertCreatedDate() {
 		return getCreatedDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"));
+	}
+
+	public String getExpiredDate() {
+		return getCreatedDate()
+			.plusDays(deadline)
+			.format(DateTimeFormatter.ofPattern("yy/MM/dd"));
 	}
 
 	public BuyingBidResponse toResponse() {
@@ -87,6 +99,14 @@ public class BuyingBid extends BaseEntity {
 			size,
 			suggestPrice,
 			status,
+			getExpiredDate()
+		);
+	}
+
+	public BidResponse toBidResponse() {
+		return new BidResponse(
+			suggestPrice,
+			deadline,
 			getConvertCreatedDate()
 		);
 	}

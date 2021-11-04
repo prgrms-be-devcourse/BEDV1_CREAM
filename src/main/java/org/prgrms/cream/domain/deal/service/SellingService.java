@@ -9,6 +9,7 @@ import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
 import org.prgrms.cream.domain.deal.dto.BuyRequest;
 import org.prgrms.cream.domain.deal.dto.DealResponse;
+import org.prgrms.cream.domain.deal.dto.SellingHistoryResponse;
 import org.prgrms.cream.domain.deal.exception.NotFoundBidException;
 import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.deal.repository.BuyingRepository;
@@ -125,6 +126,38 @@ public class SellingService {
 				size
 			)
 			.orElseThrow(() -> new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE));
+	}
+
+	@Transactional(readOnly = true)
+	public SellingHistoryResponse getAllSellingHistory(
+		Long id
+	) {
+		return new SellingHistoryResponse(
+			sellingRepository
+				.findAllByUser(
+					userService.findActiveUser(id)
+				)
+				.stream()
+				.map(SellingBid::toSellingBidResponse)
+				.toList()
+		);
+	}
+
+	@Transactional(readOnly = true)
+	public SellingHistoryResponse getAllSellingHistoryByStatus(
+		Long id,
+		String status
+	) {
+		return new SellingHistoryResponse(
+			sellingRepository
+				.findAllByUserAndStatus(
+					userService.findActiveUser(id),
+					status
+				)
+				.stream()
+				.map(SellingBid::toSellingBidResponse)
+				.toList()
+		);
 	}
 
 	@Transactional

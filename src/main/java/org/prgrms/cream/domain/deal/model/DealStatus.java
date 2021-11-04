@@ -10,6 +10,7 @@ public enum DealStatus {
 	BID_COMPLETED("입찰 완료"),
 	UNDER_INSPECTION("검수 중"),
 	SHIP_COMPLETED("배송완료"),
+	PAYMENT_COMPLETED("결제 완료"),
 	;
 
 	private final String status;

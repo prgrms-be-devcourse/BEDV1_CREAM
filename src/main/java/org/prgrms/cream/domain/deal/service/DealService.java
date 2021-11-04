@@ -8,6 +8,7 @@ import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.deal.repository.DealRepository;
 import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.domain.user.domain.User;
+import org.prgrms.cream.domain.user.dto.UserDealHistoryResponse;
 import org.prgrms.cream.domain.user.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,70 @@ public class DealService {
 		buyingBid.changeStatus(DealStatus.BID_COMPLETED);
 
 		return dealRepository.save(deal);
+	}
+
+	@Transactional(readOnly = true)
+	public UserDealHistoryResponse getFinishedDealHistory(
+		Long id
+	) {
+		return new UserDealHistoryResponse(
+			dealRepository
+				.findAllBySellerAndIsFinishedTrue(
+					userService.findActiveUser(id)
+				)
+				.stream()
+				.map(Deal::toUserDealResponse)
+				.toList()
+		);
+	}
+
+	@Transactional(readOnly = true)
+	public UserDealHistoryResponse getFinishedDealHistoryByStatus(
+		Long id,
+		String status
+	) {
+		return new UserDealHistoryResponse(
+			dealRepository
+				.findAllBySellerAndSellingStatusAndIsFinishedTrue(
+					userService.findActiveUser(id),
+					status
+				)
+				.stream()
+				.map(Deal::toUserDealResponse)
+				.toList()
+		);
+	}
+
+	@Transactional(readOnly = true)
+	public UserDealHistoryResponse getPendingDealHistory(
+		Long id
+	) {
+		return new UserDealHistoryResponse(
+			dealRepository
+				.findAllBySellerAndIsFinishedFalse(
+					userService.findActiveUser(id)
+				)
+				.stream()
+				.map(Deal::toUserDealResponse)
+				.toList()
+		);
+	}
+
+	@Transactional(readOnly = true)
+	public UserDealHistoryResponse getPendingDealHistoryByStatus(
+		Long id,
+		String status
+	) {
+		return new UserDealHistoryResponse(
+			dealRepository
+				.findAllBySellerAndSellingStatusAndIsFinishedFalse(
+					userService.findActiveUser(id),
+					status
+				)
+				.stream()
+				.map(Deal::toUserDealResponse)
+				.toList()
+		);
 	}
 
 	public Deal createDeal(Deal deal) {

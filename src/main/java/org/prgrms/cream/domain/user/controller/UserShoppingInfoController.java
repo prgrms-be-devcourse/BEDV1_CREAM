@@ -2,11 +2,13 @@ package org.prgrms.cream.domain.user.controller;
 
 import java.util.List;
 import java.util.Optional;
-import org.prgrms.cream.domain.deal.dto.BuyingBidResponse;
+import org.prgrms.cream.domain.deal.dto.BuyingHistoryResponse;
 import org.prgrms.cream.domain.deal.dto.DealHistoryResponse;
+import org.prgrms.cream.domain.deal.dto.SellingHistoryResponse;
 import org.prgrms.cream.domain.deal.service.BuyingService;
-import org.prgrms.cream.domain.deal.service.SellingService;
 import org.prgrms.cream.domain.deal.service.DealService;
+import org.prgrms.cream.domain.deal.service.SellingService;
+import org.prgrms.cream.domain.user.dto.UserDealHistoryResponse;
 import org.prgrms.cream.global.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,17 +23,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users/{userId}")
 public class UserShoppingInfoController {
 
- 	private final BuyingService buyingService;
+	private final BuyingService buyingService;
 	private final SellingService sellingService;
 	private final DealService dealService;
 
 	public UserShoppingInfoController(
- 		BuyingService buyingService,
+		BuyingService buyingService,
 		SellingService sellingService,
-    DealService dealService
+		DealService dealService
 	) {
 		this.buyingService = buyingService;
- 		this.sellingService = sellingService;
+		this.sellingService = sellingService;
 		this.dealService = dealService;
 	}
 
@@ -54,7 +56,7 @@ public class UserShoppingInfoController {
 	}
 
 	@GetMapping("/buying/bidding")
-	public ResponseEntity<ApiResponse<List<BuyingBidResponse>>> getBiddingHistory(
+	public ResponseEntity<ApiResponse<BuyingHistoryResponse>> getBiddingHistory(
 		@PathVariable Long userId,
 		@RequestParam Optional<String> status
 	) {
@@ -63,6 +65,25 @@ public class UserShoppingInfoController {
 				status
 					.map(bidStatus -> buyingService.getBiddingHistoryByStatus(userId, bidStatus))
 					.orElse(buyingService.getAllBiddingHistory(userId))
+			)
+		);
+	}
+
+	@GetMapping("/selling/bidding")
+	public ResponseEntity<ApiResponse<SellingHistoryResponse>> getSellingBidHistories(
+		@PathVariable Long userId,
+		@RequestParam Optional<String> status
+	) {
+		return ResponseEntity.ok(
+			ApiResponse.of(
+				status
+					.map(
+						biddingStatus -> sellingService.getAllSellingHistoryByStatus(
+							userId,
+							biddingStatus
+						)
+					)
+					.orElse(sellingService.getAllSellingHistory(userId))
 			)
 		);
 	}
@@ -81,6 +102,25 @@ public class UserShoppingInfoController {
 		);
 	}
 
+	@GetMapping("/selling/pending")
+	public ResponseEntity<ApiResponse<UserDealHistoryResponse>> getPendingDealHistories(
+		@PathVariable Long userId,
+		@RequestParam Optional<String> status
+	) {
+		return ResponseEntity.ok(
+			ApiResponse.of(
+				status
+					.map(
+						dealStatus -> dealService.getPendingDealHistoryByStatus(
+							userId,
+							dealStatus
+						)
+					)
+					.orElse(dealService.getPendingDealHistory(userId))
+			)
+		);
+	}
+
 	@GetMapping("/buying/finished")
 	public ResponseEntity<ApiResponse<List<DealHistoryResponse>>> getFinishedDealHistory(
 		@PathVariable Long userId,
@@ -91,6 +131,26 @@ public class UserShoppingInfoController {
 				status
 					.map(dealStatus -> dealService.getFinishedDealByStatus(userId, dealStatus))
 					.orElse(dealService.getAllFinishedDealHistory(userId))
+
+			)
+		);
+	}
+
+	@GetMapping("/selling/finished")
+	public ResponseEntity<ApiResponse<UserDealHistoryResponse>> getFinishedDealHistories(
+		@PathVariable Long userId,
+		@RequestParam Optional<String> status
+	) {
+		return ResponseEntity.ok(
+			ApiResponse.of(
+				status
+					.map(
+						dealStatus -> dealService.getFinishedDealHistoryByStatus(
+							userId,
+							dealStatus
+						)
+					)
+					.orElse(dealService.getFinishedDealHistory(userId))
 			)
 		);
 	}

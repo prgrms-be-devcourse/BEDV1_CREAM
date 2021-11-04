@@ -18,6 +18,7 @@ import org.prgrms.cream.domain.deal.dto.DealHistoryResponse;
 import org.prgrms.cream.domain.deal.dto.DealResponse;
 import org.prgrms.cream.domain.product.domain.Product;
 import org.prgrms.cream.domain.user.domain.User;
+import org.prgrms.cream.domain.user.dto.UserDealResponse;
 import org.prgrms.cream.global.domain.BaseEntity;
 
 @Getter
@@ -114,5 +115,16 @@ public class Deal extends BaseEntity {
 
 	private String convertDateTime(LocalDateTime dateTime) {
 		return dateTime.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+	}
+
+	public UserDealResponse toUserDealResponse() {
+		return new UserDealResponse(
+			this.product.getImage(),
+			this.product.getKoreanName(),
+			this.size,
+			this.price,
+			convertDateTime(this.getCreatedDate()),
+			this.getSellingStatus()
+		);
 	}
 }
