@@ -41,8 +41,13 @@ $(function () {
               + price
               + '</td></tr>'
               + '<tr>'
-              + '<td><button class="btn btn-danger btn-block">구매</button></td>'
-              + '<td><button class="btn btn-success btn-block">판매</button></td>'
+              + '<td><button class="btn btn-danger btn-block"'
+              + 'onClick="location.href=\'/buy/buying.html?' + productInfo.id
+              + '\'">구매</button></td>'
+              + '<td><button class="btn btn-success btn-block"'
+              + 'onClick="location.href=\'/sell/deal/selling-product.html?'
+              + productInfo.id
+              + '\'">판매</button></td>'
               + '</tr>');
 
           $("#product-info2").append(

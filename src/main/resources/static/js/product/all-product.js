@@ -6,7 +6,8 @@ $(function () {
       console.log(response);
       $.each(response.data, (idx, product) => {
         let productRow = '<tr style="cursor:pointer;" '
-            + 'onClick="location.href=\'one-product.html?' + product.id + '\'">'
+            + 'onClick="location.href=\'/product/one-product.html?' + product.id
+            + '\'">'
             + '<td class=\"td_image\"><img src="' + product.image
             + '"style="width:100px; height:100px;"/></td>' +
             '<td class=\"td_brand\">' + product.brand + '</td>' +
