@@ -7,6 +7,7 @@ $(function () {
       $.each(response.data, (idx, product) => {
         let productRow = '<tr style="cursor:pointer;" '
             + 'onClick="location.href=\'/product/one-product.html?' + product.id
+            + '?' + product.straightBuyPrice
             + '\'">'
             + '<td class=\"td_image\"><img src="' + product.image
             + '"style="width:100px; height:100px;"/></td>' +
