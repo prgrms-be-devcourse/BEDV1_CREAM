@@ -2,7 +2,7 @@ package org.prgrms.cream.domain.user.controller;
 
 import java.util.List;
 import java.util.Optional;
-import org.prgrms.cream.domain.deal.dto.BuyingBidResponse;
+import org.prgrms.cream.domain.deal.dto.BuyingHistoryResponse;
 import org.prgrms.cream.domain.deal.dto.DealHistoryResponse;
 import org.prgrms.cream.domain.deal.dto.SellingHistoryResponse;
 import org.prgrms.cream.domain.deal.service.BuyingService;
@@ -56,7 +56,7 @@ public class UserShoppingInfoController {
 	}
 
 	@GetMapping("/buying/bidding")
-	public ResponseEntity<ApiResponse<List<BuyingBidResponse>>> getBiddingHistory(
+	public ResponseEntity<ApiResponse<BuyingHistoryResponse>> getBiddingHistory(
 		@PathVariable Long userId,
 		@RequestParam Optional<String> status
 	) {
