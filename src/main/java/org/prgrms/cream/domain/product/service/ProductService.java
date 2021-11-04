@@ -93,7 +93,8 @@ public class ProductService {
 			.get()
 			.getPrice();
 
-		List<Deal> dealPrices = dealRepository.findAllByProductOrderByCreatedDateDesc(product);
+		List<Deal> dealPrices = dealRepository.findAllByProductAndIsFinishedTrueOrderByCreatedDateDesc(
+			product);
 		List<BidDetail> buyingBids = buyingRepository.findAllByProductGroupBy(product.getId());
 		List<BidDetail> sellingBids = sellingRepository.findAllByProductGroupBy(product.getId());
 
@@ -110,7 +111,7 @@ public class ProductService {
 			.get()
 			.getPrice();
 
-		List<Deal> dealPrices = dealRepository.findAllByProductAndSizeOrderByCreatedDateDesc(
+		List<Deal> dealPrices = dealRepository.findAllByProductAndSizeAndIsFinishedTrueOrderByCreatedDateDesc(
 			product, size);
 		List<BidDetail> buyingBids = buyingRepository.findAllByProductAndSizeGroupBy(
 			product.getId(), size);
