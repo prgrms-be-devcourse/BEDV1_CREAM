@@ -1,0 +1,142 @@
+@font-face {
+  font-family: 'RixYeoljeongdo_Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2102-01@1.0/RixYeoljeongdo_Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OTWelcomeRA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeRA.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'OTWelcomeBA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeBA.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.content {
+  width: 95%;
+}
+
+.product-image {
+  width: 45%;
+}
+
+.product-info {
+  width: 55%;
+}
+
+.navbar-brand {
+  font-family: RixYeoljeongdo_Regular, serif;
+  font-size: 40px;
+}
+
+.table {
+  font-family: OTWelcomeRA, serif;
+  font-size: 18px;
+}
+
+.td_brand, .filter-item, .nav-item, .tab-menu, thead, button {
+  font-family: OTWelcomeBA, serif;
+  font-size: 20px;
+}
+
+.column-name, thead {
+  font-size: 15px;
+}
+
+h1, h2, h3 {
+  font-family: OTWelcomeBA, serif;
+}
+
+tr, td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.tab {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#tab-content {
+  display: block;
+  padding: 6px 12px;
+  color: #fff;
+}
+
+a {
+  display: inline-block;
+  color: #000;
+  text-align: center;
+  text-decoration: none;
+  padding: 14px 16px;
+  font-size: 17px;
+  transition: 0.3s;
+}
+
+a:visited {
+  color: black;
+  background-color: #F6F8F9;
+  text-decoration: none;
+}
+
+li {
+  float: left;
+  display: inline-block;
+  color: #000;
+  text-align: center;
+  text-decoration: none;
+  padding: 14px 16px;
+  font-size: 17px;
+}
+
+.form-inline{
+  left: 75%;
+  top: 10%;
+  position: relative;
+}
+
+.form-inline-section{
+  top: 10%;
+  position: relative;
+}
+
+#send{
+  width: 70px;
+  margin-bottom: 50px;
+} 
+
+body{
+  height: 100%;
+  width: 100%;
+}
+
+html{
+  height: 100%;
+  width: 100%;
+}
+
+.table{
+  top : 10%;
+  position: relative;
+}
+
+.table-section{
+  width: 50%;
+  left: 10%;
+  position: relative;
+}
+
+.form-inline-section{
+  display:inline-flex;
+  left: 70%;
+  float : left;
+}
