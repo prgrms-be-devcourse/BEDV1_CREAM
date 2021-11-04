@@ -2,9 +2,11 @@ let temp = location.href.split("?");
 let productId = temp[1];
 
 let productInfo = null;
+let allProductDetail = null;
 let productDetail = null;
 let options = {};
 let size = "모든 사이즈";
+let price = 0;
 
 $(function () {
   $.ajax({
@@ -18,6 +20,8 @@ $(function () {
         url: "/products/" + productId + "/details",
         success: (detailRes) => {
           productDetail = detailRes.data;
+          allProductDetail = detailRes.data;
+          price = productDetail.recentDealPrice;
           console.log(productInfo);
           console.log(productDetail);
 
@@ -34,7 +38,7 @@ $(function () {
               + 'data-toggle="modal" data-target="#myModal" onclick="getOption()">'
               + size + '</button></td></tr>'
               + '<tr><td>최근 거래가</td><td id="recent-price">'
-              + productDetail.recentDealPrice
+              + price
               + '</td></tr>'
               + '<tr>'
               + '<td><button class="btn btn-danger btn-block">구매</button></td>'
@@ -71,6 +75,10 @@ $(function () {
 
 function getOption() {
   $('#modal-content tbody').empty();
+  $('#modal-content tbody').append('<tr>' +
+      '<td><button type="button" class="btn btn-light" data-dismiss="modal" '
+      + 'onclick="changeOption(0)">모든 사이즈</button></td>'
+      + '<td>' + price + '</td></tr>');
   $.each(options, (idx, opt) => {
     let optRow = '<tr>' +
         '<td><button type="button" class="btn btn-light" data-dismiss="modal" onclick="changeOption('
@@ -82,19 +90,25 @@ function getOption() {
 }
 
 function changeOption(opt) {
-  $('#product-opt').text(opt);
-  $.ajax({
-    type: "GET",
-    url: "/products/" + productId + "/details",
-    data: {
-      optSize: opt,
-    },
-    success: (response) => {
-      productDetail = response.data;
-      $('#recent-price').text(productDetail.recentDealPrice);
-      getDetail();
-    }
-  });
+  if (opt !== 0) {
+    $('#product-opt').text(opt);
+    $.ajax({
+      type: "GET",
+      url: "/products/" + productId + "/details",
+      data: {
+        optSize: opt,
+      },
+      success: (response) => {
+        productDetail = response.data;
+        $('#recent-price').text(productDetail.recentDealPrice);
+        getDetail();
+      }
+    });
+  } else {
+    productDetail = allProductDetail;
+    $('#product-opt').text(size);
+    getDetail();
+  }
 }
 
 function getDetail() {
