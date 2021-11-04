@@ -1,6 +1,5 @@
 package org.prgrms.cream.domain.deal.service;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import org.prgrms.cream.domain.deal.domain.BuyingBid;
@@ -9,7 +8,7 @@ import org.prgrms.cream.domain.deal.domain.SellingBid;
 import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
 import org.prgrms.cream.domain.deal.dto.BuyRequest;
-import org.prgrms.cream.domain.deal.dto.BuyingBidResponse;
+import org.prgrms.cream.domain.deal.dto.BuyingHistoryResponse;
 import org.prgrms.cream.domain.deal.dto.DealResponse;
 import org.prgrms.cream.domain.deal.exception.NotFoundBidException;
 import org.prgrms.cream.domain.deal.model.DealStatus;
@@ -54,14 +53,44 @@ public class BuyingService {
 
 	@Transactional
 	public BidResponse registerBuyingBid(Long id, String size, BidRequest bidRequest) {
+		User user = userService.findActiveUser(bidRequest.userId());
 		ProductOption productOption = productService.findProductOptionByProductIdAndSize(id, size);
 
-		if (productOption.getHighestPrice() < bidRequest.price()) {
-			productOption.updateBuyBidPrice(bidRequest.price());
+		if (buyingRepository.existsByProductAndSizeAndUser(
+			productOption.getProduct(), size, user)) {
+
+			Optional<BuyingBid> existBid = buyingRepository
+				.findByProductAndSizeAndUser(
+					productService.findActiveProduct(id),
+					size,
+					user
+				);
+			existBid
+				.ifPresent(
+					buyingBid -> {
+						buyingBid.update(bidRequest.price(), bidRequest.deadline());
+						buyingRepository
+							.findFirstByProductAndSizeAndStatusOrderBySuggestPriceDesc(
+								buyingBid.getProduct(),
+								size,
+								DealStatus.BIDDING.getStatus()
+							)
+							.ifPresent(
+								topPriceBid -> productOption.updateBuyBidPrice(
+									topPriceBid.getSuggestPrice())
+							);
+					}
+				);
+
+			if (existBid.isPresent()) {
+				return existBid
+					.get()
+					.toBidResponse();
+			}
 		}
 
-		User user = userService.findActiveUser(bidRequest.userId());
-		BuyingBid buyingBid = buyingRepository.save(
+		updateHighestPrice(bidRequest.price(), productOption);
+		BuyingBid newBuyingBid = buyingRepository.save(
 			BuyingBid
 				.builder()
 				.user(user)
@@ -72,12 +101,9 @@ public class BuyingService {
 				.build()
 		);
 
-		String expiredDate = buyingBid
-			.getCreatedDate()
-			.plusDays(buyingBid.getDeadline())
-			.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-		return new BidResponse(buyingBid.getSuggestPrice(), buyingBid.getDeadline(), expiredDate);
+		return newBuyingBid.toBidResponse();
 	}
+
 
 	@Transactional
 	public DealResponse straightBuyProduct(Long productId, String size, BuyRequest buyRequest) {
@@ -125,7 +151,7 @@ public class BuyingService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<BuyingBid> findBuyingBid(Long productId, String size, DealStatus status) {
+	public List<BuyingBid> findTopPriceBuyingBids(Long productId, String size, DealStatus status) {
 		Product product = productService.findActiveProduct(productId);
 
 		List<BuyingBid> buyingBids = buyingRepository
@@ -173,23 +199,33 @@ public class BuyingService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<BuyingBidResponse> getBiddingHistoryByStatus(Long userId, String status) {
-		return buyingRepository
-			.findAllByUserAndStatus(
-				userService.findActiveUser(userId),
-				status
-			)
-			.stream()
-			.map(BuyingBid::toResponse)
-			.toList();
+	public BuyingHistoryResponse getBiddingHistoryByStatus(Long userId, String status) {
+		return new BuyingHistoryResponse(
+			buyingRepository
+				.findAllByUserAndStatus(
+					userService.findActiveUser(userId),
+					status
+				)
+				.stream()
+				.map(BuyingBid::toResponse)
+				.toList());
 	}
 
 	@Transactional(readOnly = true)
-	public List<BuyingBidResponse> getAllBiddingHistory(Long userId) {
-		return buyingRepository
-			.findAllByUser(userService.findActiveUser(userId))
-			.stream()
-			.map(BuyingBid::toResponse)
-			.toList();
+	public BuyingHistoryResponse getAllBiddingHistory(Long userId) {
+		return new BuyingHistoryResponse(
+			buyingRepository
+				.findAllByUser(userService.findActiveUser(userId))
+				.stream()
+				.map(BuyingBid::toResponse)
+				.toList()
+		);
+
+	}
+
+	private void updateHighestPrice(int price, ProductOption productOption) {
+		if (productOption.getHighestPrice() < price) {
+			productOption.updateBuyBidPrice(price);
+		}
 	}
 }
