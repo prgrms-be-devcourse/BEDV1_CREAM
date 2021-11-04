@@ -10,7 +10,7 @@ $(function () {
         $('#product-color').html(data.data.color)
         $('#product-image').html(
             '<img src = ' + data.data.image + ' widht = 100 height = 100>')
-        $('#product-releasePrice').html(data.data.releasePirce)
+        $('#product-releasePrice').html(data.data.releasePrice + "원")
       },
       error: function (err) {
         alert("ajax 에러 발생");
