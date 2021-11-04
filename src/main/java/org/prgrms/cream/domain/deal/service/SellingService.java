@@ -1,6 +1,7 @@
 package org.prgrms.cream.domain.deal.service;
 
 import java.util.List;
+import java.util.Optional;
 import org.prgrms.cream.domain.deal.domain.BuyingBid;
 import org.prgrms.cream.domain.deal.domain.Deal;
 import org.prgrms.cream.domain.deal.domain.SellingBid;
@@ -8,6 +9,7 @@ import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
 import org.prgrms.cream.domain.deal.dto.BuyRequest;
 import org.prgrms.cream.domain.deal.dto.DealResponse;
+import org.prgrms.cream.domain.deal.dto.SellingHistoryResponse;
 import org.prgrms.cream.domain.deal.exception.NotFoundBidException;
 import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.deal.repository.BuyingRepository;
@@ -124,6 +126,73 @@ public class SellingService {
 				size
 			)
 			.orElseThrow(() -> new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE));
+	}
+
+	@Transactional(readOnly = true)
+	public SellingHistoryResponse getAllSellingHistory(
+		Long id
+	) {
+		return new SellingHistoryResponse(
+			sellingRepository
+				.findAllByUser(
+					userService.findActiveUser(id)
+				)
+				.stream()
+				.map(SellingBid::toSellingBidResponse)
+				.toList()
+		);
+	}
+
+	@Transactional(readOnly = true)
+	public SellingHistoryResponse getAllSellingHistoryByStatus(
+		Long id,
+		String status
+	) {
+		return new SellingHistoryResponse(
+			sellingRepository
+				.findAllByUserAndStatus(
+					userService.findActiveUser(id),
+					status
+				)
+				.stream()
+				.map(SellingBid::toSellingBidResponse)
+				.toList()
+		);
+	}
+
+	@Transactional
+	public void cancelSellingBid(Long bidId, Long userId) {
+
+		SellingBid sellingBid = sellingRepository
+			.findByIdAndUserAndStatus(
+				bidId,
+				userService.findActiveUser(userId),
+				DealStatus.BIDDING.getStatus()
+			)
+			.orElseThrow(() -> new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE));
+
+		sellingBid.changeStatus(DealStatus.BID_CANCELLED);
+
+		Optional<SellingBid> findSellingBid = sellingRepository
+			.findTopByProductAndSizeAndStatusOrderBySuggestPriceAscCreatedDateAsc(
+				sellingBid.getProduct(),
+				sellingBid.getSize(),
+				DealStatus.BIDDING.getStatus()
+			);
+
+		ProductOption productOption = productService
+			.findProductOptionByProductIdAndSize(
+				sellingBid
+					.getProduct()
+					.getId(),
+				sellingBid
+					.getSize()
+			);
+
+		productOption.updateSellBidPrice(findSellingBid.isEmpty() ? ZERO : findSellingBid
+			.get()
+			.getSuggestPrice()
+		);
 	}
 
 	public boolean existsSameBid(Long productId, String size, Long userId) {
