@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>CREAM</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        rel="stylesheet">
+  <link href="../css/product.css"
+        rel="stylesheet">
+  <script src="/js/one-product.js" type="text/javaScript"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+  <div class="container">
+    <a class="navbar-brand" href="/product/all-product.html">CREAM</a>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/product/all-product.html">Home
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/product/all-product.html">Shop</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">MyPage</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" id="sidebarMenu">
+      <div class="sidebar-sticky pt-3">
+        <div class="flex-column mt-5">
+          <div class="filter-item mb-5">
+            <button class="btn btn-dark btn-block">검색</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+      <div class="mt-5"></div>
+      <h1>상품 상세</h1>
+      <div class="row">
+        <div class="product-image">
+          <div id="product-image"></div>
+        </div>
+        <div class="product-info">
+          <div>
+            <table class="table" id="product-info1">
+            </table>
+          </div>
+          <div>
+            <table class="table" id="product-info2">
+            </table>
+          </div>
+          <div class="m-3">
+            <ul class="tab mt-5">
+              <li class='tab-menu' data-tab="deal" id="default"><a>체결 거래</a></li>
+              <li class='tab-menu' data-tab="selling"><a>판매 입찰</a></li>
+              <li class='tab-menu' data-tab="buying"><a>구매 입찰</a></li>
+            </ul>
+            <div class="tab-content mt-3" style="overflow:scroll; height: 500px;">
+              <table class="table mt-3" id="product-detail">
+                <colgroup>
+                  <col style="width:25%">
+                  <col style="width:50%">
+                  <col style="width:25%">
+                </colgroup>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div aria-labelledby="myModalLabel" class="modal fade" id="myModal" role="dialog" tabindex="-1">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">사이즈</h4>
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body" style="overflow:scroll;">
+            <table class="table" id="modal-content">
+              <thead>
+              <tr>
+                <td>사이즈</td>
+                <td>즉시 구매가</td>
+              </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+

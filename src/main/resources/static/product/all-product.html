@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>CREAM</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        rel="stylesheet">
+  <link href="../css/product.css"
+        rel="stylesheet">
+  <script src="/js/all-product.js" type="text/javaScript"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+  <div class="container">
+    <a class="navbar-brand" href="/product/all-product.html">CREAM</a>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/product/all-product.html">Home
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/product/all-product.html">Shop</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">MyPage</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" id="sidebarMenu">
+      <div class="sidebar-sticky pt-3">
+        <div class="flex-column mt-5">
+          <div class="filter-item mb-5">
+            <button class="btn btn-dark btn-block">검색</button>
+          </div>
+          <div class="filter-item">
+            <p>+ 브랜드</p>
+          </div>
+          <div class="filter-item">
+            <p>+ 사이즈</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4" role="main">
+      <div class="mt-5">
+      </div>
+      <h2>상품</h2>
+      <div class="table-responsive content">
+        <table class="table table-hover" id="productList">
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+</html>
+
