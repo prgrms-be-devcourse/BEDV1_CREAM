@@ -150,13 +150,13 @@ class BuyingControllerTest {
 		// given
 		int price = 320000;
 		int deadline = 10;
-		long userId = 6L;
+		Long userId = 6L;
 		BidRequest bidRequest = new BidRequest(
 			price,
 			deadline,
 			userId
 		);
-		long productId = 3L;
+		Long productId = 3L;
 		String size = "250";
 
 		// when
