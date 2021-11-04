@@ -42,7 +42,8 @@ public class AdminController {
 		this.productService = productService;
 	}
 
-	@ApiOperation(value = "상품 리스트 조회", notes = "특정 조건에 맞는 상품들을 조회할 수 있습니다.")
+	@ApiOperation(value = "상품 리스트 조회",
+		notes = "특정 조건에 맞는 상품들을 조회할 수 있습니다.")
 	@GetMapping("/search")
 	public ResponseEntity<ApiResponse<List<ProductsResponse>>> getProducts(
 		@RequestParam(required = false) Map<String, String> filter
@@ -50,13 +51,15 @@ public class AdminController {
 		return ResponseEntity.ok(ApiResponse.of(productService.getProducts(filter)));
 	}
 
-	@ApiOperation(value = "특정 상품 조회", notes = "특정 상품의 기본 정보를 조회할 수 있습니다.")
+	@ApiOperation(value = "특정 상품 조회",
+		notes = "특정 상품의 기본 정보를 조회할 수 있습니다.")
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse<ProductResponse>> getProduct(@PathVariable Long id) {
 		return ResponseEntity.ok(ApiResponse.of(productService.getProduct(id)));
 	}
 
-	@ApiOperation(value = "상품 등록", notes = "이미지와 함께 상품을 등록할 수 있습니다.")
+	@ApiOperation(value = "상품 등록",
+		notes = "이미지와 함께 상품을 등록할 수 있습니다.")
 	@PostMapping
 	public ResponseEntity<ApiResponse<Long>> registerProduct(
 		@RequestPart MultipartFile file,
@@ -68,7 +71,8 @@ public class AdminController {
 		return ResponseEntity.ok(ApiResponse.of(productService.registerProduct(request)));
 	}
 
-	@ApiOperation(value = "상품 수정", notes = "상품의 정보를 수정할 수 있습니다.")
+	@ApiOperation(value = "상품 수정",
+		notes = "상품의 정보를 수정할 수 있습니다.")
 	@PutMapping("/{id}")
 	public ResponseEntity<ApiResponse<Long>> modifyProduct(
 		@PathVariable Long id,
@@ -77,7 +81,8 @@ public class AdminController {
 		return ResponseEntity.ok(ApiResponse.of(productService.modifyProduct(id, productRequest)));
 	}
 
-	@ApiOperation(value = "상품 삭제", notes = "상품을 삭제할 수 있습니다.")
+	@ApiOperation(value = "상품 삭제",
+		notes = "상품을 삭제할 수 있습니다.")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> removeProduct(@PathVariable Long id) {
 		productService.removeProduct(id);

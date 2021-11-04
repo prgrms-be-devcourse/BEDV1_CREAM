@@ -28,7 +28,8 @@ public class ProductController {
 		this.productService = productService;
 	}
 
-	@ApiOperation(value = "상품 리스트 조회", notes = "특정 조건에 맞는 상품들을 조회할 수 있습니다.")
+	@ApiOperation(value = "상품 리스트 조회",
+		notes = "특정 조건에 맞는 상품들을 조회할 수 있습니다.")
 	@GetMapping("/search")
 	public ResponseEntity<ApiResponse<List<ProductsResponse>>> getProducts(
 		@RequestParam(required = false) Map<String, String> filter
@@ -36,14 +37,15 @@ public class ProductController {
 		return ResponseEntity.ok(ApiResponse.of(productService.getProducts(filter)));
 	}
 
-	@ApiOperation(value = "특정 상품 조회", notes = "특정 상품의 기본 정보를 조회할 수 있습니다.")
+	@ApiOperation(value = "특정 상품 조회",
+		notes = "특정 상품의 기본 정보를 조회할 수 있습니다.")
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse<ProductResponse>> getProduct(@PathVariable Long id) {
 		return ResponseEntity.ok(ApiResponse.of(productService.getProduct(id)));
 	}
 
-	@ApiOperation(value = "특정 상품 상세 조회", notes = "특정 상품의 상세 정보"
-		+ "(체결 거래, 판매/구매 입찰)를 조회할 수 있습니다.")
+	@ApiOperation(value = "특정 상품 상세 조회",
+		notes = "특정 상품의 상세 정보(체결 거래, 판매/구매 입찰)를 조회할 수 있습니다.")
 	@GetMapping("/{id}/details")
 	public ResponseEntity<ApiResponse<DetailResponse>> getProductDetail(
 		@PathVariable Long id,
