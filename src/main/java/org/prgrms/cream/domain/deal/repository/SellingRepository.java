@@ -11,7 +11,12 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface SellingRepository extends JpaRepository<SellingBid, Long> {
 
-	boolean existsByUserAndProductAndSize(User user, Product product, String size);
+	boolean existsByUserAndProductAndSizeAndStatus(
+		User user,
+		Product product,
+		String size,
+		String status
+	);
 
 	Optional<SellingBid> findByUserAndProductAndSize(User user, Product product, String size);
 

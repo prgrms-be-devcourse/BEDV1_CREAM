@@ -1,10 +1,11 @@
 package org.prgrms.cream.domain.deal.controller;
 
-import org.prgrms.cream.domain.deal.dto.BuyRequest;
-import org.prgrms.cream.domain.deal.dto.DealResponse;
 import javax.validation.Valid;
 import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
+import org.prgrms.cream.domain.deal.dto.BuyRequest;
+import org.prgrms.cream.domain.deal.dto.DealResponse;
+import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.deal.service.SellingService;
 import org.prgrms.cream.global.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,8 @@ public class SellingController {
 		@RequestParam String size,
 		@Valid @RequestBody BidRequest bidRequest
 	) {
-		if (sellingService.existsSameBid(id, size, bidRequest.userId())) {
+		if (sellingService.existsSameBid(id, size, bidRequest.userId(),
+										 DealStatus.BIDDING.getStatus())) {
 			return ResponseEntity.ok(ApiResponse.of(
 				sellingService.updateSellingBid(id, size, bidRequest)));
 		}
