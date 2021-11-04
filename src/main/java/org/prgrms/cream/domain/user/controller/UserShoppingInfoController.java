@@ -1,5 +1,6 @@
 package org.prgrms.cream.domain.user.controller;
 
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.Optional;
 import org.prgrms.cream.domain.deal.dto.BuyingHistoryResponse;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@ApiOperation(value = "쇼핑정보 및 관리 컨트롤러")
 @RestController
 @RequestMapping("/users/{userId}")
 public class UserShoppingInfoController {
@@ -37,6 +39,7 @@ public class UserShoppingInfoController {
 		this.dealService = dealService;
 	}
 
+	@ApiOperation(value = "판매입찰 취소", notes = "회원Id와 입찰Id를 이용해서 판매입찰을 취소합니다.")
 	@DeleteMapping("/selling/{bidId}")
 	public ResponseEntity<Void> cancelSellingBid(
 		@PathVariable Long userId,
@@ -69,6 +72,7 @@ public class UserShoppingInfoController {
 		);
 	}
 
+	@ApiOperation(value = "판매입찰 내역 조회", notes = "회원Id와 상태를 이용해 판매입찰내역을 조회합니다.")
 	@GetMapping("/selling/bidding")
 	public ResponseEntity<ApiResponse<SellingHistoryResponse>> getSellingBidHistories(
 		@PathVariable Long userId,
@@ -102,6 +106,7 @@ public class UserShoppingInfoController {
 		);
 	}
 
+	@ApiOperation(value = "판매진행중 내역 조회", notes = "회원Id와 상태를 이용해 판매진행중 내역을 조회합니다.")
 	@GetMapping("/selling/pending")
 	public ResponseEntity<ApiResponse<UserDealHistoryResponse>> getPendingDealHistories(
 		@PathVariable Long userId,
@@ -136,6 +141,7 @@ public class UserShoppingInfoController {
 		);
 	}
 
+	@ApiOperation(value = "판매완료 내역 조회", notes = "회원Id와 상태를 이용해 판매완료 내역을 조회합니다.")
 	@GetMapping("/selling/finished")
 	public ResponseEntity<ApiResponse<UserDealHistoryResponse>> getFinishedDealHistories(
 		@PathVariable Long userId,
