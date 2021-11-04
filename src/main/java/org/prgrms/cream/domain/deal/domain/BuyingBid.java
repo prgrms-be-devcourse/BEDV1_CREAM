@@ -85,7 +85,7 @@ public class BuyingBid extends BaseEntity {
 		return getCreatedDate().format(DateTimeFormatter.ofPattern("yy/MM/dd"));
 	}
 
-	public String getExpiryDate() {
+	public String getExpiredDate() {
 		return getCreatedDate()
 			.plusDays(deadline)
 			.format(DateTimeFormatter.ofPattern("yy/MM/dd"));
@@ -99,7 +99,7 @@ public class BuyingBid extends BaseEntity {
 			size,
 			suggestPrice,
 			status,
-			getExpiryDate()
+			getExpiredDate()
 		);
 	}
 

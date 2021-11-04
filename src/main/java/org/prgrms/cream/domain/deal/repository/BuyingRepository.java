@@ -51,7 +51,7 @@ public interface BuyingRepository extends JpaRepository<BuyingBid, Long> {
 
 	List<BuyingBid> findAllByUser(User user);
 
-	Optional<BuyingBid> findByProductAndSizeAndUser(Product pro, String size, User user);
+	Optional<BuyingBid> findByProductAndSizeAndUser(Product product, String size, User user);
 
 	boolean existsByProductAndSizeAndUser(Product product, String size, User user);
 }
