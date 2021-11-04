@@ -1,4 +1,4 @@
-package org.prgrms.cream.domain.user.config;
+package org.prgrms.cream.domain.config;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
