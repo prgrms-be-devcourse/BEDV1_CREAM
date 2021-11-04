@@ -53,6 +53,13 @@ $(function () {
               + '<td>' + productInfo.releasePrice + '</td></tr>');
 
           getDetail();
+          $.each(productDetail.dealPriceResponses, (idx, deal) => {
+            let dealRow = '<tr>' +
+                '<td>' + deal.size + '</td>' +
+                '<td>' + deal.dealPrice + '</td>' +
+                '<td>' + deal.dealDate + '</td></tr>';
+            $('#deal-info tbody').append(dealRow);
+          });
         }
       });
     }
@@ -64,14 +71,47 @@ function getDetail() {
     const activeTab = $(this).attr('data-tab');
     $(".tab-menu").css('background-color', 'white');
     $(this).css('background-color', '#F6F8F9').css('border-radius', '35px');
-    $.ajax({
-      type: 'GET',
-      url: activeTab + ".html",
-      dataType: "html",
-      success: function (data) {
-        $('#tab-content').html(data);
-      }
-    });
+
+    $('#product-detail').empty();
+    if (activeTab === "deal") {
+      let pre = '<thead><tr><td>사이즈</td>'
+          + '<td>거래가</td><td>거래일</td></tr></thead>';
+      $('#product-detail').append(pre);
+
+      $.each(productDetail.dealPriceResponses, (idx, deal) => {
+        let dealRow =
+            '<tbody><tr>'
+            + '<td>' + deal.size + '</td>'
+            + '<td>' + deal.dealPrice + '</td>'
+            + '<td>' + deal.dealDate + '</td></tr></tbody>';
+        $('#product-detail').append(dealRow);
+      });
+    } else if (activeTab === "selling") {
+      let pre = '<thead><tr><td>사이즈</td>'
+          + '<td>판매 희망가</td><td>수량</td></tr></thead>';
+      $('#product-detail').append(pre);
+
+      $.each(productDetail.sellingBidPriceResponses, (idx, sell) => {
+        let sellRow = '<tbody><tr>'
+            + '<td>' + sell.size + '</td>'
+            + '<td>' + sell.sellingPrice + '</td>'
+            + '<td>' + sell.quantity + '</td></tr></tbody>';
+        $('#product-detail').append(sellRow);
+      });
+    } else if (activeTab === "buying") {
+      let pre = '<thead><tr><td>사이즈</td>'
+          + '<td>구매 희망가</td><td>수량</td></tr></thead>';
+      $('#product-detail').append(pre);
+
+      $.each(productDetail.buyingBidPriceResponses, (idx, buy) => {
+        let sellRow = '<tbody><tr>'
+            + '<td>' + buy.size + '</td>'
+            + '<td>' + buy.buyingPrice + '</td>'
+            + '<td>' + buy.quantity + '</td></tr></tbody>';
+        $('#product-detail').append(sellRow);
+      });
+    }
   });
   $('#default').click();
 }
+

@@ -41,12 +41,12 @@
   font-size: 18px;
 }
 
-.td_brand, .filter-item, .nav-item, .tab-menu {
+.td_brand, .filter-item, .nav-item, .tab-menu, thead {
   font-family: OTWelcomeBA, serif;
   font-size: 20px;
 }
 
-.column-name {
+.column-name, thead {
   font-size: 15px;
 }
 
