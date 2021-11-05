@@ -1,7 +1,7 @@
 # 👟CREAM
 > **KREAM|한정판 스니커즈 거래 플랫폼** 클론 프로젝트
 
-
+<br/>
 
 ### Team
 
@@ -10,7 +10,7 @@
 |        **김부희**        |       **이수형**       |       **김명환**       |         **타일러**         |
 |      스크럼 마스터       |     프로덕트 오너      |         개발자         |            멘토            |
 
-
+<br/>
 
 ## 프로젝트 개요 
 
@@ -46,13 +46,13 @@
 	<img src="https://img.shields.io/badge/Jira-0052CC?style=flat-square&logo=Jira%20software&logoColor=white&style=flat"/></a>
 </p>
 
-
+<br/>
 
 ## Architecture
 
 ![archi](images/archi.png)
 
-
+<br/>
 
 ## Feature
 
@@ -60,7 +60,7 @@
 
 #### [Feature Detail](https://github.com/prgrms-be-devcourse/BEDV1_CREAM/wiki/01-CREAM-Use-Case)
 
-
+<br/>
 
 ## DB ERD 
 
