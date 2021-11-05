@@ -1,28 +1,16 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
->
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1" name="viewport">
-
-  <!-- Bootstrap CSS -->
-  <link crossorigin="anonymous"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-        rel="stylesheet">
-
-
-  <title>Hello, world!</title>
-  <!-- Bootstrap CSS -->
-  <link crossorigin="anonymous"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-        rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>CREAM</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-  <title>Hello, world!</title>
-  <link href="../css/user-info.css" rel="stylesheet">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        rel="stylesheet">
+  <link href="../css/product.css" rel="stylesheet">
+  <script src="../js/user/user-update.js" type="text/javascript"></script>
+  <script src="../js/user/user-delete.js" type="text/javascript"></script>
+  <script src="../js/user/user-info.js" type="text/javascript"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
@@ -41,48 +29,51 @@
         <li class="nav-item">
           <a class="nav-link" href="/user/user-info.html">MyPage</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/user/user-join.html">Join</a>
+        </li>
       </ul>
     </div>
   </div>
 </nav>
 
-<div class="mb-3">
-  <label class="form-label" for="search-input"></label>
-  <input class="form-control" id="search-input" placeholder="사용자 번호를 입력해주세요"
-         type="text">
+<div class="container mt-5">
+  <div class="form-group row m-1">
+    <div class="col-xs-3 mr-2">
+      <input class="form-control" id="search-input" placeholder="사용자 아이디 입력" type="number"/>
+    </div>
+    <div class="mr-2">
+      <button class="btn btn-dark" id="search">조회</button>
+    </div>
+    <div>
+      <button class="btn btn-dark" id="delete-send" type="button">회원 탈퇴</button>
+    </div>
+  </div>
+  <div class="content mt-5">
+    <div class="form-group m-1 update">
+      <form method="POST" name="data">
+        <h5>닉네임</h5>
+        <input class="form-control" id="nickname" name="nickname" type="text"><br>
+        <button class="btn btn-dark" id="nickname-update" type="button">수정</button>
+
+        <h5>이메일</h5>
+        <input class="form-control" id="email" name="email" type="text"><br>
+        <button class="btn btn-dark" id="email-update" type="button">수정</button>
+
+        <h5>핸드폰번호</h5>
+        <input class="form-control" id="phone" name="phone" type="text"><br>
+        <button class="btn btn-dark" id="phone-update" type="button">수정</button>
+
+        <h5>주소</h5>
+        <input class="form-control" id="address" name="address" type="text"><br>
+        <button class="btn btn-dark" id="address-update" type="button">수정</button>
+
+        <h5>신발 사이즈</h5>
+        <input class="form-control" id="size" name="size" type="text"><br>
+        <button class="btn btn-dark" id="size-update" type="button">수정</button>
+      </form>
+    </div>
+  </div>
 </div>
-
-<button class="btn btn-dark" id="search" type="button">조회</button>
-<br>
-
-<form method="POST" name="data">
-  <h5>닉네임</h5>
-  <input id="nickname" name="nickname" type="text"><br>
-  <button class="btn btn-dark" id="nickname-update" type="button">수정</button>
-
-  <h5>이메일</h5>
-  <input id="email" name="email" type="text"><br>
-  <button class="btn btn-dark" id="email-update" type="button">수정</button>
-
-  <h5>핸드폰번호</h5>
-  <input id="phone" name="phone" type="text"><br>
-  <button class="btn btn-dark" id="phone-update" type="button">수정</button>
-
-  <h5>주소</h5>
-  <input id="address" name="address" type="text"><br>
-  <button class="btn btn-dark" id="address-update" type="button">수정</button>
-
-  <h5>신발 사이즈</h5>
-  <input id="size" name="size" type="text"><br>
-  <button class="btn btn-dark" id="size-update" type="button">수정</button>
-</form>
-<br>
-
-<script src="../js/user/user-update.js" type="text/javascript"></script>
-<script src="../js/user/user-info.js" type="text/javascript"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-      rel="stylesheet">
 </body>
 </html>

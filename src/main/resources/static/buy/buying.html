@@ -32,29 +32,30 @@
         <li class="nav-item">
           <a class="nav-link" href="/user/user-info.html">MyPage</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/user/user-join.html">Join</a>
+        </li>
       </ul>
     </div>
   </div>
 </nav>
 
-<div class="col-md-auto">
-  <div class="col-md-auto">
-    <div class="mt-5"></div>
-    <h1>구매 입찰</h1>
-    <div class="mt-3"></div>
-
-    <div>
+<div class="container-fluid m-5">
+  <div class="content">
+    <div class="mt-5"><h1>구매 입찰</h1></div>
+    <div class="mt-5">
       <label for="productId">구매할 상품 ID</label>
-      <input id="productId" type="number">
+      <input class="form-control" id="productId" type="number">
     </div>
-    <div>
-      <label for="size">상품 사이즈</label>
-      <input id="size" type="text">
+    <div class="mt-2">
+      <label for="productId">상품 사이즈</label>
+      <input class="form-control" id="size" type="number">
     </div>
-    <button class="btn btn-primary" id="btn-product" type="button">상품 조회</button>
-    <div class="mt-2"></div>
+    <div class="mt-2">
+      <button class="btn btn-primary" id="btn-product" type="button">상품 조회</button>
+    </div>
 
-    <div class="col-md-10">
+    <div class="mt-5">
       <table class="table" id="dynamicTable">
         <thead>
         <tr>
@@ -78,22 +79,24 @@
     </div>
   </div>
   <div class="mt-5"></div>
-  <div class="col-md-12">
+  <div class="content">
     <dic>
       <label for="userId">구매자 ID</label>
-      <input id="userId" type="number">
+      <input class="form-control" id="userId" type="number">
     </dic>
 
     <div>
       <label for="price">구매 희망가</label>
-      <input id="price" type="number">
+      <input class="form-control" id="price" type="number">
     </div>
     <div>
       <label for="deadline">입찰 마감기한</label>
-      <input id="deadline" type="number">
+      <input class="form-control" id="deadline" type="number">
     </div>
-    <button class="btn btn-primary" id="btn-buyingbid" type="button">구매 입찰하기</button>
-    <button class="btn btn-danger" id="btn-straightBuy" type="button">즉시 구매하기</button>
+    <div class="mt-3">
+      <button class="btn btn-primary" id="btn-buyingbid" type="button">구매 입찰하기</button>
+      <button class="btn btn-danger" id="btn-straightBuy" type="button">즉시 구매하기</button>
+    </div>
   </div>
 
   <div class="col-md-10">
