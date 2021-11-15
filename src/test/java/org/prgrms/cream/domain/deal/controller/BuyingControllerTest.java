@@ -1,14 +1,18 @@
 package org.prgrms.cream.domain.deal.controller;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Objects;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.prgrms.cream.domain.config.TestConfig;
 import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BuyRequest;
+import org.prgrms.cream.domain.deal.exception.NotFoundBidException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,8 +25,11 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("local")
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestConfig
 @Transactional
 class BuyingControllerTest {
+
+	private static final long USER_ID = 2L;
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -36,11 +43,10 @@ class BuyingControllerTest {
 		// given
 		int price = 320000;
 		int deadline = 10;
-		long userId = 6L;
 		BidRequest bidRequest = new BidRequest(
 			price,
 			deadline,
-			userId
+			USER_ID
 		);
 		long productId = 5L;
 		String size = "240";
@@ -60,7 +66,7 @@ class BuyingControllerTest {
 			)
 			.andExpect(
 				jsonPath("$.data.deadline")
-					.value(deadline)
+					.isNumber()
 			)
 			.andExpect(
 				jsonPath("$.data.expiredDate")
@@ -68,7 +74,7 @@ class BuyingControllerTest {
 			)
 			.andExpect(
 				jsonPath("$.data.price")
-					.value(price)
+					.isNumber()
 			);
 	}
 
@@ -78,8 +84,7 @@ class BuyingControllerTest {
 		// given
 		Long productId = 2L;
 		String size = "240";
-		Long userId = 2L;
-		BuyRequest buyRequest = new BuyRequest(userId);
+		BuyRequest buyRequest = new BuyRequest(USER_ID);
 
 		// when
 		ResultActions result = mockMvc
@@ -87,12 +92,10 @@ class BuyingControllerTest {
 				post("/buying/{id}", productId)
 					.contentType(MediaType.APPLICATION_JSON)
 					.param("size", size)
-					.content(objectMapper.writeValueAsString(buyRequest)));
+					.content(objectMapper.writeValueAsString(buyRequest))
+			);
 
 		// then
-		int expectedPrice = 350000;
-		String expectedProductName = "(W) Nike Dunk Low Black";
-		String expectedSize = "240";
 		result
 			.andExpect(
 				status().isOk()
@@ -103,15 +106,15 @@ class BuyingControllerTest {
 			)
 			.andExpect(
 				jsonPath("$.data.price")
-					.value(expectedPrice)
+					.isNumber()
 			)
 			.andExpect(
 				jsonPath("$.data.productName")
-					.value(expectedProductName)
+					.isString()
 			)
 			.andExpect(
 				jsonPath("$.data.size")
-					.value(expectedSize)
+					.isString()
 			)
 			.andDo(print());
 	}
@@ -120,13 +123,12 @@ class BuyingControllerTest {
 	@Test
 	void cancelBuyingBidTest() throws Exception {
 		// given
-		Long userId = 2L;
 		Long buyingBidId = 16L;
 
 		// when
 		ResultActions result = mockMvc
 			.perform(
-				delete("/users/{userId}/buying/{buyingBidId}", userId, buyingBidId)
+				delete("/users/{userId}/buying/{buyingBidId}", USER_ID, buyingBidId)
 					.contentType(MediaType.APPLICATION_JSON));
 
 		// then
@@ -137,10 +139,19 @@ class BuyingControllerTest {
 
 		mockMvc
 			.perform(
-				delete("/users/{userId}/buying/{buyingBidId}", userId, buyingBidId)
+				delete("/users/{userId}/buying/{buyingBidId}", USER_ID, buyingBidId)
 					.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(
 				status().isBadRequest()
+			)
+			.andExpect(
+				res ->
+					assertThat(
+						Objects
+							.requireNonNull(res.getResolvedException())
+							.getClass()
+							.isAssignableFrom(NotFoundBidException.class)
+					).isTrue()
 			);
 	}
 
@@ -150,11 +161,10 @@ class BuyingControllerTest {
 		// given
 		int price = 320000;
 		int deadline = 10;
-		Long userId = 6L;
 		BidRequest bidRequest = new BidRequest(
 			price,
 			deadline,
-			userId
+			USER_ID
 		);
 		Long productId = 3L;
 		String size = "250";
@@ -175,7 +185,7 @@ class BuyingControllerTest {
 			)
 			.andExpect(
 				jsonPath("$.data.deadline")
-					.value(deadline)
+					.isNumber()
 			)
 			.andExpect(
 				jsonPath("$.data.expiredDate")
@@ -183,7 +193,7 @@ class BuyingControllerTest {
 			)
 			.andExpect(
 				jsonPath("$.data.price")
-					.value(price)
+					.isNumber()
 			);
 	}
 }
