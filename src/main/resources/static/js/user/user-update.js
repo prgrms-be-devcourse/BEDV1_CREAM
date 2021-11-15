@@ -5,11 +5,11 @@ $(function () {
       type: "get",
       dataType: "json",
       success: function (data) {
-        $('#user-nickname').html(data.data.nickname);
-        $('#user-email').html(data.data.email)
-        $('#user-phone').html(data.data.phone)
-        $('#user-address').html(data.data.address)
-        $('#user-size').html(data.data.size)
+        $('#nickname').attr('placeholder', data.data.nickname);
+        $('#email').attr('placeholder', data.data.email);
+        $('#phone').attr('placeholder', data.data.phone);
+        $('#address').attr('placeholder', data.data.address);
+        $('#size').attr('placeholder', data.data.size);
       },
       error: function (err) {
         alert("수정을 할 수 없습니다.");
