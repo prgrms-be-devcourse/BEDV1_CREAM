@@ -6,7 +6,6 @@ import org.prgrms.cream.domain.deal.dto.BidRequest;
 import org.prgrms.cream.domain.deal.dto.BidResponse;
 import org.prgrms.cream.domain.deal.dto.BuyRequest;
 import org.prgrms.cream.domain.deal.dto.DealResponse;
-import org.prgrms.cream.domain.deal.model.DealStatus;
 import org.prgrms.cream.domain.deal.service.SellingService;
 import org.prgrms.cream.global.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
@@ -30,22 +29,13 @@ public class SellingController {
 
 	@ApiOperation(value = "판매입찰등록 및 수정", notes = "상품Id와 신발사이즈,입찰정보(dto)를 통해 입찰을 등록 혹은 갱신합니다.")
 	@PutMapping("/{id}")
-	public ResponseEntity<ApiResponse<BidResponse>> registerSellingBid(
+	public ResponseEntity<ApiResponse<BidResponse>> registerSellingBidRefactor(
 		@PathVariable Long id,
 		@RequestParam String size,
 		@Valid @RequestBody BidRequest bidRequest
 	) {
-		if (sellingService.existsSameBid(
-			id,
-			size,
-			bidRequest.userId(),
-			DealStatus.BIDDING.getStatus())
-		) {
-			return ResponseEntity.ok(ApiResponse.of(
-				sellingService.updateSellingBid(id, size, bidRequest)));
-		}
-		return ResponseEntity.ok(ApiResponse.of(
-			sellingService.registerSellingBid(id, size, bidRequest)));
+		return ResponseEntity.ok(
+			ApiResponse.of(sellingService.registerSellingBid(id, size, bidRequest)));
 	}
 
 	@ApiOperation(value = "즉시판매", notes = "상품Id와 신발사이즈,입찰정보(dto)를 통해 입찰을 등록 혹은 갱신합니다.")
