@@ -37,6 +37,7 @@ class UserControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+
 	@Autowired
 	private ObjectMapper objectMapper;
 
@@ -291,7 +292,7 @@ class UserControllerTest {
 			)
 			.andExpect(
 				jsonPath("$.data.nickname")
-					.value("nickName2")
+					.value("고구마")
 			)
 			.andExpect(
 				jsonPath("$.data.email")

@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.prgrms.cream.domain.config.TestConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,8 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("local")
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestConfig
 @Transactional
 class UserBuyInfoControllerTest {
+
+	private static final Long USER_ID = 2L;
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -26,29 +30,25 @@ class UserBuyInfoControllerTest {
 	@DisplayName("구매 입찰 내역 조회 - 전체 테스트")
 	@Test
 	void getTotalBiddingHistoryTest() throws Exception {
-		// given
-		Long userId = 6L;
-
 		// when
 		ResultActions result = mockMvc
 			.perform(
-				get("/users/{userId}/buying/bidding", userId)
+				get("/users/{userId}/buying/bidding", USER_ID)
 					.contentType(MediaType.APPLICATION_JSON)
 			);
 
 		// then
-		int expectedLength = 2;
 		result
 			.andExpect(
 				status().isOk()
 			)
 			.andExpect(
-				jsonPath("$.data.buyingBidResponses")
+				jsonPath("$.data.bidHistory")
 					.isArray()
 			)
 			.andExpect(
-				jsonPath("$.data.buyingBidResponses.length()")
-					.value(expectedLength)
+				jsonPath("$.data.bidHistory.length()")
+					.isNumber()
 			);
 	}
 
@@ -56,59 +56,53 @@ class UserBuyInfoControllerTest {
 	@Test
 	void getBiddingHistoryByStatusTest() throws Exception {
 		// given
-		Long userId = 6L;
 		String status = "기한만료";
 
 		// when
 		ResultActions result = mockMvc
 			.perform(
-				get("/users/{userId}/buying/bidding", userId)
+				get("/users/{userId}/buying/bidding", USER_ID)
 					.contentType(MediaType.APPLICATION_JSON)
 					.param("status", status)
 			);
 
 		// then
-		int expectedLength = 0;
 		result
 			.andExpect(
 				status().isOk()
 			)
 			.andExpect(
-				jsonPath("$.data.buyingBidResponses")
+				jsonPath("$.data.bidHistory")
 					.isArray()
 			)
 			.andExpect(
-				jsonPath("$.data.buyingBidResponses.length()")
-					.value(expectedLength)
+				jsonPath("$.data.bidHistory.length()")
+					.isNumber()
 			);
 	}
 
 	@DisplayName("진행 중 내역 조회 - 전체 테스트")
 	@Test
 	void getTotalPendingHistoryTest() throws Exception {
-		// given
-		Long userId = 6L;
-
 		// when
 		ResultActions result = mockMvc
 			.perform(
-				get("/users/{userId}/buying/pending", userId)
+				get("/users/{userId}/buying/pending", USER_ID)
 					.contentType(MediaType.APPLICATION_JSON)
 			);
 
 		// then
-		int expectedLength = 2;
 		result
 			.andExpect(
 				status().isOk()
 			)
 			.andExpect(
-				jsonPath("$.data")
+				jsonPath("$.data.dealHistory")
 					.isArray()
 			)
 			.andExpect(
-				jsonPath("$.data.length()")
-					.value(expectedLength)
+				jsonPath("$.data.dealHistory.length()")
+					.isNumber()
 			);
 	}
 
@@ -116,90 +110,82 @@ class UserBuyInfoControllerTest {
 	@Test
 	void getPendingHistoryByStatusTest() throws Exception {
 		// given
-		Long userId = 6L;
 		String status = "검수합격";
 
 		// when
 		ResultActions result = mockMvc
 			.perform(
-				get("/users/{userId}/buying/pending", userId)
+				get("/users/{userId}/buying/pending", USER_ID)
 					.contentType(MediaType.APPLICATION_JSON)
 					.param("status", status)
 			);
 
 		// then
-		int expectedLength = 1;
 		result
 			.andExpect(
 				status().isOk()
 			)
 			.andExpect(
-				jsonPath("$.data")
+				jsonPath("$.data.dealHistory")
 					.isArray()
 			)
 			.andExpect(
-				jsonPath("$.data.length()")
-					.value(expectedLength)
+				jsonPath("$.data.dealHistory.length()")
+					.isNumber()
 			);
 	}
 
 	@DisplayName("종료 내역 조회 - 전체 테스트")
 	@Test
 	void getTotalFinishedHistoryTest() throws Exception {
-		// given
-		Long userId = 6L;
-
 		// when
 		ResultActions result = mockMvc
 			.perform(
-				get("/users/{userId}/buying/finished", userId)
+				get("/users/{userId}/buying/finished", USER_ID)
 					.contentType(MediaType.APPLICATION_JSON)
 			);
 
 		// then
-		int expectedLength = 2;
 		result
 			.andExpect(
 				status().isOk()
 			)
 			.andExpect(
-				jsonPath("$.data")
+				jsonPath("$.data.dealHistory")
 					.isArray()
 			)
 			.andExpect(
-				jsonPath("$.data.length()")
-					.value(expectedLength)
+				jsonPath("$.data.dealHistory.length()")
+					.isNumber()
 			);
 	}
 
-	@DisplayName("종료 중 내역 조회 - 특정 상태(조건) 테스트")
+	@DisplayName("종료 내역 조회 - 특정 상태(조건) 테스트")
 	@Test
 	void getFinishedHistoryByStatusTest() throws Exception {
 		// given
-		Long userId = 6L;
 		String status = "배송완료";
 
 		// when
 		ResultActions result = mockMvc
 			.perform(
-				get("/users/{userId}/buying/finished", userId)
+				get("/users/{userId}/buying/finished", USER_ID)
 					.contentType(MediaType.APPLICATION_JSON)
 					.param("status", status)
 			);
 
 		// then
-		int expectedLength = 1;
 		result
 			.andExpect(
 				status().isOk()
 			)
 			.andExpect(
-				jsonPath("$.data")
+				jsonPath("$.data.dealHistory")
 					.isArray()
 			)
 			.andExpect(
-				jsonPath("$.data.length()")
-					.value(expectedLength)
+				jsonPath("$.data.dealHistory.length()")
+					.isNumber()
 			);
 	}
 }
