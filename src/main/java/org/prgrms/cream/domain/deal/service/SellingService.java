@@ -93,7 +93,7 @@ public class SellingService {
 		if (existsSameBid(id, size, bidRequest.userId(), DealStatus.BIDDING.getStatus())) {
 			SellingBid sellingBid = findSellingBid(id, size, bidRequest.userId());
 			sellingBid.updateSellingBid(bidRequest.price(), bidRequest.deadline());
-
+			updateLowestPrice(bidRequest, productOption);
 			return sellingBid.toBidResponse(bidRequest);
 		}
 
