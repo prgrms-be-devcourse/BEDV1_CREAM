@@ -89,7 +89,6 @@ public class SellingService {
 	@Transactional
 	public BidResponse registerSellingBid(Long id, String size, BidRequest bidRequest) {
 		ProductOption productOption = productService.findProductOptionByProductIdAndSize(id, size);
-		updateLowestPrice(bidRequest, productOption);
 
 		if (existsSameBid(id, size, bidRequest.userId(), DealStatus.BIDDING.getStatus())) {
 			SellingBid sellingBid = findSellingBid(id, size, bidRequest.userId());
@@ -108,6 +107,7 @@ public class SellingService {
 			.build();
 
 		sellingRepository.save(sellingBid);
+		updateLowestPrice(bidRequest, productOption);
 
 		return sellingBid.toBidResponse(bidRequest);
 	}
