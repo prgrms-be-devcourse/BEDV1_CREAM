@@ -288,27 +288,27 @@ class UserControllerTest {
 			)
 			.andExpect(
 				jsonPath("$.data.id")
-					.value(2L)
+					.isNumber()
 			)
 			.andExpect(
 				jsonPath("$.data.nickname")
-					.value("고구마")
+					.isString()
 			)
 			.andExpect(
 				jsonPath("$.data.email")
-					.value("email2@email.com")
+					.isString()
 			)
 			.andExpect(
 				jsonPath("$.data.phone")
-					.value("01022222222")
+					.isString()
 			)
 			.andExpect(
 				jsonPath("$.data.address")
-					.value("경기도 성남시 분당구")
+					.isString()
 			)
 			.andExpect(
 				jsonPath("$.data.size")
-					.value("265")
+					.isString()
 			)
 			.andDo(
 				print()
