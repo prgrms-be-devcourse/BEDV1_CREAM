@@ -75,6 +75,7 @@ public class SellingService {
 
 		ProductOption productOption = productService.findProductOptionByProductIdAndSize(
 			productId, size);
+
 		if (buyingBids.size() == ONLY_ONE_BID) {
 			productOption.updateBuyBidPrice(ZERO);
 		} else if (buyingBids.size() == ALL_BID) {
@@ -89,7 +90,12 @@ public class SellingService {
 	public BidResponse registerSellingBid(Long id, String size, BidRequest bidRequest) {
 		ProductOption productOption = productService.findProductOptionByProductIdAndSize(id, size);
 
-		updateLowestPrice(bidRequest, productOption);
+		if (existsSameBid(id, size, bidRequest.userId(), DealStatus.BIDDING.getStatus())) {
+			SellingBid sellingBid = findSellingBid(id, size, bidRequest.userId());
+			sellingBid.updateSellingBid(bidRequest.price(), bidRequest.deadline());
+			updateLowestPrice(bidRequest, productOption);
+			return sellingBid.toBidResponse(bidRequest);
+		}
 
 		SellingBid sellingBid = SellingBid
 			.builder()
@@ -101,17 +107,6 @@ public class SellingService {
 			.build();
 
 		sellingRepository.save(sellingBid);
-
-		return sellingBid.toBidResponse(bidRequest);
-	}
-
-	@Transactional
-	public BidResponse updateSellingBid(Long id, String size, BidRequest bidRequest) {
-		SellingBid sellingBid = findSellingBid(id, size, bidRequest.userId());
-		sellingBid.updateSellingBid(bidRequest.price(), bidRequest.deadline());
-
-		ProductOption productOption = productService.findProductOptionByProductIdAndSize(id, size);
-
 		updateLowestPrice(bidRequest, productOption);
 
 		return sellingBid.toBidResponse(bidRequest);
@@ -162,7 +157,6 @@ public class SellingService {
 
 	@Transactional
 	public void cancelSellingBid(Long bidId, Long userId) {
-
 		SellingBid sellingBid = sellingRepository
 			.findByIdAndUserAndStatus(
 				bidId,
