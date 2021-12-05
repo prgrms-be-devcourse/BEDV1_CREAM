@@ -56,37 +56,15 @@ public class BuyingService {
 		User user = userService.findActiveUser(bidRequest.userId());
 		ProductOption productOption = productService.findProductOptionByProductIdAndSize(id, size);
 
-		if (buyingRepository.existsByProductAndSizeAndUser(
-			productOption.getProduct(), size, user)) {
-
-			Optional<BuyingBid> existBid = buyingRepository
-				.findByProductAndSizeAndUser(
-					productService.findActiveProduct(id),
-					size,
-					user
-				);
-			existBid
-				.ifPresent(
-					buyingBid -> {
-						buyingBid.update(bidRequest.price(), bidRequest.deadline());
-						buyingRepository
-							.findFirstByProductAndSizeAndStatusOrderBySuggestPriceDesc(
-								buyingBid.getProduct(),
-								size,
-								DealStatus.BIDDING.getStatus()
-							)
-							.ifPresent(
-								topPriceBid -> productOption.updateBuyBidPrice(
-									topPriceBid.getSuggestPrice())
-							);
-					}
-				);
-
-			if (existBid.isPresent()) {
-				return existBid
-					.get()
-					.toBidResponse();
-			}
+		Optional<BuyingBid> existingBid = buyingRepository
+			.findByProductAndSizeAndStatusAndUser(
+				productOption.getProduct(),
+				size,
+				DealStatus.BIDDING.getStatus(),
+				user
+			);
+		if (existingBid.isPresent()) {
+			return updateExistingBuyingBid(existingBid.get(), size, bidRequest, productOption);
 		}
 
 		updateHighestPrice(bidRequest.price(), productOption);
@@ -103,7 +81,6 @@ public class BuyingService {
 
 		return newBuyingBid.toBidResponse();
 	}
-
 
 	@Transactional
 	public DealResponse straightBuyProduct(Long productId, String size, BuyRequest buyRequest) {
@@ -148,24 +125,6 @@ public class BuyingService {
 					.build()
 			)
 			.toResponse();
-	}
-
-	@Transactional(readOnly = true)
-	public List<BuyingBid> findTopPriceBuyingBids(Long productId, String size, DealStatus status) {
-		Product product = productService.findActiveProduct(productId);
-
-		List<BuyingBid> buyingBids = buyingRepository
-			.findTop2ByProductAndSizeAndStatusOrderBySuggestPriceDescCreatedDateAsc(
-				product,
-				size,
-				status.getStatus()
-			);
-
-		if (buyingBids.isEmpty()) {
-			throw new NotFoundBidException(ErrorCode.NOT_FOUND_RESOURCE);
-		}
-
-		return buyingBids;
 	}
 
 	@Transactional
@@ -220,7 +179,27 @@ public class BuyingService {
 				.map(BuyingBid::toResponse)
 				.toList()
 		);
+	}
 
+	private BidResponse updateExistingBuyingBid(
+		BuyingBid buyingBid,
+		String size,
+		BidRequest bidRequest,
+		ProductOption productOption
+	) {
+		buyingBid.update(bidRequest.price(), bidRequest.deadline());
+		buyingRepository
+			.findFirstByProductAndSizeAndStatusOrderBySuggestPriceDesc(
+				buyingBid.getProduct(),
+				size,
+				DealStatus.BIDDING.getStatus()
+			)
+			.ifPresent(
+				topPriceBid -> productOption.updateBuyBidPrice(
+					topPriceBid.getSuggestPrice())
+			);
+
+		return buyingBid.toBidResponse();
 	}
 
 	private void updateHighestPrice(int price, ProductOption productOption) {
